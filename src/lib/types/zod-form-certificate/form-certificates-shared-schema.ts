@@ -54,14 +54,18 @@ export const createDateFieldSchema = (options?: {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const signatureSchema = z.union([
-  z
-    .instanceof(File, { message: 'A signature file is required' })
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
-      message: 'File size must be less than 5MB',
-    })
-    .refine((file) => file.type.startsWith('image/'), {
-      message: 'File must be an image (e.g., PNG, JPEG)',
-    }),
+  ...(typeof window !== "undefined"
+    ? [
+        z
+          .instanceof(File, { message: 'A signature file is required' })
+          .refine((file) => file.size <= 5 * 1024 * 1024, {
+            message: 'File size must be less than 5MB',
+          })
+          .refine((file) => file.type.startsWith('image/'), {
+            message: 'File must be an image (e.g., PNG, JPEG)',
+          }),
+      ]
+    : []), // Ensures no server-side validation for `File`
   z.string().min(1, 'A signature is required'),
 ]);
 
