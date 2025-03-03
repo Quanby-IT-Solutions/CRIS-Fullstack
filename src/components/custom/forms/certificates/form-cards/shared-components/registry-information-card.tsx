@@ -33,7 +33,7 @@ const RegistryInformationCard: React.FC<RegistryInformationCardProps> = ({
   formType,
   title = 'Registry Information',
 }) => {
-  const { control, setValue, setError, clearErrors, getValues } =
+  const { control, setValue, setError, clearErrors, getValues, watch } =
     useFormContext();
 
   // Initialize local state from RHF default value.
@@ -47,11 +47,9 @@ const RegistryInformationCard: React.FC<RegistryInformationCardProps> = ({
   }>({ exists: null, error: null });
   const [animationKey, setAnimationKey] = useState(0);
   const [ncrMode, setNcrMode] = useState(false);
-    const { watch } = useFormContext<typeof forms>()
 
   const minLength = 6;
   const maxLength = 20;
-
 
   const province = watch('province');
 
@@ -65,21 +63,24 @@ const RegistryInformationCard: React.FC<RegistryInformationCardProps> = ({
     return '';
   };
 
+  // Automatically set province to "Metro Manila" when NCR mode is enabled
+  useEffect(() => {
+    if (ncrMode) {
+      setValue('province', 'Metro Manila', { shouldValidate: true });
+    }
+  }, [ncrMode, setValue]);
+
   // When the province changes, update the NCR mode accordingly.
   useEffect(() => {
     const provinceString = getProvinceString(province);
     const shouldBeNCR = provinceString.trim().toLowerCase() === 'metro manila';
     setNcrMode(shouldBeNCR);
-  }, []);
-
-
-
+  }, [province]);
 
   const generateRegistryNumber = () => {
     const year = new Date().getFullYear();
     return `${year}-${Math.floor(Math.random() * 1000000)}`;
   };
-
 
   const validateRegistryNumber = useCallback(
     (value: string): string => {
@@ -101,7 +102,6 @@ const RegistryInformationCard: React.FC<RegistryInformationCardProps> = ({
     },
     [minLength]
   );
-
 
   const checkRegistryNumber = useCallback(
     async (value: string) => {
@@ -163,7 +163,6 @@ const RegistryInformationCard: React.FC<RegistryInformationCardProps> = ({
   const handleRegistryNumberChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    // Removed the early return so user input always works
     let value = event.target.value.replace(/[^\d-]/g, '');
     if (value.length >= 4 && !value.includes('-')) {
       value = value.slice(0, 4) + '-' + value.slice(4);
@@ -190,7 +189,6 @@ const RegistryInformationCard: React.FC<RegistryInformationCardProps> = ({
   };
 
   const handleGenerateRegistryNumber = () => {
-    // Removed the early return so the generate button always works
     const generatedNumber = generateRegistryNumber();
     setRegistryNumber(generatedNumber);
     setValue('registryNumber', generatedNumber);
@@ -199,7 +197,6 @@ const RegistryInformationCard: React.FC<RegistryInformationCardProps> = ({
   };
 
   const getValidationIcon = () => {
-    // Use the current registryNumber instead of initialRegistryNumber for UX feedback
     if (!registryNumber) return null;
 
     if (isChecking) {

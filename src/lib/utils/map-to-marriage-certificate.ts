@@ -153,6 +153,7 @@ export const mapToMarriageCertificateValues = (
         if (!addressObj) return {
             houseNo: '',
             street: '',
+            st: '',
             barangay: '',
             cityMunicipality: '',
             province: '',
@@ -166,6 +167,9 @@ export const mapToMarriageCertificateValues = (
             street: typeof addressObj.street === 'object' && addressObj.street
                 ? ensureString(addressObj.street.value || addressObj.street)
                 : ensureString(addressObj.street),
+            st: typeof addressObj.st === 'object' && addressObj.st
+                ? ensureString(addressObj.st.value || addressObj.st)
+                : ensureString(addressObj.st),
             barangay: typeof addressObj.barangay === 'object' && addressObj.barangay
                 ? ensureString(addressObj.barangay.value || addressObj.barangay)
                 : ensureString(addressObj.barangay),
@@ -396,23 +400,11 @@ export const mapToMarriageCertificateValues = (
         c: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.c),
         d: {
             dayOf: parseDateSafely(marriageForm.affidavitOfSolemnizingOfficer?.d?.dayOf),
-            atPlaceExecute: {
-                st: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceExecute?.street),
-                barangay: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceExecute?.barangay),
-                cityMunicipality: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceExecute?.cityMunicipality),
-                province: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceExecute?.province),
-                country: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceExecute?.country)
-            }
+            atPlaceExecute: createAddressObject(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceExecute)
         },
         dateSworn: {
             dayOf: parseDateSafely(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.dayOf),
-            atPlaceOfSworn: {
-                st: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.atPlaceOfSworn?.street),
-                barangay: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.atPlaceOfSworn?.barangay),
-                cityMunicipality: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.atPlaceOfSworn?.cityMunicipality),
-                province: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.atPlaceOfSworn?.province),
-                country: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.atPlaceOfSworn?.country)
-            },
+            atPlaceOfSworn: createAddressObject(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.atPlaceOfSworn),
             ctcInfo: {
                 number: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.ctcInfo?.number),
                 dateIssued: parseDateSafely(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.ctcInfo?.dateIssued),

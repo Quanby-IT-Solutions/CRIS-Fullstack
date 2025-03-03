@@ -222,7 +222,7 @@ export const MarriageDetailsCard: React.FC<MarriageDetailsCardProps> = ({ form }
                         </div>
                         <div>
                             <p className="font-medium">{t('Time of Marriage')}</p>
-                            <div>{m.timeOfMarriage || ''}</div>
+                            <div>{m.timeOfMarriage ? formatDate(m.timeOfMarriage) : ''}</div>
                         </div>
                         <div>
                             <p className="font-medium">{t('Marriage Settlement')}</p>

@@ -32,39 +32,7 @@ const DelayedRegistrationForm: React.FC = () => {
   const [affiantAddressNcrMode, setAffiantAddressNcrMode] = useState(false);
 
   // When delayed registration is toggled on, ensure the nested object is initialized.
-  useEffect(() => {
-    const currentDelayedReg = getValues('affidavitOfDelayedRegistration');
-    if (isDelayedRegistration && currentDelayedReg === null) {
-      setValue('affidavitOfDelayedRegistration', {
-        affiant: {
-          name: '',
-          citizenship: '',
-          civilStatus: '',
-          address: {
-            houseNo: '',
-            st: '',
-            barangay: '',
-            cityMunicipality: '',
-            province: '',
-            country: '',
-          },
-        },
-        registrationType: '',
-        reasonForDelay: '',
-        dateSworn: '',
-        adminOfficer: {
-          signature: '',
-          name: '',
-          position: '',
-        },
-        ctcInfo: {
-          number: '',
-          dateIssued: '',
-          placeIssued: '',
-        },
-      });
-    }
-  }, [isDelayedRegistration, setValue, getValues]);
+
 
   return (
     <Card>

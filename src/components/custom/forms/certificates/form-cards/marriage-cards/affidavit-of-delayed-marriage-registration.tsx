@@ -22,16 +22,45 @@ interface AffidavitForDelayedMarriageRegistrationProps {
 export const AffidavitForDelayedMarriageRegistration: FC<
     AffidavitForDelayedMarriageRegistrationProps
 > = ({ className }) => {
-    const { control, watch, setValue } = useFormContext<MarriageCertificateFormValues>()
-    const [affiant, setAffiant] = useState(false)
-    const [execution, setExecution] = useState(false)
+    const { control, getValues, setValue } = useFormContext<MarriageCertificateFormValues>()
+
+
     const isDelayed = useWatch({ control, name: 'affidavitForDelayed.delayedRegistration' })
 
-    const [ncrModeAdminOfficer, setNcrModeAdminOfficer] = useState(false)
+    // NCR
+    const [affiant, setAffiant] = useState(false)
+    const [execution, setExecution] = useState(false)
     const [ncrModeSwornOfficer, setNcrModeSwornOfficer] = useState(false)
 
     const agreementA = useWatch({ control, name: 'affidavitForDelayed.a.a.agreement' });
     const agreementB = useWatch({ control, name: 'affidavitForDelayed.a.b.agreement' });
+
+
+    useEffect(() => {
+        // Detect NCR mode from fetched data on component mount
+        const province = getValues('affidavitForDelayed.applicantInformation.applicantAddress.province');
+        if (province === 'Metro Manila' || province === 'NCR') {
+            setAffiant(true);
+        }
+    }, [getValues]);
+
+    useEffect(() => {
+        // Detect NCR mode from fetched data on component mount
+        const province = getValues('affidavitForDelayed.f.place.province');
+        if (province === 'Metro Manila' || province === 'NCR') {
+            setExecution(true);
+        }
+    }, [getValues]);
+
+    useEffect(() => {
+        // Detect NCR mode from fetched data on component mount
+        const province = getValues('affidavitForDelayed.dateSworn.atPlaceOfSworn.province');
+        if (province === 'Metro Manila' || province === 'NCR') {
+            setNcrModeSwornOfficer(true);
+        }
+    }, [getValues]);
+
+
 
 
     // Reset the entire AffidavitForDelayed object
@@ -941,10 +970,6 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                             </CardHeader>
                             <CardContent>
                                 <div className='space-y-4'>
-                                    <NCRModeSwitch
-                                        isNCRMode={ncrModeAdminOfficer}
-                                        setIsNCRMode={setNcrModeAdminOfficer}
-                                    />
                                     <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                                         <FormField
                                             control={control}
@@ -987,13 +1012,12 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                             )}
                                         />
 
-                                        
                                         <FormField
                                             control={control}
                                             name='affidavitForDelayed.administeringInformation.adminAddress'
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>Street</FormLabel>
+                                                    <FormLabel>Address</FormLabel>
                                                     <FormControl>
                                                         <Input
                                                             {...field}
@@ -1006,7 +1030,7 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                                 </FormItem>
                                             )}
                                         />
-                                        
+
                                         <FormField
                                             control={control}
                                             name='affidavitForDelayed.administeringInformation.adminSignature'

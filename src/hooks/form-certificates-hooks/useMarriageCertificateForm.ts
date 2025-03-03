@@ -30,239 +30,235 @@ const preparePrismaData = (data: any) => {
 const emptyDefaults: MarriageCertificateFormValues = {
     // Registry Information
     registryNumber: '',
-    province: '',
-    cityMunicipality: '',
+    province: 'Metro Manila', // Updated
+    cityMunicipality: 'Quezon City', // Updated
 
     // Husband Information
     husbandName: {
-        first: '',
-        middle: '',
-        last: ''
+        first: 'Juan',
+        middle: 'Dela',
+        last: 'Cruz'
     },
-    husbandAge: 0,
-    husbandBirth: undefined,
+    husbandAge: 30,
+    husbandBirth: new Date('1990-01-01'),
     husbandPlaceOfBirth: {
-        houseNo: '',
-        street: '',
-        barangay: '',
-        cityMunicipality: '',
-        province: '',
-        country: ''
+        houseNo: '123',
+        street: 'Main Street',
+        barangay: '', // Updated
+        cityMunicipality: '', // Updated
+        province: '', // Updated
+        country: 'Philippines'
     },
     husbandSex: 'Male',
-    husbandCitizenship: '',
-    husbandResidence: '',
-    husbandReligion: '',
+    husbandCitizenship: 'Filipino',
+    husbandResidence: 'Quezon City',
+    husbandReligion: 'Roman Catholic',
     husbandCivilStatus: 'Single',
     husbandConsentPerson: {
         name: {
-            first: '',
-            middle: '',
-            last: ''
+            first: 'Pedro',
+            middle: 'Dela',
+            last: 'Cruz'
         },
-        relationship: '',
+        relationship: 'Father',
         residence: {
-            houseNo: '',
-            street: '',
-            barangay: '',
-            cityMunicipality: '',
-            province: '',
-            country: ''
+            houseNo: '123',
+            street: 'Main Street',
+            barangay: 'Capri', // Updated
+            cityMunicipality: 'Quezon City', // Updated
+            province: 'Metro Manila', // Updated
+            country: 'Philippines'
         }
     },
     husbandParents: {
         fatherName: {
-            first: '',
-            middle: '',
-            last: ''
+            first: 'Pedro',
+            middle: 'Dela',
+            last: 'Cruz'
         },
-        fatherCitizenship: '',
+        fatherCitizenship: 'Filipino',
         motherName: {
-            first: '',
-            middle: '',
-            last: ''
+            first: 'Maria',
+            middle: 'Dela',
+            last: 'Cruz'
         },
-        motherCitizenship: ''
+        motherCitizenship: 'Filipino'
     },
 
     // Wife Information
     wifeName: {
-        first: '',
-        middle: '',
-        last: ''
+        first: 'Maria',
+        middle: 'Dela',
+        last: 'Cruz'
     },
-    wifeAge: 0,
-    wifeBirth: undefined,
+    wifeAge: 28,
+    wifeBirth: new Date('1992-02-02'),
     wifePlaceOfBirth: {
-        houseNo: '',
-        street: '',
-        barangay: '',
-        cityMunicipality: '',
-        province: '',
-        country: ''
+        houseNo: '456',
+        street: 'Second Street',
+        barangay: 'Capri', // Updated
+        cityMunicipality: 'Quezon City', // Updated
+        province: 'Metro Manila', // Updated
+        country: 'Philippines'
     },
     wifeSex: 'Female',
-    wifeCitizenship: '',
-    wifeResidence: '',
-    wifeReligion: '',
+    wifeCitizenship: 'Filipino',
+    wifeResidence: 'Quezon City',
+    wifeReligion: 'Roman Catholic',
     wifeCivilStatus: 'Single',
     wifeConsentPerson: {
         name: {
-            first: '',
-            middle: '',
-            last: ''
+            first: 'Juanita',
+            middle: 'Dela',
+            last: 'Cruz'
         },
-        relationship: '',
+        relationship: 'Mother',
         residence: {
-            houseNo: '',
-            street: '',
-            barangay: '',
-            cityMunicipality: '',
-            province: '',
-            country: ''
+            houseNo: '456',
+            street: 'Second Street',
+            barangay: 'Capri', // Updated
+            cityMunicipality: 'Quezon City', // Updated
+            province: 'Metro Manila', // Updated
+            country: 'Philippines'
         }
     },
     wifeParents: {
         fatherName: {
-            first: '',
-            middle: '',
-            last: ''
+            first: 'Jose',
+            middle: 'Dela',
+            last: 'Cruz'
         },
-        fatherCitizenship: '',
+        fatherCitizenship: 'Filipino',
         motherName: {
-            first: '',
-            middle: '',
-            last: ''
+            first: 'Ana',
+            middle: 'Dela',
+            last: 'Cruz'
         },
-        motherCitizenship: ''
+        motherCitizenship: 'Filipino'
     },
 
     // Marriage Details
     placeOfMarriage: {
-        houseNo: '',
-        street: '',
-        barangay: '',
-        cityMunicipality: '',
-        province: '',
-        country: ''
+        houseNo: '789',
+        street: 'Third Street',
+        barangay: 'Capri', // Updated
+        cityMunicipality: 'Quezon City', // Updated
+        province: 'Metro Manila', // Updated
+        country: 'Philippines'
     },
-    dateOfMarriage: undefined,
-    timeOfMarriage: undefined,
+    dateOfMarriage: new Date('2023-10-10'),
+    timeOfMarriage: new Date('2023-10-10T14:30:00'),
 
     // Witnesses
     husbandWitnesses: [
         {
-            name: '',
-            signature: ''
+            name: 'John Doe',
+            signature: 'John_Doe_Signature'
         },
         {
-            name: '',
-            signature: ''
+            name: 'Jane Doe',
+            signature: 'Jane_Doe_Signature'
         }
     ],
     wifeWitnesses: [
         {
-            name: '',
-            signature: ''
+            name: 'Alice Smith',
+            signature: 'Alice_Smith_Signature'
         },
         {
-            name: '',
-            signature: ''
+            name: 'Bob Johnson',
+            signature: 'Bob_Johnson_Signature'
         }
     ],
 
     // Contract Details
-    contractDay: undefined,
+    contractDay: new Date('2023-10-10'),
 
     // Contracting Parties
     husbandContractParty: {
-        signature: '',
-        agreement: false
+        signature: 'Juan_Cruz_Signature',
+        agreement: true
     },
     wifeContractParty: {
-        signature: '',
-        agreement: false
+        signature: 'Maria_Cruz_Signature',
+        agreement: true
     },
 
     // Marriage License Details
     marriageLicenseDetails: {
-        dateIssued: undefined,
-        placeIssued: '',
-        licenseNumber: '',
-        marriageAgreement: false
+        dateIssued: new Date('2023-09-01'),
+        placeIssued: 'Manila City Hall',
+        licenseNumber: 'LIC123456',
+        marriageAgreement: true
     },
 
     // Marriage Article
     marriageArticle: {
-        article: '',
-        marriageArticle: false
+        article: 'Article 1',
+        marriageArticle: true
     },
 
     // Marriage Settlement
-    marriageSettlement: false,
+    marriageSettlement: true,
 
     // Solemnizing Officer
     solemnizingOfficer: {
-        name: '',
-        position: '',
-        signature: '',
-        registryNoExpiryDate: ''
+        name: 'Rev. Father Santos',
+        position: 'Priest',
+        signature: 'Rev_Father_Santos_Signature',
+        registryNoExpiryDate: '2025-12-31'
     },
 
     // Registered at Civil Registrar
     preparedBy: {
-        date: undefined,
-        nameInPrint: '',
-        signature: '',
-        titleOrPosition: ''
+        date: new Date('2023-10-11'),
+        nameInPrint: 'Clerk Juan',
+        signature: 'Clerk_Juan_Signature',
+        titleOrPosition: 'Clerk'
     },
     receivedBy: {
-        date: undefined,
-        nameInPrint: '',
-        signature: '',
-        titleOrPosition: ''
+        date: new Date('2023-10-11'),
+        nameInPrint: 'Registrar Maria',
+        signature: 'Registrar_Maria_Signature',
+        titleOrPosition: 'Registrar'
     },
     registeredByOffice: {
-        date: undefined,
-        nameInPrint: '',
-        signature: '',
-        titleOrPosition: ''
+        date: new Date('2023-10-11'),
+        nameInPrint: 'Office Clerk',
+        signature: 'Office_Clerk_Signature',
+        titleOrPosition: 'Office Clerk'
     },
 
     // Optional Sections
-    remarks: '',
-    pagination: {
-        pageNumber: '',
-        bookNumber: ''
-    },
+    remarks: 'No remarks',
 
     // Back page data - Affidavit of Solemnizing Officer
     affidavitOfSolemnizingOfficer: {
         solemnizingOfficerInformation: {
             officerName: {
-                first: '',
-                middle: '',
-                last: ''
+                first: 'Rev. Father',
+                middle: 'Dela',
+                last: 'Santos'
             },
-            officeName: '',
-            signature: '',
-            address: '',
+            officeName: 'Manila Parish',
+            signature: 'Rev_Father_Santos_Signature',
+            address: 'Manila, Philippines'
         },
 
         a: {
             nameOfHusband: {
-                first: '',
-                middle: '',
-                last: ''
+                first: 'Juan',
+                middle: 'Dela',
+                last: 'Cruz'
             },
             nameOfWife: {
-                first: '',
-                middle: '',
-                last: ''
+                first: 'Maria',
+                middle: 'Dela',
+                last: 'Cruz'
             },
         },
         b: {
-            a: false,
+            a: true,
             b: false,
             c: false,
             d: false,
@@ -270,39 +266,39 @@ const emptyDefaults: MarriageCertificateFormValues = {
         },
         c: '', //wala man to
         d: {
-            dayOf: undefined,
+            dayOf: new Date('2023-10-10'),
             atPlaceExecute: {
-                st: '',
-                barangay: '',
-                cityMunicipality: '',
-                province: '',
-                country: ''
+                st: 'Third Street',
+                barangay: 'Capri', // Updated
+                cityMunicipality: 'Quezon City', // Updated
+                province: 'Metro Manila', // Updated
+                country: 'Philippines'
             },
         },
         dateSworn: {
-            dayOf: undefined,
+            dayOf: new Date('2023-10-11'),
             atPlaceOfSworn: {
-                st: '',
-                barangay: '',
-                cityMunicipality: '',
-                province: '',
-                country: ''
+                st: 'Third Street',
+                barangay: 'Capri', // Updated
+                cityMunicipality: 'Quezon City', // Updated
+                province: 'Metro Manila', // Updated
+                country: 'Philippines'
             },
             ctcInfo: {
-                number: '',
-                dateIssued: undefined,
-                placeIssued: '',
+                number: 'CTC123456',
+                dateIssued: new Date('2023-10-11'),
+                placeIssued: 'Manila City Hall'
             },
         },
         administeringOfficerInformation: {
             adminName: {
-                first: '',
-                middle: '',
-                last: ''
+                first: 'Clerk',
+                middle: 'Dela',
+                last: 'Juan'
             },
-            position: '',
-            address: '',
-            signature: ''
+            position: 'Clerk',
+            address: 'Manila, Philippines',
+            signature: 'Clerk_Juan_Signature'
         },
     },
 
@@ -310,21 +306,21 @@ const emptyDefaults: MarriageCertificateFormValues = {
     affidavitForDelayed: {
         delayedRegistration: 'No',
         administeringInformation: {
-            adminSignature: '',
-            adminName: '',
-            position: '',
-            adminAddress: '',
+            adminSignature: 'Admin_Signature',
+            adminName: 'Admin Juan',
+            position: 'Admin',
+            adminAddress: 'Manila, Philippines'
         },
         applicantInformation: {
-            signatureOfApplicant: '',
-            nameOfApplicant: '',
-            postalCode: '',
+            signatureOfApplicant: 'Applicant_Signature',
+            nameOfApplicant: 'Juan Cruz',
+            postalCode: '1234',
             applicantAddress: {
-                st: '',
-                barangay: '',
-                cityMunicipality: '',
-                province: '',
-                country: ''
+                st: 'Main Street',
+                barangay: 'Capri', // Updated
+                cityMunicipality: 'Quezon City', // Updated
+                province: 'Metro Manila', // Updated
+                country: 'Philippines'
             }
         },
         a: {
@@ -339,67 +335,67 @@ const emptyDefaults: MarriageCertificateFormValues = {
                 dateOfMarriage: undefined,
             },
             b: {
-                agreement: false,
+                agreement: true,
                 nameOfHusband: {
-                    first: '',
-                    middle: '',
-                    last: ''
+                    first: 'Juan',
+                    middle: 'Dela',
+                    last: 'Cruz'
                 },
                 nameOfWife: {
-                    first: '',
-                    middle: '',
-                    last: ''
+                    first: 'Maria',
+                    middle: 'Dela',
+                    last: 'Cruz'
                 },
-                placeOfMarriage: '',
-                dateOfMarriage: undefined,
+                placeOfMarriage: 'Manila',
+                dateOfMarriage: new Date('2023-10-10'),
             }
         },
         b: {
-            solemnizedBy: '',
+            solemnizedBy: 'Rev. Father Santos',
             sector: 'religious-ceremony',
         },
         c: {
             a: {
-                licenseNo: '',
-                dateIssued: undefined,
-                placeOfSolemnizedMarriage: '',
+                licenseNo: 'LIC123456',
+                dateIssued: new Date('2023-09-01'),
+                placeOfSolemnizedMarriage: 'Manila'
             },
             b: {
-                underArticle: ''
-            },
+                underArticle: 'Article 1'
+            }
         },
         d: {
-            husbandCitizenship: '',
-            wifeCitizenship: '',
+            husbandCitizenship: 'Filipino',
+            wifeCitizenship: 'Filipino'
         },
-        e: '',
+        e: 'No reason provided',
         f: {
-            date: undefined,
+            date: new Date('2023-10-11'),
             place: {
-                st: '',
-                barangay: '',
-                cityMunicipality: '',
-                province: '',
-                country: ''
+                st: 'Third Street',
+                barangay: 'Capri', // Updated
+                cityMunicipality: 'Quezon City', // Updated
+                province: 'Metro Manila', // Updated
+                country: 'Philippines'
             }
         },
         dateSworn: {
-            dayOf: undefined,
+            dayOf: new Date('2023-10-11'),
             atPlaceOfSworn: {
-                st: '',
-                barangay: '',
-                cityMunicipality: '',
-                province: '',
-                country: ''
+                st: 'Third Street',
+                barangay: 'Capri', // Updated
+                cityMunicipality: 'Quezon City', // Updated
+                province: 'Metro Manila', // Updated
+                country: 'Philippines'
             },
             ctcInfo: {
-                number: '',
-                dateIssued: undefined,
-                placeIssued: '',
+                number: 'CTC123456',
+                dateIssued: new Date('2023-10-11'),
+                placeIssued: 'Manila City Hall'
             }
         }
     }
-}
+};
 
 export function useMarriageCertificateForm({
     onOpenChange,
@@ -481,22 +477,22 @@ export function useMarriageCertificateForm({
 
         // Affidavit of Solemnizing Officer
         if (processedData.affidavitOfSolemnizingOfficer) {
-            if (processedData.affidavitOfSolemnizingOfficer.administeringInformation.signatureOfOfficer instanceof File) {
-                processedData.affidavitOfSolemnizingOfficer.administeringInformation.signatureOfOfficer =
-                    await fileToBase64(processedData.affidavitOfSolemnizingOfficer.administeringInformation.signatureOfOfficer);
+            if (processedData.affidavitOfSolemnizingOfficer.solemnizingOfficerInformation?.signature instanceof File) {
+                processedData.affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.signature =
+                    await fileToBase64(processedData.affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.signature);
             }
 
-            if (processedData.affidavitOfSolemnizingOfficer.nameOfAdmin?.signature?.signature instanceof File) {
-                processedData.affidavitOfSolemnizingOfficer.nameOfAdmin.signature.signature =
-                    await fileToBase64(processedData.affidavitOfSolemnizingOfficer.nameOfAdmin.signature.signature);
+            if (processedData.affidavitOfSolemnizingOfficer.administeringOfficerInformation?.signature instanceof File) {
+                processedData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature =
+                    await fileToBase64(processedData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature);
             }
         }
 
         // Affidavit for Delayed Registration (optional)
         if (processedData.affidavitForDelayed) {
-            if (processedData.affidavitForDelayed.administeringInformation.signatureOfAdmin instanceof File) {
-                processedData.affidavitForDelayed.administeringInformation.signatureOfAdmin =
-                    await fileToBase64(processedData.affidavitForDelayed.administeringInformation.signatureOfAdmin);
+            if (processedData.affidavitForDelayed.administeringInformation.adminSignature instanceof File) {
+                processedData.affidavitForDelayed.administeringInformation.adminSignature =
+                    await fileToBase64(processedData.affidavitForDelayed.administeringInformation.adminSignature);
             }
 
             if (processedData.affidavitForDelayed.applicantInformation.signatureOfApplicant instanceof File) {
@@ -510,81 +506,52 @@ export function useMarriageCertificateForm({
 
     // Updated submission function with proper data preparation
     const onSubmit = async (data: MarriageCertificateFormValues) => {
+        if (!formMethods.formState.isValid) {
+            console.error("Form is invalid, submission blocked");
+            return;
+        }
+
         try {
-            console.log(
-                'Attempting to submit form with data:',
-                JSON.stringify(data, null, 2)
-            );
+            console.log('Attempting to submit form with data:', JSON.stringify(data, null, 2));
 
-            // First prepare the data structure
             const preparedData = preparePrismaData(data);
-
-            // Process file uploads and convert to base64
             const processedData = await handleFileUploads(preparedData);
 
             console.log('Processed data before submission:', processedData);
 
-
-            // Submit the processed data
             const result = await submitMarriageCertificateForm(processedData);
 
-            // If defaultValues includes an id, assume update mode and simply log success
             if (defaultValues && defaultValues.id) {
                 console.log('Update successful:', data);
                 toast.success('Marriage certificate update successful');
             } else {
-                const result = await submitMarriageCertificateForm(data);
-                console.log('API submission result:', result);
                 if ('data' in result) {
-                    toast.success(
-                        `Marriage certificate submitted successfully (Book ${result.data.bookNumber}, Page ${result.data.pageNumber})`
+                    toast.success(`Marriage certificate submitted successfully (Book ${result.data.bookNumber}, Page ${result.data.pageNumber})`);
+                    notifyUsersWithPermission(
+                        Permission.DOCUMENT_READ,
+                        "New uploaded Marriage Certificate",
+                        `New Marriage Certificate with the details (Book ${result.data.bookNumber}, Page ${result.data.pageNumber}, Registry Number ${data.registryNumber}) has been uploaded.`
                     );
-
-                    const documentRead = Permission.DOCUMENT_READ
-                    const Title = "New uploaded Marriage Certificate"
-                    const message = `New Marriage Certificate with the details (Book ${result.data.bookNumber}, Page ${result.data.pageNumber}, Registry Number ${data.registryNumber}) has been uploaded.`
-                    notifyUsersWithPermission(documentRead, Title, message)
 
                     onOpenChange?.(false);
                     formMethods.reset();
-
                 } else if ('error' in result) {
                     console.log('Submission error:', result.error);
-                    const errorMessage = result.error.includes('No user found with name')
-                        ? 'Invalid prepared by user. Please check the name.'
-                        : result.error;
-                    toast.error(errorMessage);
+                    toast.error(result.error.includes('No user found with name') ? 'Invalid prepared by user. Please check the name.' : result.error);
                 }
             }
+
             formMethods.reset(emptyDefaults);
-        }
-        catch (error) {
+        } catch (error) {
             console.error('Error in submitMarriageCertificateForm:', error);
-            return {
-                success: false,
-                error: 'Internal server error',
-            };
+            return { success: false, error: 'Internal server error' };
         }
     };
 
-    // const onSubmit = async (data: MarriageCertificateFormValues) => {
-    //     try {
-    //         console.log('✅ Form Data Submitted:', JSON.stringify(data, null, 2)); // Pretty-print JSON data
-    //         console.log('✅ Form Current State:', JSON.stringify(formMethods.getValues(), null, 2)); // Debug current state
-
-    //         toast.success('Form submitted successfully');
-    //         onOpenChange?.(false);
-    //     } catch (error) {
-    //         console.error('❌ Error submitting form:', error);
-    //         toast.error('Submission failed, please try again');
-    //     }
-    // };
-
-    // Extract file upload processing to a separate function
-
 
     const handleError = (errors: any) => {
-        console.error("❌ Form Errors:", errors); // Log errors for debugging
+        console.error("❌ Form Errors:", errors);
+        console.log("handleError triggered, preventing submission");
 
         const errorMessages: string[] = [];
 
@@ -601,11 +568,27 @@ export function useMarriageCertificateForm({
         });
 
         if (errorMessages.length > 0) {
-            toast.error(errorMessages.join("\n")); // Show all errors in a single toast
+            toast.error(errorMessages.join("\n"));
         } else {
             toast.error("Please check the form for errors");
         }
     };
+
+
+    // const onSubmit = async (data: MarriageCertificateFormValues) => {
+    //     try {
+    //         console.log('✅ Form Data Submitted:', JSON.stringify(data, null, 2)); // Pretty-print JSON data
+    //         console.log('✅ Form Current State:', JSON.stringify(formMethods.getValues(), null, 2)); // Debug current state
+
+    //         toast.success('Form submitted successfully');
+    //         onOpenChange?.(false);
+    //     } catch (error) {
+    //         console.error('❌ Error submitting form:', error);
+    //         toast.error('Submission failed, please try again');
+    //     }
+    // };
+
+    // Extract file upload processing to a separate function
 
     // Helper function to make field names user-friendly
     const formatFieldName = (fieldName: string) => {

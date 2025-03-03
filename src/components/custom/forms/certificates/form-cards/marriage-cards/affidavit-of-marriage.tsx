@@ -17,6 +17,7 @@ import DatePickerField from '@/components/custom/datepickerfield/date-picker-fie
 import LocationSelector from '../shared-components/location-selector';
 import NCRModeSwitch from '../shared-components/ncr-mode-switch';
 import SignatureUploader from '../shared-components/signature-uploader';
+import { useEffect } from 'react';
 
 interface AffidavitOfSolemnizingOfficerProps {
     className?: string;
@@ -25,10 +26,25 @@ interface AffidavitOfSolemnizingOfficerProps {
 export const AffidavitOfSolemnizingOfficer: React.FC<
     AffidavitOfSolemnizingOfficerProps
 > = ({ className }) => {
-    const { control, watch } = useFormContext<MarriageCertificateFormValues>();
+    const { control, getValues } = useFormContext<MarriageCertificateFormValues>();
     const [ncrModeAdminOfficer, setNcrModeAdminOfficer] = React.useState(false);
     const [ncrModeSwornOfficer, setNcrModeSwornOfficer] = React.useState(false);
 
+    useEffect(() => {
+        // Detect NCR mode from fetched data on component mount
+        const province = getValues('affidavitOfSolemnizingOfficer.d.atPlaceExecute.province');
+        if (province === 'Metro Manila' || province === 'NCR') {
+            setNcrModeAdminOfficer(true);
+        }
+    }, [getValues]);
+
+    useEffect(() => {
+        // Detect NCR mode from fetched data on component mount
+        const province = getValues('affidavitOfSolemnizingOfficer.dateSworn.atPlaceOfSworn.province');
+        if (province === 'Metro Manila' || province === 'NCR') {
+            setNcrModeSwornOfficer(true);
+        }
+    }, [getValues]);
     // Watch specific form fields for dynamic updates
     //   const marriageLicenseNumber = watch('marriageLicenseDetails.number');
     //   const marriageLicenseDateIssued = watch('marriageLicenseDetails.dateIssued');

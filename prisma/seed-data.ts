@@ -484,20 +484,17 @@ const generateMarriageCertificate = (
 
       // Affidavit of Solemnizing Officer
       affidavitOfSolemnizingOfficer: {
-        administeringInformation: {
-          nameOfOfficer: faker.person.fullName(),
-          signatureOfOfficer: faker.person.fullName(),
-          position: faker.helpers.arrayElement(['Judge', 'Mayor', 'Priest']),
-          addressOfOffice: {
-            st: faker.location.street(),
-            barangay: faker.location.county(),
-            cityMunicipality: faker.location.city(),
-            province: faker.location.state(),
-            country: 'Philippines'
-          }
+        solemnizingOfficerInformation: {
+          officerName: {
+            first: faker.person.firstName(),
+            middle: faker.person.middleName(),
+            last: faker.person.lastName()
+          },
+          officeName: faker.company.name(),
+          signature: faker.person.fullName(),
+          address: faker.location.streetAddress(),
         },
-        nameOfPlace: faker.location.city(),
-        addressAt: faker.location.streetAddress(),
+        
         a: {
           nameOfHusband: {
             first: husbandFirstName,
@@ -510,6 +507,7 @@ const generateMarriageCertificate = (
             last: wifeLastName
           }
         },
+        
         b: {
           a: faker.datatype.boolean(0.2),
           b: faker.datatype.boolean(0.2),
@@ -517,21 +515,24 @@ const generateMarriageCertificate = (
           d: faker.datatype.boolean(0.2),
           e: faker.datatype.boolean(0.2)
         },
+        
         c: faker.lorem.sentence(),
+        
         d: {
           dayOf: randomDate(new Date(2020, 0, 1), dateOfMarriage),
-          atPlaceOfMarriage: {
-            st: faker.location.street(),
+          atPlaceExecute: {
+            street: faker.location.street(),
             barangay: faker.location.county(),
             cityMunicipality: faker.location.city(),
             province: faker.location.state(),
             country: 'Philippines'
           }
         },
+        
         dateSworn: {
           dayOf: faker.date.recent(),
           atPlaceOfSworn: {
-            st: faker.location.street(),
+            street: faker.location.street(),
             barangay: faker.location.county(),
             cityMunicipality: faker.location.city(),
             province: faker.location.state(),
@@ -543,13 +544,16 @@ const generateMarriageCertificate = (
             placeIssued: faker.location.city()
           }
         },
-        nameOfAdmin: {
+        
+        administeringOfficerInformation: {
+          adminName: {
+            first: faker.person.firstName(),
+            middle: faker.person.middleName(),
+            last: faker.person.lastName()
+          },
+          position: faker.helpers.arrayElement(['Notary Public', 'Judge', 'Mayor']),
           address: faker.location.streetAddress(),
-          signature: {
-            signature: faker.person.fullName(),
-            name2: faker.person.fullName(),
-            position: faker.helpers.arrayElement(['Notary Public', 'Judge', 'Mayor'])
-          }
+          signature: faker.person.fullName()
         }
       },
 
@@ -562,7 +566,7 @@ const generateMarriageCertificate = (
           nameOfOfficer: faker.person.fullName(),
           position: faker.helpers.arrayElement(['Judge', 'Notary Public', 'Mayor']),
           addressOfOfficer: {
-            st: faker.location.street(),
+            street: faker.location.street(),
             barangay: faker.location.county(),
             cityMunicipality: faker.location.city(),
             province: faker.location.state(),
@@ -574,7 +578,7 @@ const generateMarriageCertificate = (
           nameOfApplicant: faker.person.fullName(),
           postalCode: faker.location.zipCode('#####'), // Ensuring 5 digits for postalCode
           applicantAddress: {
-            st: faker.location.street(),
+            street: faker.location.street(),
             barangay: faker.location.county(),
             cityMunicipality: faker.location.city(),
             province: faker.location.state(),
@@ -643,7 +647,7 @@ const generateMarriageCertificate = (
         f: {
           date: faker.date.recent(),
           place: {
-            st: faker.location.street(),
+            street: faker.location.street(),
             barangay: faker.location.county(),
             cityMunicipality: faker.location.city(),
             province: faker.location.state(),
@@ -653,7 +657,7 @@ const generateMarriageCertificate = (
         dateSworn: {
           dayOf: randomDate(new Date(2020, 0, 1), dateOfMarriage),
           atPlaceOfSworn: {
-            st: faker.location.street(),
+            street: faker.location.street(),
             barangay: faker.location.county(),
             cityMunicipality: faker.location.city(),
             province: faker.location.state(),

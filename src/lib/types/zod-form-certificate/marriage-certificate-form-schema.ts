@@ -28,7 +28,7 @@ const residenceSchemas = z.object({
   barangay: z.string().optional(),
   cityMunicipality: cityMunicipalitySchema, // Reuse shared city/municipality schema
   province: provinceSchema, // Reuse shared province schema
-  country: z.string().nonempty('Country is required').optional(),
+  country: z.string().optional(),
 })
 
 
@@ -105,13 +105,13 @@ const affidavitForDelayedSchema = z.object({
 
   a: z.object({
     a: z.object({
-      agreement: z.boolean().default(false),
+      agreement: z.boolean().default(false).optional(),
       nameOfPartner: z.object({
         first: z.string().optional(),
         middle: z.string().optional(), // Middle name can be optional
         last: z.string().optional(),
-      }),
-      placeOfMarriage: z.string().min(1, 'Place of marriage is required').optional(),
+      }).optional(),
+      placeOfMarriage: z.string().optional(),
       dateOfMarriage: createDateFieldSchema({
         requiredError: 'Start date is required',
         futureError: 'Start date cannot be in the future',
@@ -123,13 +123,13 @@ const affidavitForDelayedSchema = z.object({
         first: z.string().optional(),
         middle: z.string().optional(), // Middle name can be optional
         last: z.string().optional(),
-      }),
+      }).optional(),
       nameOfWife: z.object({
         first: z.string().optional(),
         middle: z.string().optional(), // Middle name can be optional
         last: z.string().optional(),
-      }),
-      placeOfMarriage: z.string().min(1, 'Place of marriage is required').optional(),
+      }).optional(),
+      placeOfMarriage: z.string().optional(),
       dateOfMarriage: createDateFieldSchema({
         requiredError: 'Start date is required',
         futureError: 'Start date cannot be in the future',

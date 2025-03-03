@@ -485,10 +485,10 @@ export function EditCivilRegistryFormDialog({
   const initialData = mapToBirthCertificateValues(form);
 
   const handleEditSubmit = async (
-    data: BirthCertificateFormValues
-  ): Promise<void> => {
-    try {
-      const preparedByValue = { name: data.preparedBy.nameInPrint };
+      data: BirthCertificateFormValues
+    ): Promise<void> => {
+      try {
+        const preparedByValue = { name: data.preparedBy.nameInPrint || '' };
       const updatedForm: BaseRegistryFormWithRelations = {
         ...form,
         registryNumber: data.registryNumber,
