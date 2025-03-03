@@ -219,28 +219,27 @@
 // }
 
 // src\hooks\form-certificates-hooks\useBirthCertificateForm.ts
-import { submitBirthCertificateForm } from '@/components/custom/civil-registry/actions/certificate-actions/birth-certificate-actions'
+import { submitBirthCertificateForm } from '@/components/custom/civil-registry/actions/certificate-actions/birth-certificate-actions';
 import {
   BirthCertificateFormValues,
   birthCertificateFormSchema,
-} from '@/lib/types/zod-form-certificate/birth-certificate-form-schema'
-import { fileToBase64 } from '@/lib/utils/fileToBase64'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
-import { Permission } from '@prisma/client'
-import { notifyUsersWithPermission } from '../users-action'
+} from '@/lib/types/zod-form-certificate/birth-certificate-form-schema';
+import { fileToBase64 } from '@/lib/utils/fileToBase64';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { Permission } from '@prisma/client';
+import { notifyUsersWithPermission } from '../users-action';
 
 interface UseBirthCertificateFormProps {
-  onOpenChange?: (open: boolean) => void
-  defaultValues?: Partial<BirthCertificateFormValues>
+  onOpenChange?: (open: boolean) => void;
+  defaultValues?: Partial<BirthCertificateFormValues>;
 }
 
 export function useBirthCertificateForm({
   onOpenChange,
   defaultValues,
 }: UseBirthCertificateFormProps = {}) {
-
   const formMethods = useForm<BirthCertificateFormValues>({
     resolver: zodResolver(birthCertificateFormSchema),
     mode: 'onChange',
@@ -373,7 +372,7 @@ export function useBirthCertificateForm({
       },
       ...defaultValues,
     },
-  })
+  });
 
   const onSubmit = async (data: BirthCertificateFormValues) => {
     try {
@@ -381,59 +380,59 @@ export function useBirthCertificateForm({
       if (data.attendant.certification.signature instanceof File) {
         data.attendant.certification.signature = await fileToBase64(
           data.attendant.certification.signature
-        )
+        );
       }
       if (data.informant.signature instanceof File) {
-        data.informant.signature = await fileToBase64(data.informant.signature)
+        data.informant.signature = await fileToBase64(data.informant.signature);
       }
       if (data.preparedBy.signature instanceof File) {
         data.preparedBy.signature = await fileToBase64(
           data.preparedBy.signature
-        )
+        );
       }
       if (data.receivedBy.signature instanceof File) {
         data.receivedBy.signature = await fileToBase64(
           data.receivedBy.signature
-        )
+        );
       }
       if (data.registeredByOffice.signature instanceof File) {
         data.registeredByOffice.signature = await fileToBase64(
           data.registeredByOffice.signature
-        )
+        );
       }
 
-      const result = await submitBirthCertificateForm(data)
+      const result = await submitBirthCertificateForm(data);
 
       if ('data' in result) {
-        console.log('Submission successful:', result)
+        console.log('Submission successful:', result);
         toast.success(
           `Birth certificate submitted successfully (Book ${result.data.bookNumber}, Page ${result.data.pageNumber})`
-        )
+        );
 
-        const documentRead = Permission.DOCUMENT_READ
-        const Title = "New uploaded Birth Certificate"
-        const message = `New Birth Certificate with the details (Book ${result.data.bookNumber}, Page ${result.data.pageNumber}, Registry Number ${data.registryNumber}) has been uploaded.`
-        notifyUsersWithPermission(documentRead, Title, message)
+        const documentRead = Permission.DOCUMENT_READ;
+        const Title = 'New uploaded Birth Certificate';
+        const message = `New Birth Certificate with the details (Book ${result.data.bookNumber}, Page ${result.data.pageNumber}, Registry Number ${data.registryNumber}) has been uploaded.`;
+        notifyUsersWithPermission(documentRead, Title, message);
 
-        onOpenChange?.(false)
+        onOpenChange?.(false);
       } else if ('error' in result) {
-        console.log('Submission error:', result.error)
+        console.log('Submission error:', result.error);
         const errorMessage = result.error.includes('No user found with name')
           ? 'Invalid prepared by user. Please check the name.'
-          : result.error
-        toast.error(errorMessage)
+          : result.error;
+        toast.error(errorMessage);
       }
-      formMethods.reset()
+      formMethods.reset();
     } catch (error) {
-      console.error('Form submission error:', error)
-      toast.error('An unexpected error occurred while submitting the form')
+      console.error('Form submission error:', error);
+      toast.error('An unexpected error occurred while submitting the form');
     }
-  }
+  };
 
   const handleError = (errors: any) => {
-    console.log('Form Validation Errors:', JSON.stringify(errors, null, 2))
-    toast.error('Please check form for errors')
-  }
+    console.log('Form Validation Errors:', JSON.stringify(errors, null, 2));
+    toast.error('Please check form for errors');
+  };
 
-  return { formMethods, onSubmit, handleError }
+  return { formMethods, onSubmit, handleError };
 }
