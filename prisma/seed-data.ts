@@ -291,6 +291,9 @@ const generateMarriageCertificate = (
   // Generate contract day
   const contractDay = randomDate(new Date(2020, 0, 1), marriageDate);
 
+  const delayedRegistration = faker.datatype.boolean(0.3);
+  const delayedRegistrationValue = delayedRegistration ? 'Yes' : 'No';
+
   // Create base form
   const baseForm = generateBaseRegistryForm(
     FormType.MARRIAGE,
@@ -380,7 +383,7 @@ const generateMarriageCertificate = (
           'Child',
           'Sibling',
         ]),
-        residence: generatePhLocation(),
+        residence: faker.location.streetAddress(),
       },
 
       // Contract Party
@@ -551,8 +554,9 @@ const generateMarriageCertificate = (
       },
 
       // Optional affidavit for delayed registration
-      affidavitOfdelayedRegistration: faker.datatype.boolean(0.3) ? {
-        // Administering Information
+      // Affidavit for Delayed Registration
+      affidavitForDelayed: delayedRegistrationValue === 'Yes'  ? {
+        delayedRegistration: 'Yes',
         administeringInformation: {
           signatureOfAdmin: faker.person.fullName(),
           nameOfOfficer: faker.person.fullName(),
@@ -565,12 +569,10 @@ const generateMarriageCertificate = (
             country: 'Philippines'
           }
         },
-
-        // Applicant Information
         applicantInformation: {
           signatureOfApplicant: faker.person.fullName(),
           nameOfApplicant: faker.person.fullName(),
-          postalCode: faker.location.zipCode(),
+          postalCode: faker.location.zipCode('#####'), // Ensuring 5 digits for postalCode
           applicantAddress: {
             st: faker.location.street(),
             barangay: faker.location.county(),
@@ -579,43 +581,46 @@ const generateMarriageCertificate = (
             country: 'Philippines'
           }
         },
-
-        // Section A
-        a: {
-          a: {
-            agreement: faker.datatype.boolean(),
-            nameOfPartner: {
-              first: faker.person.firstName(),
-              middle: faker.person.lastName(),
-              last: faker.person.lastName()
+        a: (() => {
+          // To ensure only one agreement is true (per schema refine rule)
+          const useAgreementA = faker.datatype.boolean();
+          return {
+            a: {
+              agreement: useAgreementA,
+              nameOfPartner: {
+                first: faker.person.firstName(),
+                middle: faker.person.lastName(),
+                last: faker.person.lastName()
+              },
+              placeOfMarriage: faker.location.city(),
+              dateOfMarriage: randomDate(new Date(2020, 0, 1), new Date())
             },
-            placeOfMarriage: faker.location.city(),
-            dateOfMarriage: randomDate(new Date(2020, 0, 1), new Date())
-          },
-          b: {
-            agreement: faker.datatype.boolean(),
-            nameOfHusband: {
-              first: husbandFirstName,
-              middle: husbandMiddleName,
-              last: husbandLastName
-            },
-            nameOfWife: {
-              first: wifeFirstName,
-              middle: wifeMiddleName,
-              last: wifeLastName
-            },
-            placeOfMarriage: faker.location.city(),
-            dateOfMarriage: dateOfMarriage
-          }
-        },
-
-        // Section B
+            b: {
+              agreement: !useAgreementA,
+              nameOfHusband: {
+                first: husbandFirstName,
+                middle: husbandMiddleName,
+                last: husbandLastName
+              },
+              nameOfWife: {
+                first: wifeFirstName,
+                middle: wifeMiddleName,
+                last: wifeLastName
+              },
+              placeOfMarriage: faker.location.city(),
+              dateOfMarriage: dateOfMarriage
+            }
+          };
+        })(),
         b: {
           solemnizedBy: faker.person.fullName(),
-          sector: faker.helpers.arrayElement(['religious-ceremony', 'civil-ceremony', 'tribal-ceremony'])
+          sector: faker.helpers.arrayElement([
+            'religious-ceremony',
+            'civil-ceremony',
+            'Muslim-rites',
+            'tribal-rites'
+          ])
         },
-
-        // Section C
         c: {
           a: {
             licenseNo: faker.string.numeric(8),
@@ -630,17 +635,11 @@ const generateMarriageCertificate = (
             ])
           }
         },
-
-        // Section D
         d: {
           husbandCitizenship: 'Filipino',
           wifeCitizenship: 'Filipino'
         },
-
-        // Section E
-        e: faker.lorem.paragraph(),
-
-        // Section F
+        e: faker.lorem.paragraph(), // Required reason for delayed registration
         f: {
           date: faker.date.recent(),
           place: {
@@ -651,10 +650,8 @@ const generateMarriageCertificate = (
             country: 'Philippines'
           }
         },
-
-        // Date Sworn
         dateSworn: {
-          dayOf: faker.date.recent(),
+          dayOf: randomDate(new Date(2020, 0, 1), dateOfMarriage),
           atPlaceOfSworn: {
             st: faker.location.street(),
             barangay: faker.location.county(),
@@ -664,11 +661,12 @@ const generateMarriageCertificate = (
           },
           ctcInfo: {
             number: faker.string.alphanumeric(10),
-            dateIssued: faker.date.recent(),
+            dateIssued: randomDate(new Date(2020, 0, 1), dateOfMarriage),
             placeIssued: faker.location.city()
           }
         }
-      } : {}
+      } : null
+
     }
   };
 };

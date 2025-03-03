@@ -267,8 +267,6 @@ export async function submitMarriageCertificateForm(
 
             // Affidavit of Solemnizing Officer
             affidavitOfSolemnizingOfficer: {
-
-
               solemnizingOfficerInformation: {
                 officeName: formData.affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.officeName,
                 officerName: formData.affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.officerName as Prisma.JsonObject,
@@ -288,7 +286,7 @@ export async function submitMarriageCertificateForm(
                 d: formData.affidavitOfSolemnizingOfficer.b.d,
                 e: formData.affidavitOfSolemnizingOfficer.b.e,
               } as Prisma.JsonObject,
-              c: formData.affidavitOfSolemnizingOfficer.c,
+              c: formData.affidavitOfSolemnizingOfficer.c, //wala pa ata to
               d: {
                 dayOf: dateToJSON(formData.affidavitOfSolemnizingOfficer.d.dayOf || new Date()),
                 atPlaceExecute: {

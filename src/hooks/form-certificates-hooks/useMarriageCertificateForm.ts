@@ -268,7 +268,7 @@ const emptyDefaults: MarriageCertificateFormValues = {
             d: false,
             e: false,
         },
-        c: '',
+        c: '', //wala man to
         d: {
             dayOf: undefined,
             atPlaceExecute: {

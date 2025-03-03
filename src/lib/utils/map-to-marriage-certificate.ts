@@ -484,7 +484,7 @@ export const mapToMarriageCertificateValues = (
             },
             b: {
                 solemnizedBy: '',
-                sector: 'religious-ceremony'
+                sector: validateSector(marriageForm.affidavitOfdelayedRegistration.b?.sector) || 'religious-ceremony',
             },
             c: {
                 a: {

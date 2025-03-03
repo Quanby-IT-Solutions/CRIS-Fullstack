@@ -22,15 +22,6 @@ const locationSchema = z.object({
   country: z.string().optional(),
 })
 
-//signature
-const signatureSchema = z.object({
-  signature: z.any(),
-  name: nameSchema.optional(),
-  name2: z.string().optional(),
-  position: z.any().optional()
-})
-
-
 
 const residenceSchemas = z.object({
   st: z.string().optional(),
