@@ -87,10 +87,10 @@ const affidavitOfSolemnizingOfficerSchema = z.object({
 const affidavitForDelayedSchema = z.object({
   delayedRegistration: z.enum(['Yes', 'No',]).default('No'),
   administeringInformation: z.object({
-    nameOfOfficer: z.string().optional(),
-    signatureOfAdmin: z.any().optional(),
-    position: z.string().min(1, 'Position/Title/Designation is required'),
-    addressOfOfficer: residenceSchemas
+    adminName: z.string().optional(),
+    adminSignature: z.any().optional(),
+    position: z.string().optional(),
+    adminAddress: z.string().optional(),
   }),
   applicantInformation: z.object({
     signatureOfApplicant: z.any().optional(),

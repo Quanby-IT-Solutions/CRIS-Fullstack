@@ -432,16 +432,10 @@ export const mapToMarriageCertificateValues = (
         result.affidavitForDelayed = {
             delayedRegistration: 'Yes',
             administeringInformation: {
-                signatureOfAdmin: '',
-                nameOfOfficer: '',
+                adminSignature: '',
+                adminName: '',
                 position: '',
-                addressOfOfficer: {
-                    st: '',
-                    barangay: '',
-                    cityMunicipality: '',
-                    province: '',
-                    country: ''
-                }
+                adminAddress: ''
             },
             applicantInformation: {
                 signatureOfApplicant: ensureString(marriageForm.affidavitOfdelayedRegistration.applicantInformation?.signatureOfApplicant),

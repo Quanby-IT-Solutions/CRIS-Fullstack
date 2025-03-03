@@ -330,18 +330,12 @@ export async function submitMarriageCertificateForm(
                 delayedRegistration: 'Yes',
                 // Administering Information
                 administeringInformation: {
-                  signatureOfAdmin: formData.affidavitForDelayed.administeringInformation.signatureOfAdmin instanceof File
-                    ? await fileToBase64(formData.affidavitForDelayed.administeringInformation.signatureOfAdmin)
-                    : formData.affidavitForDelayed.administeringInformation.signatureOfAdmin,
-                  nameOfOfficer: formData.affidavitForDelayed.administeringInformation.nameOfOfficer,
+                  adminSignature: formData.affidavitForDelayed.administeringInformation.adminSignature instanceof File
+                    ? await fileToBase64(formData.affidavitForDelayed.administeringInformation.adminSignature)
+                    : formData.affidavitForDelayed.administeringInformation.adminSignature,
+                  nameOfOfficer: formData.affidavitForDelayed.administeringInformation.adminName,
                   position: formData.affidavitForDelayed.administeringInformation.position,
-                  addressOfOfficer: {
-                    cityMunicipality: formData.affidavitForDelayed.administeringInformation.addressOfOfficer.cityMunicipality,
-                    province: formData.affidavitForDelayed.administeringInformation.addressOfOfficer.province,
-                    country: formData.affidavitForDelayed.administeringInformation.addressOfOfficer.country,
-                    st: formData.affidavitForDelayed.administeringInformation.addressOfOfficer.st,
-                    barangay: formData.affidavitForDelayed.administeringInformation.addressOfOfficer.barangay,
-                  } as Prisma.JsonObject,
+                  addressOfOfficer: formData.affidavitForDelayed.administeringInformation.adminAddress
                 } as Prisma.JsonObject,
                 // Applicant Information
                 applicantInformation: {
@@ -360,23 +354,38 @@ export async function submitMarriageCertificateForm(
                 } as Prisma.JsonObject,
                 // Section A
                 a: {
-                  a: {
-                    agreement: false,
-                    nameOfPartner: formData.affidavitForDelayed.a.a.nameOfPartner as Prisma.JsonObject,
-                    placeOfMarriage: formData.affidavitForDelayed.a.a.placeOfMarriage,
-                    dateOfMarriage: formData.affidavitForDelayed.a.a.dateOfMarriage
-                      ? dateToJSON(formData.affidavitForDelayed.a.a.dateOfMarriage || new Date())
-                      : null,
-                  } as Prisma.JsonObject,
-                  b: {
-                    agreement: formData.affidavitForDelayed.a.b.agreement,
-                    nameOfHusband: formData.affidavitForDelayed.a.b.nameOfHusband,
-                    nameOfWife: formData.affidavitForDelayed.a.b.nameOfWife,
-                    placeOfMarriage: formData.affidavitForDelayed.a.b.placeOfMarriage,
-                    dateOfMarriage: formData.affidavitForDelayed.a.b.dateOfMarriage
-                      ? dateToJSON(formData.affidavitForDelayed.a.b.dateOfMarriage || new Date())
-                      : null,
-                  } as Prisma.JsonObject,
+                  a: formData.affidavitForDelayed.a.a.agreement 
+                    ? {
+                        agreement: true,
+                        nameOfPartner: formData.affidavitForDelayed.a.a.nameOfPartner as Prisma.JsonObject,
+                        placeOfMarriage: formData.affidavitForDelayed.a.a.placeOfMarriage,
+                        dateOfMarriage: formData.affidavitForDelayed.a.a.dateOfMarriage
+                          ? dateToJSON(formData.affidavitForDelayed.a.a.dateOfMarriage || new Date())
+                          : null,
+                      } 
+                    : {
+                        agreement: false,
+                        nameOfPartner: null,
+                        placeOfMarriage: null,
+                        dateOfMarriage: null,
+                      },
+                  b: formData.affidavitForDelayed.a.b.agreement 
+                    ? {
+                        agreement: true,
+                        nameOfHusband: formData.affidavitForDelayed.a.b.nameOfHusband,
+                        nameOfWife: formData.affidavitForDelayed.a.b.nameOfWife,
+                        placeOfMarriage: formData.affidavitForDelayed.a.b.placeOfMarriage,
+                        dateOfMarriage: formData.affidavitForDelayed.a.b.dateOfMarriage
+                          ? dateToJSON(formData.affidavitForDelayed.a.b.dateOfMarriage || new Date())
+                          : null,
+                      }
+                    : {
+                        agreement: false,
+                        nameOfHusband: null,
+                        nameOfWife: null,
+                        placeOfMarriage: null,
+                        dateOfMarriage: null,
+                      },
                 } as Prisma.JsonObject,
                 // Section B
                 b: {

@@ -555,7 +555,7 @@ const generateMarriageCertificate = (
 
       // Optional affidavit for delayed registration
       // Affidavit for Delayed Registration
-      affidavitForDelayed: delayedRegistrationValue === 'Yes'  ? {
+      affidavitOfdelayedRegistration : delayedRegistrationValue === 'Yes'  ? {
         delayedRegistration: 'Yes',
         administeringInformation: {
           signatureOfAdmin: faker.person.fullName(),
@@ -665,7 +665,7 @@ const generateMarriageCertificate = (
             placeIssued: faker.location.city()
           }
         }
-      } : null
+      } : {}
 
     }
   };

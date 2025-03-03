@@ -310,16 +310,10 @@ const emptyDefaults: MarriageCertificateFormValues = {
     affidavitForDelayed: {
         delayedRegistration: 'No',
         administeringInformation: {
-            signatureOfAdmin: '',
-            nameOfOfficer: '',
+            adminSignature: '',
+            adminName: '',
             position: '',
-            addressOfOfficer: {
-                st: '',
-                barangay: '',
-                cityMunicipality: '',
-                province: '',
-                country: ''
-            }
+            adminAddress: '',
         },
         applicantInformation: {
             signatureOfApplicant: '',

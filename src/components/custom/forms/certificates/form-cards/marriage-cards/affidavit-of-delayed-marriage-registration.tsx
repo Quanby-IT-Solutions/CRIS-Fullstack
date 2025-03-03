@@ -948,7 +948,7 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                     <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                                         <FormField
                                             control={control}
-                                            name='affidavitForDelayed.administeringInformation.nameOfOfficer'
+                                            name='affidavitForDelayed.administeringInformation.adminName'
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel className='text-foreground'>
@@ -987,24 +987,10 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                             )}
                                         />
 
-                                        <LocationSelector
-                                            provinceFieldName='affidavitForDelayed.administeringInformation.addressOfOfficer.province'
-                                            municipalityFieldName='affidavitForDelayed.administeringInformation.addressOfOfficer.cityMunicipality'
-                                            barangayFieldName='affidavitForDelayed.administeringInformation.addressOfOfficer.barangay'
-                                            provinceLabel='Province'
-                                            municipalityLabel='City/Municipality'
-                                            selectTriggerClassName='h-10 px-3 text-base md:text-sm'
-                                            provincePlaceholder='Select province'
-                                            municipalityPlaceholder='Select city/municipality'
-                                            className='grid grid-cols-2 gap-4'
-                                            isNCRMode={ncrModeAdminOfficer}
-                                            showBarangay={true}
-                                            barangayLabel='Barangay'
-                                            barangayPlaceholder='Select barangay'
-                                        />
+                                        
                                         <FormField
                                             control={control}
-                                            name='affidavitForDelayed.administeringInformation.addressOfOfficer.st'
+                                            name='affidavitForDelayed.administeringInformation.adminAddress'
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>Street</FormLabel>
@@ -1013,34 +999,17 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                                             {...field}
                                                             className='h-10'
                                                             value={field.value || ''}
-                                                            placeholder='Enter Office street'
+                                                            placeholder='Enter Office address'
                                                         />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
                                         />
+                                        
                                         <FormField
                                             control={control}
-                                            name='affidavitForDelayed.administeringInformation.addressOfOfficer.country'
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Country</FormLabel>
-                                                    <FormControl>
-                                                        <Input
-                                                            {...field}
-                                                            className='h-10'
-                                                            value={field.value || ''}
-                                                            placeholder='Entry Country'
-                                                        />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={control}
-                                            name='affidavitForDelayed.administeringInformation.signatureOfAdmin'
+                                            name='affidavitForDelayed.administeringInformation.adminSignature'
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>Signature (optional)</FormLabel>
