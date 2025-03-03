@@ -60,7 +60,6 @@ const CertificationOfDeathCard: React.FC = () => {
                 <FormLabel>Time of Death</FormLabel>
                 <FormControl>
                   <TimePicker
-                    
                     value={field.value ?? null}
                     onChange={(value) => field.onChange(value)}
                     ref={field.ref}
@@ -80,16 +79,26 @@ const CertificationOfDeathCard: React.FC = () => {
                   <SignatureUploader
                     name='certificationOfDeath.signature'
                     label='Upload Signature'
-                    onChange={(file: File) => {
-                      setValue('certificationOfDeath.signature', file, {
-                        shouldValidate: true,
-                        shouldDirty: true,
-                      });
+                    onChange={(value: File | string) => {
+                      if (value instanceof File) {
+                        setValue('certificationOfDeath.signature', value, {
+                          shouldValidate: true,
+                          shouldDirty: true,
+                        });
+                      } else {
+                        setValue('certificationOfDeath.signature', value, {
+                          shouldValidate: true,
+                          shouldDirty: true,
+                        });
+                      }
                     }}
                   />
                 </FormControl>
                 <FormMessage>
-                  {errors?.certificationOfDeath?.signature?.message}
+                  {typeof errors?.certificationOfDeath?.signature?.message ===
+                  'string'
+                    ? errors.certificationOfDeath.signature.message
+                    : ''}
                 </FormMessage>
               </FormItem>
             )}
@@ -105,6 +114,7 @@ const CertificationOfDeathCard: React.FC = () => {
                     className='h-10'
                     placeholder='Enter name in print'
                     {...field}
+                    value={field.value ?? ''}
                   />
                 </FormControl>
                 <FormMessage />
@@ -128,6 +138,7 @@ const CertificationOfDeathCard: React.FC = () => {
                     className='h-10'
                     placeholder='Enter title or position'
                     {...field}
+                    value={field.value ?? ''}
                   />
                 </FormControl>
                 <FormMessage />
@@ -144,23 +155,34 @@ const CertificationOfDeathCard: React.FC = () => {
                   <SignatureUploader
                     name='certificationOfDeath.healthOfficerSignature'
                     label='Upload Health Officer Signature'
-                    onChange={(file: File) => {
-                      setValue(
-                        'certificationOfDeath.healthOfficerSignature',
-                        file,
-                        {
-                          shouldValidate: true,
-                          shouldDirty: true,
-                        }
-                      );
+                    onChange={(value: File | string) => {
+                      if (value instanceof File) {
+                        setValue(
+                          'certificationOfDeath.healthOfficerSignature',
+                          value,
+                          {
+                            shouldValidate: true,
+                            shouldDirty: true,
+                          }
+                        );
+                      } else {
+                        setValue(
+                          'certificationOfDeath.healthOfficerSignature',
+                          value,
+                          {
+                            shouldValidate: true,
+                            shouldDirty: true,
+                          }
+                        );
+                      }
                     }}
                   />
                 </FormControl>
                 <FormMessage>
-                  {
-                    errors?.certificationOfDeath?.healthOfficerSignature
-                      ?.message
-                  }
+                  {typeof errors?.certificationOfDeath?.healthOfficerSignature
+                    ?.message === 'string'
+                    ? errors.certificationOfDeath.healthOfficerSignature.message
+                    : ''}
                 </FormMessage>
               </FormItem>
             )}
@@ -176,6 +198,7 @@ const CertificationOfDeathCard: React.FC = () => {
                     className='h-10'
                     placeholder='Enter health officer name in print'
                     {...field}
+                    value={field.value ?? ''}
                   />
                 </FormControl>
                 <FormMessage />
@@ -183,7 +206,6 @@ const CertificationOfDeathCard: React.FC = () => {
             )}
           />
         </div>
-
 
         {/* NCR Mode Switch */}
         <div>
@@ -213,6 +235,7 @@ const CertificationOfDeathCard: React.FC = () => {
                       className='h-10'
                       placeholder='House No.'
                       {...field}
+                      value={field.value ?? ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -226,7 +249,12 @@ const CertificationOfDeathCard: React.FC = () => {
                 <FormItem>
                   <FormLabel>Street</FormLabel>
                   <FormControl>
-                    <Input className='h-10' placeholder='Street' {...field} />
+                    <Input
+                      className='h-10'
+                      placeholder='Street'
+                      {...field}
+                      value={field.value ?? ''}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -239,7 +267,12 @@ const CertificationOfDeathCard: React.FC = () => {
                 <FormItem>
                   <FormLabel>Country</FormLabel>
                   <FormControl>
-                    <Input className='h-10' placeholder='Country' {...field} />
+                    <Input
+                      className='h-10'
+                      placeholder='Country'
+                      {...field}
+                      value={field.value ?? ''}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -257,6 +290,7 @@ const CertificationOfDeathCard: React.FC = () => {
                     }}
                     label='Certification Date'
                     placeholder='Select certification date'
+                    ref={field.ref}
                   />
                 </FormItem>
               )}
