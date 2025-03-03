@@ -74,7 +74,7 @@ function ProcessingDetailsCard<T extends FieldValues = FieldValues>({
               name={signatureFieldName}
               render={({ field, formState: { errors } }) => (
                 <FormItem>
-                  <FormLabel>Signature</FormLabel>
+                  {/* <FormLabel>Signature</FormLabel> */}
                   <FormControl>
                     <SignatureUploader
                       name={signatureFieldName}

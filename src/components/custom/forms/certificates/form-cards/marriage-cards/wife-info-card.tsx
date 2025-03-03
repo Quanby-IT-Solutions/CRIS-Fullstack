@@ -250,6 +250,9 @@ const WifeInfoCard: React.FC = () => {
             )}
           />
         </div>
+        <div className='col-span-3 py-4'>
+          <CardTitle >Place Of Birth</CardTitle>
+        </div>
         <div className='col-span-1 md:col-span-3'>
           <NCRModeSwitch isNCRMode={ncrMode} setIsNCRMode={setncrMode} />
         </div>

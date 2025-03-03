@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { string, z } from 'zod'
 import {
   citizenshipSchema,
   cityMunicipalitySchema,
@@ -44,14 +44,7 @@ const residenceSchemas = z.object({
 //*****BACK PAGE ***************************************** //
 //*****BACK PAGE ***************************************** //
 const affidavitOfSolemnizingOfficerSchema = z.object({
-  administeringInformation: z.object({
-    nameOfOfficer: z.string().min(1, 'Name of officer is required'),
-    signatureOfOfficer: z.any().optional(),
-    position: z.string().min(1, 'Position/Title/Designation is required'),
-    addressOfOffice: residenceSchemas
-  }),
-  nameOfPlace: z.string().min(1, 'Name of place is required'),
-  addressAt: z.string().min(1, 'Address at is required'),
+
   a: z.object({
     nameOfHusband: nameSchema,
     nameOfWife: nameSchema
@@ -69,7 +62,7 @@ const affidavitOfSolemnizingOfficerSchema = z.object({
       requiredError: 'Start date is required',
       futureError: 'Start date cannot be in the future',
     }),
-    atPlaceOfMarriage: residenceSchemas,
+    atPlaceExecute: residenceSchemas,
   }),
   dateSworn: z.object({
     dayOf: createDateFieldSchema({
@@ -86,9 +79,17 @@ const affidavitOfSolemnizingOfficerSchema = z.object({
       placeIssued: z.string().min(1, 'Place issued is required'),
     }),
   }),
-  nameOfAdmin: z.object({
-    signature: signatureSchema,
-    address: z.string().min(1, 'Address is required')
+  solemnizingOfficerInformation: z.object({
+    officerName: nameSchema,
+    officeName: z.string().min(1, 'Office name is required'),
+    signature: z.any().optional(),
+    address: z.string().min(1, 'Address is required'),
+  }),
+  administeringOfficerInformation: z.object({
+    adminName: nameSchema,
+    signature: z.any().optional(),
+    address: z.string().min(1, 'Address is required'),
+    position: z.string().min(1, 'Position/Title/Designation is required'),
   })
 })
 

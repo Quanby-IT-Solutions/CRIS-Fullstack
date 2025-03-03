@@ -567,11 +567,10 @@ export function EditCivilRegistryFormDialog({
     };
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChangeAction}>
-            <DialogTitle></DialogTitle>
-            <DialogContent className='max-w-[70vw] w-[70vw] h-[95vh] max-h-[95vh] p-0'>
+
+            <div className='w-full h-full'>
                 {renderForm()}
-            </DialogContent>
-        </Dialog>
+            </div>
+
     );
 }

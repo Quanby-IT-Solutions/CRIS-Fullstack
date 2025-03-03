@@ -245,14 +245,16 @@ const HusbandInfoCard: React.FC = () => {
         </div>
 
         {/* Place of Birth */}
-
+        <div className='col-span-3 py-4'>
+          <CardTitle >Place Of Birth</CardTitle>
+        </div>
         <div className='col-span-1 md:col-span-3'>
           <NCRModeSwitch isNCRMode={ncrMode} setIsNCRMode={setncrMode} />
         </div>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4'>
           {/* Place of Birth */}
           <LocationSelector
-            provinceFieldName='husbandhusbandPlaceOfBirth.province'
+            provinceFieldName='husbandPlaceOfBirth.province'
             municipalityFieldName='husbandPlaceOfBirth.cityMunicipality'
             barangayFieldName='husbandPlaceOfBirth.barangay'
             provinceLabel='Province'

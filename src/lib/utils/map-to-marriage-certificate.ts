@@ -160,12 +160,24 @@ export const mapToMarriageCertificateValues = (
         };
 
         return {
-            houseNo: ensureString(addressObj.houseNo),
-            street: ensureString(addressObj.street),
-            barangay: ensureString(addressObj.barangay),
-            cityMunicipality: ensureString(addressObj.cityMunicipality),
-            province: ensureString(addressObj.province),
-            country: ensureString(addressObj.country)
+            houseNo: typeof addressObj.houseNo === 'object' && addressObj.houseNo
+                ? ensureString(addressObj.houseNo.value || addressObj.houseNo)
+                : ensureString(addressObj.houseNo),
+            street: typeof addressObj.street === 'object' && addressObj.street
+                ? ensureString(addressObj.street.value || addressObj.street)
+                : ensureString(addressObj.street),
+            barangay: typeof addressObj.barangay === 'object' && addressObj.barangay
+                ? ensureString(addressObj.barangay.value || addressObj.barangay)
+                : ensureString(addressObj.barangay),
+            cityMunicipality: typeof addressObj.cityMunicipality === 'object' && addressObj.cityMunicipality
+                ? ensureString(addressObj.cityMunicipality.value || addressObj.cityMunicipality)
+                : ensureString(addressObj.cityMunicipality),
+            province: typeof addressObj.province === 'object' && addressObj.province
+                ? ensureString(addressObj.province.value || addressObj.province)
+                : ensureString(addressObj.province),
+            country: typeof addressObj.country === 'object' && addressObj.country
+                ? ensureString(addressObj.country.value || addressObj.country)
+                : ensureString(addressObj.country)
         };
     };
 
@@ -213,34 +225,10 @@ export const mapToMarriageCertificateValues = (
     };
 
     // Map husband consent person information - ensure residence is an object
-    if (marriageForm.husbandConsentPerson) {
-        result.husbandConsentPerson = {
-            name: createNameObject(marriageForm.husbandConsentPerson.name),
-            relationship: ensureString(marriageForm.husbandConsentPerson.relationship),
-            residence: typeof marriageForm.husbandConsentPerson.residence === 'object'
-                ? createAddressObject(marriageForm.husbandConsentPerson.residence)
-                : {
-                    houseNo: '',
-                    street: '',
-                    barangay: '',
-                    cityMunicipality: ensureString(marriageForm.husbandConsentPerson.residence),
-                    province: '',
-                    country: ''
-                }
-        };
-    } else {
-        result.husbandConsentPerson = {
-            name: { first: '', middle: '', last: '' },
-            relationship: '',
-            residence: {
-                houseNo: '',
-                street: '',
-                barangay: '',
-                cityMunicipality: '',
-                province: '',
-                country: ''
-            }
-        };
+    result.husbandConsentPerson = {
+        name: createNameObject(marriageForm.husbandConsentPerson.name),
+        relationship: ensureString(marriageForm.husbandConsentPerson.relationship),
+        residence: createAddressObject(marriageForm.husbandConsentPerson.residence)
     }
 
     // Map wife information
@@ -273,35 +261,10 @@ export const mapToMarriageCertificateValues = (
         motherCitizenship: ensureString(marriageForm.wifeMotherCitizenship)
     };
 
-    // Map wife consent person information
-    if (marriageForm.wifeConsentPerson) {
-        result.wifeConsentPerson = {
-            name: createNameObject(marriageForm.wifeConsentPerson.name),
-            relationship: ensureString(marriageForm.wifeConsentPerson.relationship),
-            residence: typeof marriageForm.wifeConsentPerson.residence === 'object'
-                ? createAddressObject(marriageForm.wifeConsentPerson.residence)
-                : {
-                    houseNo: '',
-                    street: '',
-                    barangay: '',
-                    cityMunicipality: ensureString(marriageForm.wifeConsentPerson.residence),
-                    province: '',
-                    country: ''
-                }
-        };
-    } else {
-        result.wifeConsentPerson = {
-            name: { first: '', middle: '', last: '' },
-            relationship: '',
-            residence: {
-                houseNo: '',
-                street: '',
-                barangay: '',
-                cityMunicipality: '',
-                province: '',
-                country: ''
-            }
-        };
+    result.wifeConsentPerson = {
+        name: createNameObject(marriageForm.wifeConsentPerson.name),
+        relationship: ensureString(marriageForm.wifeConsentPerson.relationship),
+        residence: createAddressObject(marriageForm.wifeConsentPerson.residence)
     }
 
     // Map marriage details
@@ -413,20 +376,12 @@ export const mapToMarriageCertificateValues = (
 
     // Map affidavit of solemnizing officer with updated structure
     result.affidavitOfSolemnizingOfficer = {
-        administeringInformation: {
-            nameOfOfficer: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.nameOfOfficer),
-            signatureOfOfficer: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.signatureOfOfficer),
-            position: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.position),
-            addressOfOffice: {
-                st: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.addressOfOffice?.street),
-                barangay: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.addressOfOffice?.barangay),
-                cityMunicipality: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.addressOfOffice?.cityMunicipality),
-                province: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.addressOfOffice?.province),
-                country: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.addressOfOffice?.country)
-            }
+        solemnizingOfficerInformation: {
+            officeName: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.officeName),
+            officerName: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.officerName),
+            signature: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.signature),
+            address: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.address),
         },
-        nameOfPlace: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.nameOfPlace),
-        addressAt: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.addressAt),
         a: {
             nameOfHusband: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.a?.nameOfHusband),
             nameOfWife: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.a?.nameOfWife)
@@ -441,12 +396,12 @@ export const mapToMarriageCertificateValues = (
         c: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.c),
         d: {
             dayOf: parseDateSafely(marriageForm.affidavitOfSolemnizingOfficer?.d?.dayOf),
-            atPlaceOfMarriage: {
-                st: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceOfMarriage?.street),
-                barangay: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceOfMarriage?.barangay),
-                cityMunicipality: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceOfMarriage?.cityMunicipality),
-                province: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceOfMarriage?.province),
-                country: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceOfMarriage?.country)
+            atPlaceExecute: {
+                st: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceExecute?.street),
+                barangay: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceExecute?.barangay),
+                cityMunicipality: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceExecute?.cityMunicipality),
+                province: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceExecute?.province),
+                country: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceExecute?.country)
             }
         },
         dateSworn: {
@@ -464,13 +419,11 @@ export const mapToMarriageCertificateValues = (
                 placeIssued: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.ctcInfo?.placeIssued)
             }
         },
-        nameOfAdmin: {
-            address: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.nameOfAdmin?.address),
-            signature: {
-                signature: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.nameOfAdmin?.signature?.signature),
-                position: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.nameOfAdmin?.signature?.position),
-                name2: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.nameOfAdmin?.signature?.name2)
-            }
+        administeringOfficerInformation: {
+            adminName: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.adminName),
+            position: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.position),
+            address: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.address),
+            signature: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.signature?.signature),
         }
     };
 

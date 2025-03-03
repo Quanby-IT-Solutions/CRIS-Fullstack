@@ -238,20 +238,17 @@ const emptyDefaults: MarriageCertificateFormValues = {
 
     // Back page data - Affidavit of Solemnizing Officer
     affidavitOfSolemnizingOfficer: {
-        administeringInformation: {
-            nameOfOfficer: '',
-            signatureOfOfficer: '',
-            position: '',
-            addressOfOffice: {
-                st: '',
-                barangay: '',
-                cityMunicipality: '',
-                province: '',
-                country: ''
+        solemnizingOfficerInformation: {
+            officerName: {
+                first: '',
+                middle: '',
+                last: ''
             },
+            officeName: '',
+            signature: '',
+            address: '',
         },
-        nameOfPlace: '',
-        addressAt: '',
+
         a: {
             nameOfHusband: {
                 first: '',
@@ -274,7 +271,7 @@ const emptyDefaults: MarriageCertificateFormValues = {
         c: '',
         d: {
             dayOf: undefined,
-            atPlaceOfMarriage: {
+            atPlaceExecute: {
                 st: '',
                 barangay: '',
                 cityMunicipality: '',
@@ -297,13 +294,15 @@ const emptyDefaults: MarriageCertificateFormValues = {
                 placeIssued: '',
             },
         },
-        nameOfAdmin: {
+        administeringOfficerInformation: {
+            adminName: {
+                first: '',
+                middle: '',
+                last: ''
+            },
+            position: '',
             address: '',
-            signature: {
-                signature: '',
-                position: '',
-                name2: '',
-            }
+            signature: ''
         },
     },
 

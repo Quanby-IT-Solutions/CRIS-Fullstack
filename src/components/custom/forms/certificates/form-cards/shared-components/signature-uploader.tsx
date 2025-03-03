@@ -42,7 +42,8 @@ const SignatureUploader: React.FC<SignatureUploaderProps> = ({
   };
 
   return (
-    <div className='signature-uploader'>
+    <div className='signature-uploader flex flex-col gap-2.5'>
+      <label htmlFor={name} className='text-sm'>{label}</label>
       {/* Hidden file input */}
       <input
         id={name}

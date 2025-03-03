@@ -339,7 +339,7 @@ const generateMarriageCertificate = (
           'Child',
           'Sibling',
         ]),
-        residence: faker.location.streetAddress(),
+        residence: generatePhLocation(),
       },
 
       // Wife Information
@@ -380,7 +380,7 @@ const generateMarriageCertificate = (
           'Child',
           'Sibling',
         ]),
-        residence: faker.location.streetAddress(),
+        residence: generatePhLocation(),
       },
 
       // Contract Party
