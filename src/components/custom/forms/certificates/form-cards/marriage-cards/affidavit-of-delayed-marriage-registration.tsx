@@ -33,17 +33,6 @@ export const AffidavitForDelayedMarriageRegistration: FC<
     const agreementA = useWatch({ control, name: 'affidavitForDelayed.a.a.agreement' });
     const agreementB = useWatch({ control, name: 'affidavitForDelayed.a.b.agreement' });
 
-    useEffect(() => {
-        // If agreementA becomes true, set agreementB to false
-        if (agreementA === true) {
-            setValue('affidavitForDelayed.a.b.agreement', false, { shouldValidate: true });
-        }
-        // If agreementB becomes true, set agreementA to false
-        else if (agreementB === true) {
-            setValue('affidavitForDelayed.a.a.agreement', false, { shouldValidate: true });
-        }
-    }, [agreementA, agreementB, setValue]);
-
 
     // Reset the entire AffidavitForDelayed object
     useEffect(() => {
@@ -223,14 +212,14 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                                     // Convert the string value to a boolean
                                                     const isAffiantHusbandOrWife = value === "true";
 
-                                                    // Update both fields in one operation
+                                                    // Update both fields in one operation with boolean values
                                                     setValue('affidavitForDelayed.a.a.agreement', isAffiantHusbandOrWife, { shouldValidate: true });
                                                     setValue('affidavitForDelayed.a.b.agreement', !isAffiantHusbandOrWife, { shouldValidate: true });
 
-                                                    // Trigger the field's onChange to update the form state
-                                                    field.onChange(value);
+                                                    // Important: Trigger the field's onChange with a boolean value, not the string
+                                                    field.onChange(isAffiantHusbandOrWife);
                                                 }}
-                                                value={field.value ? "true" : "false"}
+                                                value={field.value === true ? "true" : "false"}
                                             >
                                                 <FormControl>
                                                     <SelectTrigger className="h-10">
