@@ -124,7 +124,7 @@ const affidavitForDelayedSchema = z.object({
       dateOfMarriage: createDateFieldSchema({
         requiredError: 'Start date is required',
         futureError: 'Start date cannot be in the future',
-      })
+      }).optional()
     }),
     b: z.object({
       agreement: z.boolean().default(false),
@@ -142,7 +142,7 @@ const affidavitForDelayedSchema = z.object({
       dateOfMarriage: createDateFieldSchema({
         requiredError: 'Start date is required',
         futureError: 'Start date cannot be in the future',
-      })
+      }).optional()
     }),
   }).refine((data) => {
     // Ensure only one agreement is true at a time

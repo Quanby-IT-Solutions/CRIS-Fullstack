@@ -30,8 +30,20 @@ export const AffidavitForDelayedMarriageRegistration: FC<
     const [ncrModeAdminOfficer, setNcrModeAdminOfficer] = useState(false)
     const [ncrModeSwornOfficer, setNcrModeSwornOfficer] = useState(false)
 
-    const agreementA = useWatch({ control, name: 'affidavitForDelayed.a.a.agreement' })
-    const agreementB = useWatch({ control, name: 'affidavitForDelayed.a.b.agreement' })
+    const agreementA = useWatch({ control, name: 'affidavitForDelayed.a.a.agreement' });
+    const agreementB = useWatch({ control, name: 'affidavitForDelayed.a.b.agreement' });
+
+    useEffect(() => {
+        // If agreementA becomes true, set agreementB to false
+        if (agreementA === true) {
+            setValue('affidavitForDelayed.a.b.agreement', false, { shouldValidate: true });
+        }
+        // If agreementB becomes true, set agreementA to false
+        else if (agreementB === true) {
+            setValue('affidavitForDelayed.a.a.agreement', false, { shouldValidate: true });
+        }
+    }, [agreementA, agreementB, setValue]);
+
 
     // Reset the entire AffidavitForDelayed object
     useEffect(() => {
@@ -199,20 +211,38 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                 <CardTitle>Applicant for the delayed registration</CardTitle>
                             </CardHeader>
                             <CardContent className='p-6 space-y-6'>
+
                                 <FormField
                                     control={control}
-                                    name='affidavitForDelayed.a.a.agreement'
+                                    name="affidavitForDelayed.a.a.agreement" // Name of agreementA
                                     render={({ field }) => (
-                                        <FormItem className='flex flex-row items-center space-x-3 space-y-0'>
-                                            <FormControl>
-                                                <Checkbox
-                                                    checked={field.value}
-                                                    onCheckedChange={field.onChange}
-                                                />
-                                            </FormControl>
-                                            <FormLabel className='text-sm font-normal'>
-                                                a. (the affiant is the husband or wife)
-                                            </FormLabel>
+                                        <FormItem>
+                                            <FormLabel>Affiant Information</FormLabel>
+                                            <Select
+                                                onValueChange={(value) => {
+                                                    // Convert the string value to a boolean
+                                                    const isAffiantHusbandOrWife = value === "true";
+
+                                                    // Update both fields in one operation
+                                                    setValue('affidavitForDelayed.a.a.agreement', isAffiantHusbandOrWife, { shouldValidate: true });
+                                                    setValue('affidavitForDelayed.a.b.agreement', !isAffiantHusbandOrWife, { shouldValidate: true });
+
+                                                    // Trigger the field's onChange to update the form state
+                                                    field.onChange(value);
+                                                }}
+                                                value={field.value ? "true" : "false"}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger className="h-10">
+                                                        <SelectValue placeholder="Select affiant type" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    <SelectItem value="true">a. (the affiant is the husband or wife)</SelectItem>
+                                                    <SelectItem value="false">a. (the affiant is <span className="text-red-500">not</span> the husband or wife)</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
                                         </FormItem>
                                     )}
                                 />
@@ -315,23 +345,7 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                     </div>
                                 )}
                                 <div className='pt-6 space-y-6'>
-                                    <FormField
-                                        control={control}
-                                        name='affidavitForDelayed.a.b.agreement'
-                                        render={({ field }) => (
-                                            <FormItem className='flex flex-row items-center space-x-3 space-y-0'>
-                                                <FormControl>
-                                                    <Checkbox
-                                                        checked={field.value}
-                                                        onCheckedChange={field.onChange}
-                                                    />
-                                                </FormControl>
-                                                <FormLabel className='text-sm font-normal'>
-                                                    a. (the affiant is not the husband or wife)
-                                                </FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
+
                                     {agreementB && (
                                         <div className='grid grid-cols-1 md:grid-cols-3 gap-6 '>
                                             <FormField
