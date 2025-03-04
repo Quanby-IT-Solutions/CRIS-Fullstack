@@ -388,10 +388,10 @@ export const mapToMarriageCertificateValues = (
             address: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.address),
         },
         administeringOfficerInformation: {
-            adminName: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.adminName),
-            position: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.position),
-            address: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.address),
-            signature: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.signature?.signature),
+            adminName: createNameObject(marriageForm.affidavitOfSolemnizingOfficer.administeringOfficerInformation.adminName),
+            position: ensureString(marriageForm.affidavitOfSolemnizingOfficer.administeringOfficerInformation.position),
+            address: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringOfficerInformation?.adminAddress),
+            signature: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringOfficerInformation?.signature?.signature),
         },
         a: {
             nameOfHusband: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.a?.nameOfHusband),

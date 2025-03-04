@@ -3,13 +3,16 @@ import { MarriageCertificateFormValues, marriageCertificateSchema } from '@/lib/
 import { fileToBase64 } from '@/lib/utils/fileToBase64';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Permission } from '@prisma/client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import { notifyUsersWithPermission } from '../users-action';
+import { useRouter } from 'next/navigation';
+import { updateMarriageCertificateForm } from '@/components/custom/civil-registry/actions/certificate-edit-actions/marriage-edit-certificate-actions';
 
 interface UseMarriageCertificateFormProps {
     onOpenChange?: (open: boolean) => void;
+    baseFormId?: string; // Add this field
     defaultValues?: Partial<MarriageCertificateFormValues> & { id?: string };
 }
 
@@ -244,6 +247,16 @@ const emptyDefaults: MarriageCertificateFormValues = {
             signature: 'Rev_Father_Santos_Signature',
             address: 'Manila, Philippines'
         },
+        administeringOfficerInformation: {
+            adminName: {
+                first: 'Clerk',
+                middle: 'Dela',
+                last: 'Juan'
+            },
+            position: 'Clerk',
+            address: 'Manila, Philippines',
+            signature: 'Clerk_Juan_Signature'
+        },
 
         a: {
             nameOfHusband: {
@@ -290,110 +303,12 @@ const emptyDefaults: MarriageCertificateFormValues = {
                 placeIssued: 'Manila City Hall'
             },
         },
-        administeringOfficerInformation: {
-            adminName: {
-                first: 'Clerk',
-                middle: 'Dela',
-                last: 'Juan'
-            },
-            position: 'Clerk',
-            address: 'Manila, Philippines',
-            signature: 'Clerk_Juan_Signature'
-        },
+
     },
 
     // Affidavit for Delayed Registration
     affidavitForDelayed: {
         delayedRegistration: 'No',
-        administeringInformation: {
-            adminSignature: 'Admin_Signature',
-            adminName: 'Admin Juan',
-            position: 'Admin',
-            adminAddress: 'Manila, Philippines'
-        },
-        applicantInformation: {
-            signatureOfApplicant: 'Applicant_Signature',
-            nameOfApplicant: 'Juan Cruz',
-            postalCode: '1234',
-            applicantAddress: {
-                st: 'Main Street',
-                barangay: 'Capri', // Updated
-                cityMunicipality: 'Quezon City', // Updated
-                province: 'Metro Manila', // Updated
-                country: 'Philippines'
-            }
-        },
-        a: {
-            a: {
-                agreement: false,
-                nameOfPartner: {
-                    first: '',
-                    middle: '',
-                    last: ''
-                },
-                placeOfMarriage: '',
-                dateOfMarriage: undefined,
-            },
-            b: {
-                agreement: true,
-                nameOfHusband: {
-                    first: 'Juan',
-                    middle: 'Dela',
-                    last: 'Cruz'
-                },
-                nameOfWife: {
-                    first: 'Maria',
-                    middle: 'Dela',
-                    last: 'Cruz'
-                },
-                placeOfMarriage: 'Manila',
-                dateOfMarriage: new Date('2023-10-10'),
-            }
-        },
-        b: {
-            solemnizedBy: 'Rev. Father Santos',
-            sector: 'religious-ceremony',
-        },
-        c: {
-            a: {
-                licenseNo: 'LIC123456',
-                dateIssued: new Date('2023-09-01'),
-                placeOfSolemnizedMarriage: 'Manila'
-            },
-            b: {
-                underArticle: 'Article 1'
-            }
-        },
-        d: {
-            husbandCitizenship: 'Filipino',
-            wifeCitizenship: 'Filipino'
-        },
-        e: 'No reason provided',
-        f: {
-            date: new Date('2023-10-11'),
-            place: {
-                st: 'Third Street',
-                barangay: 'Capri', // Updated
-                cityMunicipality: 'Quezon City', // Updated
-                province: 'Metro Manila', // Updated
-                country: 'Philippines'
-            }
-        },
-        dateSworn: {
-            dayOf: new Date('2023-10-11'),
-            atPlaceOfSworn: {
-                st: 'Third Street',
-                barangay: 'Capri', // Updated
-                cityMunicipality: 'Quezon City', // Updated
-                province: 'Metro Manila', // Updated
-                country: 'Philippines'
-            },
-            ctcInfo: {
-                number: 'CTC123456',
-                dateIssued: new Date('2023-10-11'),
-                placeIssued: 'Manila City Hall'
-            }
-        }
     }
 };
 
@@ -401,6 +316,11 @@ export function useMarriageCertificateForm({
     onOpenChange,
     defaultValues
 }: UseMarriageCertificateFormProps = {}) {
+    const [isInitialized, setIsInitialized] = useState(false);
+    const [initialValues, setInitialValues] = useState<Partial<MarriageCertificateFormValues> | undefined>(undefined);
+    // When initializing your component or hook
+    const [baseFormId, setBaseFormId] = useState<string | undefined>(undefined);
+
     const formMethods = useForm<MarriageCertificateFormValues>({
         resolver: zodResolver(marriageCertificateSchema),
         mode: 'onChange',
@@ -408,12 +328,23 @@ export function useMarriageCertificateForm({
         defaultValues: defaultValues || emptyDefaults,
     });
 
+    const router = useRouter();
+
     // Reset the form when defaultValues change (for edit mode)
-    React.useEffect(() => {
-        if (defaultValues) {
-            formMethods.reset({ ...emptyDefaults, ...defaultValues });
+    useEffect(() => {
+        if (defaultValues && !isInitialized) {
+            // Set the form values once and mark as initialized
+            formMethods.reset(defaultValues);
+            setIsInitialized(true);
+
+            if ('baseFormId' in defaultValues) {
+                // @ts-ignore - Access baseFormId even though it's not in the type
+                setBaseFormId(defaultValues.baseFormId);
+            }
         }
-    }, [defaultValues, formMethods]);
+    }, [defaultValues, formMethods, isInitialized]);
+
+
 
 
     const handleFileUploads = async (data: any) => {
@@ -487,44 +418,87 @@ export function useMarriageCertificateForm({
                     await fileToBase64(processedData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature);
             }
         }
-
         // Affidavit for Delayed Registration (optional)
-        if (processedData.affidavitForDelayed) {
-            if (processedData.affidavitForDelayed.administeringInformation.adminSignature instanceof File) {
-                processedData.affidavitForDelayed.administeringInformation.adminSignature =
-                    await fileToBase64(processedData.affidavitForDelayed.administeringInformation.adminSignature);
+        if (processedData.affidavitForDelayed && processedData.affidavitForDelayed.delayedRegistration === 'Yes') {
+            // Check if administeringInformation exists before accessing its properties
+            if (processedData.affidavitForDelayed.administeringInformation) {
+                if (processedData.affidavitForDelayed.administeringInformation.adminSignature instanceof File) {
+                    processedData.affidavitForDelayed.administeringInformation.adminSignature =
+                        await fileToBase64(processedData.affidavitForDelayed.administeringInformation.adminSignature);
+                }
             }
 
-            if (processedData.affidavitForDelayed.applicantInformation.signatureOfApplicant instanceof File) {
-                processedData.affidavitForDelayed.applicantInformation.signatureOfApplicant =
-                    await fileToBase64(processedData.affidavitForDelayed.applicantInformation.signatureOfApplicant);
+            // Check if applicantInformation exists before accessing its properties
+            if (processedData.affidavitForDelayed.applicantInformation) {
+                if (processedData.affidavitForDelayed.applicantInformation.signatureOfApplicant instanceof File) {
+                    processedData.affidavitForDelayed.applicantInformation.signatureOfApplicant =
+                        await fileToBase64(processedData.affidavitForDelayed.applicantInformation.signatureOfApplicant);
+                }
             }
+        } else if (processedData.affidavitForDelayed) {
+            // If not a 'Yes' for delayed registration, set to null or a minimal object
+            processedData.affidavitForDelayed = {
+                delayedRegistration: 'No'
+            };
         }
 
         return processedData;
     };
 
-    // Updated submission function with proper data preparation
     const onSubmit = async (data: MarriageCertificateFormValues) => {
+
+
         if (!formMethods.formState.isValid) {
             console.error("Form is invalid, submission blocked");
             return;
         }
 
         try {
-            console.log('Attempting to submit form with data:', JSON.stringify(data, null, 2));
+            // Handle affidavitForDelayed as before
+            if (data.affidavitForDelayed?.delayedRegistration === 'No') {
+                data.affidavitForDelayed = {
+                    delayedRegistration: 'No'
+                };
+            }
 
             const preparedData = preparePrismaData(data);
             const processedData = await handleFileUploads(preparedData);
 
-            console.log('Processed data before submission:', processedData);
+            // Check if we're in edit mode
+            const isEditMode = Boolean(defaultValues && defaultValues.id);
 
-            const result = await submitMarriageCertificateForm(processedData);
+            let result;
 
-            if (defaultValues && defaultValues.id) {
-                console.log('Update successful:', data);
-                toast.success('Marriage certificate update successful');
+            // Then in your onSubmit function
+            if (isEditMode) {
+                console.log('Edit mode - updating existing record');
+                result = await updateMarriageCertificateForm(
+                    defaultValues?.id as string,
+                    // baseFormId as string, // Use the stored baseFormId
+                    processedData
+                );
+
+                // Update operation has success and message/error properties
+                if (result.success) {
+                    toast.success('Marriage certificate updated successfully');
+                    onOpenChange?.(false);
+                    formMethods.reset();
+                } else {
+                    if ('error' in result) {
+                        console.log('Update error:', result.error);
+                        toast.error(result.error.includes('No user found with name')
+                            ? 'Invalid prepared by user. Please check the name.'
+                            : result.error);
+                    } else {
+                        console.log('Update message:', result.message);
+                        toast.error(result.message);
+                    }
+                }
             } else {
+                console.log('Create mode - creating new record');
+                result = await submitMarriageCertificateForm(processedData);
+
+                // Create operation has data property
                 if ('data' in result) {
                     toast.success(`Marriage certificate submitted successfully (Book ${result.data.bookNumber}, Page ${result.data.pageNumber})`);
                     notifyUsersWithPermission(
@@ -537,17 +511,17 @@ export function useMarriageCertificateForm({
                     formMethods.reset();
                 } else if ('error' in result) {
                     console.log('Submission error:', result.error);
-                    toast.error(result.error.includes('No user found with name') ? 'Invalid prepared by user. Please check the name.' : result.error);
+                    toast.error(result.error.includes('No user found with name')
+                        ? 'Invalid prepared by user. Please check the name.'
+                        : result.error);
                 }
             }
-
-            formMethods.reset(emptyDefaults);
         } catch (error) {
-            console.error('Error in submitMarriageCertificateForm:', error);
+            console.error('Error processing form:', error);
+            toast.error('An unexpected error occurred');
             return { success: false, error: 'Internal server error' };
         }
     };
-
 
     const handleError = (errors: any) => {
         console.error("❌ Form Errors:", errors);

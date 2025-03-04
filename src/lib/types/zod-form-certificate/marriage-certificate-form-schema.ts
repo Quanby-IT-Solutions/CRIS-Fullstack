@@ -92,21 +92,22 @@ const affidavitForDelayedSchema = z.object({
 
   administeringInformation: z.object({
     adminName: z.string().optional(),
-    adminSignature: signatureSchema,
+    adminSignature: z.any().optional(),
     position: z.string().optional(),
     adminAddress: z.string().optional(),
-  }),
+  }).optional(), // Make this entire section optional
 
   applicantInformation: z.object({
-    signatureOfApplicant: signatureSchema,
+    signatureOfApplicant: z.any().optional(),
     nameOfApplicant: z.string().optional(),
-    applicantAddress: residenceSchemas,
+    applicantAddress: residenceSchemas.optional(), // Make the address optional
     postalCode: z
       .string()
       .min(4, 'Postal code must be at least 4 digits')
       .max(6, 'Postal code must be at most 6 digits')
-      .regex(/^\d+$/, 'Postal code must contain only numbers'),
-  }),
+      .regex(/^\d+$/, 'Postal code must contain only numbers')
+      .optional(), // Make postal code optional
+  }).optional(),
 
   a: z
     .object({
@@ -151,61 +152,60 @@ const affidavitForDelayedSchema = z.object({
     }).optional(),
 
   b: z.object({
-    solemnizedBy: z.string().min(1, 'Name of officer is required'),
+    solemnizedBy: z.string().min(1, 'Name of officer is required').optional(), // Make required fields optional
     sector: z.enum([
       'religious-ceremony',
       'civil-ceremony',
       'Muslim-rites',
       'tribal-rites',
-    ]),
-  }),
+    ]).optional(), // Make required fields optional
+  }).optional(),
 
   c: z.object({
     a: z.object({
-      licenseNo: z.string().min(1, 'License number is required'),
+      licenseNo: z.string().min(1, 'License number is required').optional(), // Make required fields optional
       dateIssued: createDateFieldSchema({
         requiredError: 'Start date is required',
         futureError: 'Start date cannot be in the future',
-      }),
-      placeOfSolemnizedMarriage: z.string().min(1, 'Place of Solemnized marriage'),
-    }),
+      }).optional(),
+      placeOfSolemnizedMarriage: z.string().min(1, 'Place of Solemnized marriage').optional(), // Make required fields optional
+    }).optional(),
     b: z.object({
       underArticle: z.string().optional(),
-    }),
-  }),
+    }).optional(),
+  }).optional(),
 
   d: z.object({
-    husbandCitizenship: citizenshipSchema,
-    wifeCitizenship: citizenshipSchema,
-  }),
+    husbandCitizenship: citizenshipSchema.optional(), // Make required fields optional
+    wifeCitizenship: citizenshipSchema.optional(), // Make required fields optional
+  }).optional(),
 
-  e: z.string().nonempty('Add valid reason'),
+  e: z.string().nonempty('Add valid reason').optional(), // Make required fields optional
 
   f: z.object({
     date: createDateFieldSchema({
       requiredError: 'Start date is required',
       futureError: 'Start date cannot be in the future',
-    }),
-    place: residenceSchemas,
-  }),
+    }).optional(), // Make required fields optional
+    place: residenceSchemas.optional(), // Make required fields optional
+  }).optional(),
 
   dateSworn: z.object({
     dayOf: createDateFieldSchema({
       requiredError: 'Start date is required',
       futureError: 'Start date cannot be in the future',
-    }),
-    atPlaceOfSworn: residenceSchemas,
+    }).optional(),
+    atPlaceOfSworn: residenceSchemas.optional(), // Make required fields optional
     ctcInfo: z.object({
-      number: z.string().min(1, 'CTC number is required'),
+      number: z.string().min(1, 'CTC number is required').optional(), // Make required fields optional
       dateIssued: createDateFieldSchema({
         requiredError: 'Start date is required',
         futureError: 'Start date cannot be in the future',
-      }),
-      placeIssued: z.string().min(1, 'Place issued is required'),
-    }),
-  }),
-});
-
+      }).optional(),
+      placeIssued: z.string().optional(),
+    }).optional(),
+  }).optional(),
+}).optional(); // Make the entire affidavit section optional
 
 /**
  * Main Marriage Certificate Schema

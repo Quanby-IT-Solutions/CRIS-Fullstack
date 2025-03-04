@@ -102,8 +102,8 @@ export const ContractingPartiesCertification: React.FC<
                       />
                     </FormControl>
                     <FormMessage>
-                      {typeof errors?.affidavitForDelayed?.applicantInformation?.signatureOfApplicant?.message === 'string'
-                        ? errors?.affidavitForDelayed?.applicantInformation?.signatureOfApplicant?.message
+                      {typeof errors?.husbandContractParty?.signature?.message === 'string'
+                        ? errors?.husbandContractParty?.signature?.message
                         : ''}
                     </FormMessage>
                   </FormItem>
@@ -137,8 +137,8 @@ export const ContractingPartiesCertification: React.FC<
                       />
                     </FormControl>
                     <FormMessage>
-                      {typeof errors?.affidavitForDelayed?.applicantInformation?.signatureOfApplicant?.message === 'string'
-                        ? errors?.affidavitForDelayed?.applicantInformation?.signatureOfApplicant?.message
+                      {typeof errors?.wifeContractParty?.signature?.message === 'string'
+                        ? errors?.wifeContractParty?.signature?.message
                         : ''}
                     </FormMessage>
                   </FormItem>

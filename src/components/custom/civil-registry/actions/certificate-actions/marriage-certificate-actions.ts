@@ -277,9 +277,9 @@ export async function submitMarriageCertificateForm(
               } as Prisma.JsonObject,
               administeringOfficerInformation: {
                 adminName: formData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.adminName as Prisma.JsonObject,
-                adminAddress: formData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.address,
+                address: formData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.address,
                 position: formData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.position,
-                adminSignature: formData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature.signature instanceof File
+                signature: formData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature.signature instanceof File
                   ? await fileToBase64(formData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature.signature)
                   : formData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature.signature,
 
@@ -331,80 +331,80 @@ export async function submitMarriageCertificateForm(
                 delayedRegistration: 'Yes',
                 // Administering Information
                 administeringInformation: {
-                  adminSignature: formData.affidavitForDelayed.administeringInformation.adminSignature instanceof File
+                  adminSignature: formData.affidavitForDelayed.administeringInformation?.adminSignature instanceof File
                     ? await fileToBase64(formData.affidavitForDelayed.administeringInformation.adminSignature)
-                    : formData.affidavitForDelayed.administeringInformation.adminSignature,
-                  adminName: formData.affidavitForDelayed.administeringInformation.adminName,
-                  position: formData.affidavitForDelayed.administeringInformation.position,
-                  adminAddress: formData.affidavitForDelayed.administeringInformation.adminAddress
+                    : formData.affidavitForDelayed.administeringInformation?.adminSignature,
+                  adminName: formData.affidavitForDelayed.administeringInformation?.adminName,
+                  position: formData.affidavitForDelayed.administeringInformation?.position,
+                  adminAddress: formData.affidavitForDelayed.administeringInformation?.adminAddress
                 } as Prisma.JsonObject,
                 // Applicant Information
                 applicantInformation: {
-                  signatureOfApplicant: formData.affidavitForDelayed.applicantInformation.signatureOfApplicant instanceof File
-                    ? await fileToBase64(formData.affidavitForDelayed.applicantInformation.signatureOfApplicant)
-                    : formData.affidavitForDelayed.applicantInformation.signatureOfApplicant,
-                  nameOfApplicant: formData.affidavitForDelayed.applicantInformation.nameOfApplicant,
-                  postalCode: formData.affidavitForDelayed.applicantInformation.postalCode,
+                  signatureOfApplicant: formData.affidavitForDelayed?.applicantInformation?.signatureOfApplicant instanceof File
+                    ? await fileToBase64(formData.affidavitForDelayed?.applicantInformation?.signatureOfApplicant)
+                    : formData.affidavitForDelayed?.applicantInformation?.signatureOfApplicant,
+                  nameOfApplicant: formData.affidavitForDelayed?.applicantInformation?.nameOfApplicant,
+                  postalCode: formData.affidavitForDelayed?.applicantInformation?.postalCode,
                   applicantAddress: {
-                    cityMunicipality: formData.affidavitForDelayed.applicantInformation.applicantAddress.cityMunicipality,
-                    province: formData.affidavitForDelayed.applicantInformation.applicantAddress.province,
-                    country: formData.affidavitForDelayed.applicantInformation.applicantAddress.country,
-                    st: formData.affidavitForDelayed.applicantInformation.applicantAddress.st,
-                    barangay: formData.affidavitForDelayed.applicantInformation.applicantAddress.barangay,
+                    cityMunicipality: formData.affidavitForDelayed?.applicantInformation?.applicantAddress?.cityMunicipality,
+                    province: formData.affidavitForDelayed?.applicantInformation?.applicantAddress?.province,
+                    country: formData.affidavitForDelayed?.applicantInformation?.applicantAddress?.country,
+                    st: formData.affidavitForDelayed?.applicantInformation?.applicantAddress?.st,
+                    barangay: formData.affidavitForDelayed?.applicantInformation?.applicantAddress?.barangay,
                   } as Prisma.JsonObject,
                 } as Prisma.JsonObject,
                 // Section A
                 a: formData.affidavitForDelayed.a as Prisma.JsonObject,
                 // Section B
                 b: {
-                  solemnizedBy: formData.affidavitForDelayed.b.solemnizedBy,
-                  sector: formData.affidavitForDelayed.b.sector,
+                  solemnizedBy: formData.affidavitForDelayed?.b?.solemnizedBy,
+                  sector: formData.affidavitForDelayed?.b?.sector,
                 } as Prisma.JsonObject,
                 // Section C
                 c: {
                   a: {
-                    licenseNo: formData.affidavitForDelayed.c.a.licenseNo,
-                    dateIssued: dateToJSON(formData.affidavitForDelayed.c.a.dateIssued || new Date()),
-                    placeOfSolemnizedMarriage: formData.affidavitForDelayed.c.a.placeOfSolemnizedMarriage,
+                    licenseNo: formData.affidavitForDelayed?.c?.a?.licenseNo,
+                    dateIssued: dateToJSON(formData.affidavitForDelayed?.c?.a?.dateIssued || new Date()),
+                    placeOfSolemnizedMarriage: formData.affidavitForDelayed?.c?.a?.placeOfSolemnizedMarriage,
                   } as Prisma.JsonObject,
                   b: {
-                    underArticle: formData.affidavitForDelayed.c.b.underArticle,
+                    underArticle: formData.affidavitForDelayed?.c?.b?.underArticle,
                   } as Prisma.JsonObject,
                 } as Prisma.JsonObject,
                 // Section D
                 d: {
-                  husbandCitizenship: formData.affidavitForDelayed.d.husbandCitizenship,
-                  wifeCitizenship: formData.affidavitForDelayed.d.wifeCitizenship,
+                  husbandCitizenship: formData.affidavitForDelayed?.d?.husbandCitizenship,
+                  wifeCitizenship: formData.affidavitForDelayed?.d?.wifeCitizenship,
                 } as Prisma.JsonObject,
                 // Section E
-                e: formData.affidavitForDelayed.e,
+                e: formData.affidavitForDelayed?.e,
                 // Section F
                 f: {
-                  date: formData.affidavitForDelayed.f.date
-                    ? dateToJSON(formData.affidavitForDelayed.f.date || new Date())
+                  date: formData.affidavitForDelayed?.f?.date
+                    ? dateToJSON(formData.affidavitForDelayed?.f?.date || new Date())
                     : null,
                   place: {
-                    cityMunicipality: formData.affidavitForDelayed.f.place.cityMunicipality,
-                    province: formData.affidavitForDelayed.f.place.province,
-                    country: formData.affidavitForDelayed.f.place.country,
-                    barangay: formData.affidavitForDelayed.f.place.barangay,
-                    st: formData.affidavitForDelayed.f.place.st,
+                    cityMunicipality: formData.affidavitForDelayed?.f?.place?.cityMunicipality,
+                    province: formData.affidavitForDelayed?.f?.place?.province,
+                    country: formData.affidavitForDelayed?.f?.place?.country,
+                    barangay: formData.affidavitForDelayed?.f?.place?.barangay,
+                    st: formData.affidavitForDelayed?.f?.place?.st,
                   } as Prisma.JsonObject,
                 } as Prisma.JsonObject,
                 // Date Sworn
                 dateSworn: {
-                  dayOf: dateToJSON(formData.affidavitForDelayed.dateSworn.dayOf || new Date()),
+                  dayOf: dateToJSON(formData.affidavitForDelayed?.dateSworn?.dayOf || new Date()),
                   atPlaceOfSworn: {
-                    cityMunicipality: formData.affidavitForDelayed.dateSworn.atPlaceOfSworn.cityMunicipality,
-                    province: formData.affidavitForDelayed.dateSworn.atPlaceOfSworn.province,
-                    country: formData.affidavitForDelayed.dateSworn.atPlaceOfSworn.country,
-                    barangay: formData.affidavitForDelayed.dateSworn.atPlaceOfSworn.barangay,
-                    st: formData.affidavitForDelayed.dateSworn.atPlaceOfSworn.st,
+                    cityMunicipality: formData.affidavitForDelayed?.dateSworn?.atPlaceOfSworn?.cityMunicipality,
+                    province: formData.affidavitForDelayed?.dateSworn?.atPlaceOfSworn?.province,
+                    country: formData.affidavitForDelayed?.dateSworn?.atPlaceOfSworn?.country,
+                    barangay: formData.affidavitForDelayed?.dateSworn?.atPlaceOfSworn?.barangay,
+                    st: formData.affidavitForDelayed?.dateSworn?.atPlaceOfSworn?.st,
                   } as Prisma.JsonObject,
                   ctcInfo: {
-                    number: formData.affidavitForDelayed.dateSworn.ctcInfo.number,
-                    dateIssued: dateToJSON(formData.affidavitForDelayed.dateSworn.ctcInfo.dateIssued || new Date()),
-                    placeIssued: formData.affidavitForDelayed.dateSworn.ctcInfo.placeIssued,
+                    number: formData.affidavitForDelayed?.dateSworn?.ctcInfo?.number,
+                    dateIssued: dateToJSON(formData.affidavitForDelayed?.dateSworn?.ctcInfo?.dateIssued || new Date()),
+                    placeIssued: formData.affidavitForDelayed?.dateSworn?.ctcInfo?.placeIssued,
                   } as Prisma.JsonObject,
                 } as Prisma.JsonObject,
               } as Prisma.JsonObject)

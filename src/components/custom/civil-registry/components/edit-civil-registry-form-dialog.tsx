@@ -12,6 +12,7 @@ import { EditBirthCivilRegistryFormInline } from './edit-form-provider/BirthForm
 
 import { Button } from '@/components/ui/button';
 import { DialogFooter, DialogHeader } from '@/components/ui/dialog';
+import { useEffect, useRef } from 'react';
 
 interface EmptyDialogProps {
   open: boolean;
@@ -111,6 +112,64 @@ export function EditCivilRegistryFormDialog({
   editType,
 }: EditCivilRegistryFormDialogProps) {
   const { t } = useTranslation();
+  const openRef = useRef(open);
+  
+  // This prevents the dialog from closing when switching tabs
+  useEffect(() => {
+    openRef.current = open;
+  }, [open]);
+
+  // Add a visibility change event listener to prevent dialog from closing when tab switching
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      // If the dialog was open before losing focus, ensure it stays open
+      if (openRef.current && !document.hidden) {
+        // Small delay to ensure React has processed all events
+        setTimeout(() => {
+          if (openRef.current) {
+            onOpenChangeAction(true);
+          }
+        }, 0);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Handle window focus/blur events as well for better coverage
+    const handleWindowFocus = () => {
+      if (openRef.current) {
+        setTimeout(() => {
+          onOpenChangeAction(true);
+        }, 0);
+      }
+    };
+    
+    window.addEventListener('focus', handleWindowFocus);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleWindowFocus);
+    };
+  }, [onOpenChangeAction]);
+  
+  // Custom handler for dialog open state changes
+  const handleOpenChange = (newOpenState: boolean) => {
+    // If attempting to close by clicking outside or pressing escape, 
+    // ignore it if it wasn't an explicit user action within the dialog
+    if (!newOpenState && openRef.current) {
+      // Check if this was triggered by tab switching or an actual user action
+      if (document.visibilityState === 'visible') {
+        // This was likely a user action (clicking outside, pressing ESC)
+        onOpenChangeAction(newOpenState);
+      } else {
+        // This was likely due to tab switching, prevent closing
+        setTimeout(() => onOpenChangeAction(true), 0);
+      }
+    } else {
+      // Normal open/close operation
+      onOpenChangeAction(newOpenState);
+    }
+  };
 
   // Helper function to safely parse dates
   const parseDateSafely = (dateValue: Date | null): Date => {
@@ -561,7 +620,7 @@ export function EditCivilRegistryFormDialog({
         return (
           <EmptyDialog
             open={open}
-            onOpenChange={onOpenChangeAction}
+            onOpenChange={handleOpenChange}
             onCancel={handleCancel}
           />
         );
@@ -570,7 +629,7 @@ export function EditCivilRegistryFormDialog({
         return (
           <EmptyDialog
             open={open}
-            onOpenChange={onOpenChangeAction}
+            onOpenChange={handleOpenChange}
             onCancel={handleCancel}
           />
         );
@@ -580,11 +639,11 @@ export function EditCivilRegistryFormDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChangeAction}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTitle></DialogTitle>
       <DialogContent className='max-w-[70vw] w-[70vw] h-[95vh] max-h-[95vh] p-0'>
         {renderForm()}
       </DialogContent>
     </Dialog>
   );
-}
+};
