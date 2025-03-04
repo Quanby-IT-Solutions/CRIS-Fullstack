@@ -26,14 +26,14 @@ interface AffidavitOfSolemnizingOfficerProps {
 export const AffidavitOfSolemnizingOfficer: React.FC<
     AffidavitOfSolemnizingOfficerProps
 > = ({ className }) => {
-    const { control, getValues } = useFormContext<MarriageCertificateFormValues>();
+    const { control, getValues, setValue } = useFormContext<MarriageCertificateFormValues>();
     const [ncrModeAdminOfficer, setNcrModeAdminOfficer] = React.useState(false);
     const [ncrModeSwornOfficer, setNcrModeSwornOfficer] = React.useState(false);
 
     useEffect(() => {
         // Detect NCR mode from fetched data on component mount
         const province = getValues('affidavitOfSolemnizingOfficer.d.atPlaceExecute.province');
-        if (province === 'Metro Manila' || province === 'NCR') {
+      if (province === '' || province === 'Metro Manila' || province === 'NCR') {
             setNcrModeAdminOfficer(true);
         }
     }, [getValues]);
@@ -41,7 +41,7 @@ export const AffidavitOfSolemnizingOfficer: React.FC<
     useEffect(() => {
         // Detect NCR mode from fetched data on component mount
         const province = getValues('affidavitOfSolemnizingOfficer.dateSworn.atPlaceOfSworn.province');
-        if (province === 'Metro Manila' || province === 'NCR') {
+      if (province === '' || province === 'Metro Manila' || province === 'NCR') {
             setNcrModeSwornOfficer(true);
         }
     }, [getValues]);
@@ -120,7 +120,39 @@ export const AffidavitOfSolemnizingOfficer: React.FC<
                             )}
                         />
 
-                        <SignatureUploader name='affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.signature' label='Signature' />
+                        <FormField
+                            control={control}
+                            name='affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.signature'
+                            render={({ field, formState: { errors } }) => (
+                                <FormItem>
+                                    
+                                    <FormControl>
+                                        <SignatureUploader
+                                            name='affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.signature'
+                                            label='Signature'
+                                            onChange={(value: File | string) => {
+                                                if (value instanceof File) {
+                                                    setValue('affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.signature', value, {
+                                                        shouldValidate: true,
+                                                        shouldDirty: true,
+                                                    });
+                                                } else {
+                                                    setValue('affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.signature', value, {
+                                                        shouldValidate: true,
+                                                        shouldDirty: true,
+                                                    });
+                                                }
+                                            }}
+                                        />
+                                    </FormControl>
+                                    <FormMessage>
+                                        {typeof errors?.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.signature?.message === 'string'
+                                            ? errors?.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.signature?.message
+                                            : ''}
+                                    </FormMessage>
+                                </FormItem>
+                            )}
+                        />
 
                         <FormField
                             control={control}
@@ -655,7 +687,40 @@ export const AffidavitOfSolemnizingOfficer: React.FC<
                                         </FormItem>
                                     )}
                                 />
-                                <SignatureUploader name='affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature' label='Signature' />
+                               
+                                <FormField
+                                    control={control}
+                                    name='affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature'
+                                    render={({ field, formState: { errors } }) => (
+                                        <FormItem>
+                                            
+                                            <FormControl>
+                                                <SignatureUploader
+                                                    name='affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature'
+                                                    label='Signature'
+                                                    onChange={(value: File | string) => {
+                                                        if (value instanceof File) {
+                                                            setValue('affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature', value, {
+                                                                shouldValidate: true,
+                                                                shouldDirty: true,
+                                                            });
+                                                        } else {
+                                                            setValue('affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature', value, {
+                                                                shouldValidate: true,
+                                                                shouldDirty: true,
+                                                            });
+                                                        }
+                                                    }}
+                                                />
+                                            </FormControl>
+                                            <FormMessage>
+                                                {typeof errors?.affidavitOfSolemnizingOfficer?.administeringOfficerInformation?.signature?.message === 'string'
+                                                    ? errors?.affidavitOfSolemnizingOfficer?.administeringOfficerInformation?.signature?.message
+                                                    : ''}
+                                            </FormMessage>
+                                        </FormItem>
+                                    )}
+                                />
 
                                 {/* Position */}
                                 <FormField
@@ -690,9 +755,6 @@ export const AffidavitOfSolemnizingOfficer: React.FC<
                                         </FormItem>
                                     )}
                                 />
-
-
-
 
                             </div>
                         </CardContent>

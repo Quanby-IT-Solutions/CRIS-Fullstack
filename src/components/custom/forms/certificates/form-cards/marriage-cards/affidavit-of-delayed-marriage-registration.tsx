@@ -14,6 +14,7 @@ import DatePickerField from '@/components/custom/datepickerfield/date-picker-fie
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { MarriageCertificateFormValues } from '@/lib/types/zod-form-certificate/marriage-certificate-form-schema'
+import SignatureUploader from '../shared-components/signature-uploader'
 
 interface AffidavitForDelayedMarriageRegistrationProps {
     className?: string
@@ -39,7 +40,7 @@ export const AffidavitForDelayedMarriageRegistration: FC<
     useEffect(() => {
         // Detect NCR mode from fetched data on component mount
         const province = getValues('affidavitForDelayed.applicantInformation.applicantAddress.province');
-        if (province === 'Metro Manila' || province === 'NCR') {
+        if (province === '' || province === 'Metro Manila' || province === 'NCR') {
             setAffiant(true);
         }
     }, [getValues]);
@@ -47,7 +48,7 @@ export const AffidavitForDelayedMarriageRegistration: FC<
     useEffect(() => {
         // Detect NCR mode from fetched data on component mount
         const province = getValues('affidavitForDelayed.f.place.province');
-        if (province === 'Metro Manila' || province === 'NCR') {
+        if (province === '' || province === 'Metro Manila' || province === 'NCR') {
             setExecution(true);
         }
     }, [getValues]);
@@ -55,7 +56,7 @@ export const AffidavitForDelayedMarriageRegistration: FC<
     useEffect(() => {
         // Detect NCR mode from fetched data on component mount
         const province = getValues('affidavitForDelayed.dateSworn.atPlaceOfSworn.province');
-        if (province === 'Metro Manila' || province === 'NCR') {
+        if (province === '' || province === 'Metro Manila' || province === 'NCR') {
             setNcrModeSwornOfficer(true);
         }
     }, [getValues]);
@@ -63,12 +64,31 @@ export const AffidavitForDelayedMarriageRegistration: FC<
 
 
 
-    // Reset the entire AffidavitForDelayed object
+
+
     useEffect(() => {
-        if (isDelayed === 'No') {
-            setValue('affidavitForDelayed', undefined)
+        if (agreementA) {
+            // When A is selected, clear B
+            setValue('affidavitForDelayed.a.b', {
+                agreement: false, // Ensure the agreement is deselected
+                nameOfHusband: { first: '', middle: '', last: '' },
+                nameOfWife: { first: '', middle: '', last: '' },
+                placeOfMarriage: '',
+            })
         }
-    }, [isDelayed, setValue])
+    }, [agreementA, setValue])
+
+    useEffect(() => {
+        if (agreementB) {
+            // When B is selected, clear A
+            setValue('affidavitForDelayed.a.a', {
+                agreement: false, // Ensure the agreement is deselected
+                nameOfPartner: { first: '', middle: '', last: '' },
+                placeOfMarriage: '',
+            })
+        }
+    }, [agreementB, setValue])
+
 
     return (
         <Card className={cn('border dark:border-border', className)}>
@@ -205,21 +225,38 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                     <FormField
                                         control={control}
                                         name='affidavitForDelayed.applicantInformation.signatureOfApplicant'
-                                        render={({ field }) => (
+                                        render={({ field, formState: { errors } }) => (
                                             <FormItem>
-                                                <FormLabel>Signature (optional)</FormLabel>
+                                                
                                                 <FormControl>
-                                                    <Input
-                                                        type='text' className='h-10' placeholder='This is optional'
-                                                        {...field}
-                                                        value={field.value ?? ''}
-                                                        disabled
+                                                    <SignatureUploader
+                                                        name='affidavitForDelayed.applicantInformation.signatureOfApplicant'
+                                                        label='Signature'
+                                                        onChange={(value: File | string) => {
+                                                            if (value instanceof File) {
+                                                                setValue('affidavitForDelayed.applicantInformation.signatureOfApplicant', value, {
+                                                                    shouldValidate: true,
+                                                                    shouldDirty: true,
+                                                                });
+                                                            } else {
+                                                                setValue('affidavitForDelayed.applicantInformation.signatureOfApplicant', value, {
+                                                                    shouldValidate: true,
+                                                                    shouldDirty: true,
+                                                                });
+                                                            }
+                                                        }}
                                                     />
                                                 </FormControl>
-                                                <FormMessage />
+                                                <FormMessage>
+                                                    {typeof errors?.affidavitForDelayed?.applicantInformation?.signatureOfApplicant?.message === 'string'
+                                                        ? errors?.affidavitForDelayed?.applicantInformation?.signatureOfApplicant?.message
+                                                        : ''}
+                                                </FormMessage>
                                             </FormItem>
                                         )}
                                     />
+
+
                                 </div>
                             </CardContent>
                         </Card>
@@ -232,21 +269,19 @@ export const AffidavitForDelayedMarriageRegistration: FC<
 
                                 <FormField
                                     control={control}
-                                    name="affidavitForDelayed.a.a.agreement" // Name of agreementA
+                                    name="affidavitForDelayed.a.a.agreement"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Affiant Information</FormLabel>
+                                            <FormLabel>Affiant Type</FormLabel>
                                             <Select
                                                 onValueChange={(value) => {
-                                                    // Convert the string value to a boolean
-                                                    const isAffiantHusbandOrWife = value === "true";
+                                                    const isAffiantA = value === "true"
 
-                                                    // Update both fields in one operation with boolean values
-                                                    setValue('affidavitForDelayed.a.a.agreement', isAffiantHusbandOrWife, { shouldValidate: true });
-                                                    setValue('affidavitForDelayed.a.b.agreement', !isAffiantHusbandOrWife, { shouldValidate: true });
+                                                    // Set selected agreement to true
+                                                    setValue("affidavitForDelayed.a.a.agreement", isAffiantA, { shouldValidate: true })
+                                                    setValue("affidavitForDelayed.a.b.agreement", !isAffiantA, { shouldValidate: true })
 
-                                                    // Important: Trigger the field's onChange with a boolean value, not the string
-                                                    field.onChange(isAffiantHusbandOrWife);
+                                                    field.onChange(isAffiantA) // Ensure change event fires
                                                 }}
                                                 value={field.value === true ? "true" : "false"}
                                             >
@@ -257,7 +292,7 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                                 </FormControl>
                                                 <SelectContent>
                                                     <SelectItem value="true">a. (the affiant is the husband or wife)</SelectItem>
-                                                    <SelectItem value="false">a. (the affiant is <span className="text-red-500">not</span> the husband or wife)</SelectItem>
+                                                    <SelectItem value="false">b. (the affiant is <span className='text-red-500'>NOT</span> the husband or wife)</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage />
@@ -538,14 +573,14 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel className='text-foreground'>
-                                                    Solemnizing officer/Administrator
+                                                    Solemnizing officer
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         {...field}
                                                         value={field.value || ''}
                                                         className='h-10'
-                                                        placeholder='Enter officer&aposs name'
+                                                        placeholder='Enter officer&aposs; name'
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
@@ -1031,21 +1066,37 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                             )}
                                         />
 
+
                                         <FormField
                                             control={control}
                                             name='affidavitForDelayed.administeringInformation.adminSignature'
-                                            render={({ field }) => (
+                                            render={({ field, formState: { errors } }) => (
                                                 <FormItem>
-                                                    <FormLabel>Signature (optional)</FormLabel>
+                                                    
                                                     <FormControl>
-                                                        <Input
-                                                            type='text' className='h-10' placeholder='This is optional'
-                                                            {...field}
-                                                            value={field.value ?? ''}
-                                                            disabled
+                                                        <SignatureUploader
+                                                            name='affidavitForDelayed.administeringInformation.adminSignature'
+                                                            label='Signature'
+                                                            onChange={(value: File | string) => {
+                                                                if (value instanceof File) {
+                                                                    setValue('affidavitForDelayed.administeringInformation.adminSignature', value, {
+                                                                        shouldValidate: true,
+                                                                        shouldDirty: true,
+                                                                    });
+                                                                } else {
+                                                                    setValue('affidavitForDelayed.administeringInformation.adminSignature', value, {
+                                                                        shouldValidate: true,
+                                                                        shouldDirty: true,
+                                                                    });
+                                                                }
+                                                            }}
                                                         />
                                                     </FormControl>
-                                                    <FormMessage />
+                                                    <FormMessage>
+                                                        {typeof errors?.affidavitForDelayed?.administeringInformation?.adminSignature?.message === 'string'
+                                                            ? errors?.affidavitForDelayed?.administeringInformation?.adminSignature?.message
+                                                            : ''}
+                                                    </FormMessage>
                                                 </FormItem>
                                             )}
                                         />

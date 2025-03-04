@@ -11,6 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { MarriageCertificateFormValues } from '@/lib/types/zod-form-certificate/marriage-certificate-form-schema';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import SignatureUploader from '../shared-components/signature-uploader';
 ;
 
 interface WitnessesCardProps {
@@ -18,7 +19,7 @@ interface WitnessesCardProps {
 }
 
 export const WitnessesCard: React.FC<WitnessesCardProps> = ({ className }) => {
-  const { control } = useFormContext<MarriageCertificateFormValues>();
+  const { control, setValue } = useFormContext<MarriageCertificateFormValues>();
   // Setup field array for husband witnesses
   const { fields, append, remove } = useFieldArray({
     control,
@@ -55,16 +56,33 @@ export const WitnessesCard: React.FC<WitnessesCardProps> = ({ className }) => {
               <FormField
                 control={control}
                 name={`husbandWitnesses.${index}.signature`}
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
-                    <FormLabel>Signature</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Enter signature" />
+                      <SignatureUploader
+                        name={`husbandWitnesses.${index}.signature`}
+                        label="Signature"
+                        onChange={(value: File | string) => {
+                          setValue(
+                            `husbandWitnesses.${index}.signature`, // ✅ Correct dynamic field name
+                            value,
+                            {
+                              shouldValidate: true,
+                              shouldDirty: true,
+                            }
+                          );
+                        }}
+                      />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage>
+                      {typeof errors?.husbandWitnesses?.[index]?.signature?.message === "string"
+                        ? errors.husbandWitnesses[index].signature.message
+                        : ""}
+                    </FormMessage>
                   </FormItem>
                 )}
               />
+
             </div>
             {/* You can add additional fields (e.g. name2, signature2) similarly */}
             <button className='border rounded-lg bg-red-500 p-1 text-sm text-accent w-24 flex-none h-10 mt-7' type="button" onClick={() => remove(index)}>
