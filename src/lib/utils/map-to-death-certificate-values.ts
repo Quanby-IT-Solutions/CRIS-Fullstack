@@ -255,35 +255,76 @@ export const mapToDeathCertificateValues = (
     },
   };
 
+  const preparedBySignature =
+    form.preparedBy &&
+    typeof form.preparedBy === 'object' &&
+    'eSignature' in form.preparedBy &&
+    form.preparedBy.eSignature
+      ? ensureString((form.preparedBy as { eSignature?: string }).eSignature)
+      : '';
+
+  const preparedByNameResolved =
+    typeof form.preparedBy === 'string'
+      ? form.preparedBy
+      : form.preparedByName
+      ? ensureString(form.preparedByName)
+      : form.preparedBy && form.preparedBy.name
+      ? ensureString(form.preparedBy.name)
+      : '';
+
+  // Now for receivedBy:
+  const receivedByNameResolved =
+    typeof form.receivedBy === 'string'
+      ? form.receivedBy ?? ''
+      : (form as any).receivedByUser && 'name' in (form as any).receivedByUser
+      ? ensureString((form as any).receivedByUser.name)
+      : ensureString(form.receivedBy);
+
+  const receivedBySignature =
+    (form as any).receivedByUser &&
+    typeof (form as any).receivedByUser === 'object' &&
+    'eSignature' in (form as any).receivedByUser &&
+    (form as any).receivedByUser.eSignature
+      ? ensureString((form as any).receivedByUser.eSignature)
+      : receivedByNameResolved === preparedByNameResolved
+      ? preparedBySignature
+      : '';
+
+  // And similarly for registeredBy:
+  const registeredByNameResolved =
+    typeof form.registeredBy === 'string'
+      ? form.registeredBy ?? ''
+      : (form as any).registeredByUser &&
+        'name' in (form as any).registeredByUser
+      ? ensureString((form as any).registeredByUser.name)
+      : ensureString(form.registeredBy);
+
+  const registeredBySignature =
+    (form as any).registeredByUser &&
+    typeof (form as any).registeredByUser === 'object' &&
+    'eSignature' in (form as any).registeredByUser &&
+    (form as any).registeredByUser.eSignature
+      ? ensureString((form as any).registeredByUser.eSignature)
+      : registeredByNameResolved === preparedByNameResolved
+      ? preparedBySignature
+      : '';
+
   const processingInfo = {
     preparedBy: {
-      signature: '',
-      nameInPrint:
-        typeof form.preparedBy === 'string'
-          ? form.preparedBy
-          : form.preparedByName
-          ? ensureString(form.preparedByName)
-          : form.preparedBy?.name
-          ? ensureString(form.preparedBy.name)
-          : '',
+      signature: preparedBySignature,
+      nameInPrint: preparedByNameResolved,
       titleOrPosition: ensureString(form.preparedByPosition),
       date: parseDateSafely(form.preparedByDate),
     },
     receivedBy: {
-      signature: '',
-      nameInPrint:
-        typeof form.receivedBy === 'string'
-          ? form.receivedBy
-          : ensureString(form.receivedBy),
+      signature: receivedBySignature,
+      nameInPrint: receivedByNameResolved,
       titleOrPosition: ensureString(form.receivedByPosition),
       date: parseDateSafely(form.receivedByDate),
     },
     registeredByOffice: {
-      signature: '',
-      nameInPrint:
-        typeof form.registeredBy === 'string'
-          ? form.registeredBy
-          : ensureString(form.registeredBy),
+      signature: registeredBySignature,
+      nameInPrint: registeredByNameResolved,
       titleOrPosition: ensureString(form.registeredByPosition),
       date: parseDateSafely(form.registeredByDate),
     },

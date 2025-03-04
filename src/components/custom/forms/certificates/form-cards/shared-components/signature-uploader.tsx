@@ -1,3 +1,5 @@
+'use client';
+
 import {
   HoverCard,
   HoverCardContent,
@@ -5,7 +7,8 @@ import {
 } from '@/components/ui/hover-card';
 import { Input } from '@/components/ui/input';
 import { CheckCircle2 } from 'lucide-react';
-import React, { useState } from 'react';
+import React from 'react';
+import { useFormContext } from 'react-hook-form';
 
 interface SignatureUploaderProps {
   /**
@@ -20,27 +23,21 @@ interface SignatureUploaderProps {
    * Callback to pass the selected file (or base64 string) back to the parent.
    */
   onChange?: (value: File | string) => void;
-  /**
-   * An optional initial value. This can be a File object or a base64 string.
-   */
-  initialValue?: File | string;
 }
 
 const SignatureUploader: React.FC<SignatureUploaderProps> = ({
   name,
   label = 'Signature',
   onChange,
-  initialValue = null,
 }) => {
-  const [selectedFile, setSelectedFile] = useState<File | string | null>(
-    initialValue
-  );
+  // Use react-hook-form to watch the value for this field.
+  const { watch } = useFormContext();
+  const selectedFile = watch(name);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setSelectedFile(file);
-      onChange?.(file); // Pass the file to the parent
+      onChange?.(file);
     }
   };
 
@@ -49,9 +46,12 @@ const SignatureUploader: React.FC<SignatureUploaderProps> = ({
   };
 
   const renderPreview = () => {
+    // If the selected value is a File, create an object URL.
     if (selectedFile instanceof File) {
       return URL.createObjectURL(selectedFile);
-    } else if (typeof selectedFile === 'string') {
+    }
+    // If it's a non-empty string, assume it's a base64 image.
+    else if (typeof selectedFile === 'string' && selectedFile) {
       return selectedFile;
     }
     return '';
@@ -59,17 +59,18 @@ const SignatureUploader: React.FC<SignatureUploaderProps> = ({
 
   return (
     <div className='signature-uploader flex flex-col gap-2.5'>
-      <label htmlFor={name} className='text-sm'>{label}</label>
+      <label htmlFor={name} className='text-sm'>
+        {label}
+      </label>
       {/* Hidden file input */}
       <input
         id={name}
         name={name}
         type='file'
-        accept='image/*' // Restrict file types to images
+        accept='image/*'
         onChange={handleFileChange}
         className='hidden'
       />
-
       <HoverCard>
         <HoverCardTrigger asChild>
           <div className='relative'>

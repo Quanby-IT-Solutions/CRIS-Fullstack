@@ -1,3 +1,5 @@
+// ----------- ORIGINAL --------------------//
+
 import { submitDeathCertificateForm } from '@/components/custom/civil-registry/actions/certificate-actions/death-certificate-actions';
 import {
   DeathCertificateFormValues,
@@ -321,6 +323,7 @@ export function useDeathCertificateForm({
   return { formMethods, onSubmit, handleError };
 }
 
+// -------------------------- submission data for testing --------------------//
 // import { submitDeathCertificateForm } from '@/components/custom/civil-registry/actions/certificate-actions/death-certificate-actions';
 // import {
 //   DeathCertificateFormValues,
@@ -329,7 +332,7 @@ export function useDeathCertificateForm({
 // import { fileToBase64 } from '@/lib/utils/fileToBase64';
 // import { zodResolver } from '@hookform/resolvers/zod';
 // import { Permission } from '@prisma/client';
-// import React from 'react';
+// import { useEffect } from 'react';
 // import { useForm } from 'react-hook-form';
 // import { toast } from 'sonner';
 // import { notifyUsersWithPermission } from '../users-action';
@@ -339,46 +342,45 @@ export function useDeathCertificateForm({
 //   defaultValues?: Partial<DeathCertificateFormValues> & { id?: string };
 // }
 
-// const dummyDefaults: DeathCertificateFormValues = {
-//   registryNumber: '2022-12345',
-//   province: 'Sample Province',
-//   cityMunicipality: 'Sample City',
+// const emptyDefaults: DeathCertificateFormValues = {
+//   registryNumber: '2025-1001',
+//   province: 'Province A',
+//   cityMunicipality: 'City A',
 //   name: {
 //     first: 'John',
-//     middle: 'M',
-//     last: 'Doe',
+//     middle: 'Q',
+//     last: 'Public',
 //   },
 //   sex: 'Male',
-//   dateOfDeath: new Date('2023-01-01T00:00:00'),
-//   timeOfDeath: new Date('2023-01-01T12:34:00'),
-//   dateOfBirth: new Date('2022-12-31T00:00:00'),
-//   // Updated days to "10" so that infant-specific validation is not triggered.
+//   dateOfDeath: new Date('2025-03-03'),
+//   timeOfDeath: undefined, // a valid string that will be preprocessed into a Date
+//   dateOfBirth: new Date('1950-01-01'),
 //   ageAtDeath: {
-//     years: '0',
+//     years: '75',
 //     months: '0',
-//     days: '10',
-//     hours: '12',
+//     days: '0',
+//     hours: '0',
 //   },
 //   placeOfDeath: {
-//     hospitalInstitution: 'Sample Hospital',
+//     hospitalInstitution: 'General Hospital',
 //     houseNo: '123',
 //     st: 'Main St',
 //     barangay: 'Barangay 1',
-//     cityMunicipality: 'Sample City',
-//     province: 'Sample Province',
+//     cityMunicipality: 'City A',
+//     province: 'Province A',
 //   },
-//   civilStatus: 'Single',
+//   civilStatus: 'Married',
 //   religion: 'Christianity',
-//   citizenship: 'Sample Country',
+//   citizenship: 'American',
 //   residence: {
-//     houseNo: '123',
-//     st: 'Main St',
-//     barangay: 'Barangay 1',
-//     cityMunicipality: 'Sample City',
-//     province: 'Sample Province',
-//     country: 'Sample Country',
+//     houseNo: '456',
+//     st: 'Second St',
+//     barangay: 'Barangay 2',
+//     cityMunicipality: 'City B',
+//     province: 'Province B',
+//     country: 'USA',
 //   },
-//   occupation: 'Unemployed',
+//   occupation: 'Retired',
 //   birthInformation: {
 //     ageOfMother: '30',
 //     methodOfDelivery: 'Normal spontaneous vertex',
@@ -387,20 +389,28 @@ export function useDeathCertificateForm({
 //     birthOrder: 'First',
 //   },
 //   parents: {
-//     fatherName: { first: 'Robert', middle: 'A', last: 'Doe' },
-//     motherName: { first: 'Jane', middle: 'B', last: 'Doe' },
+//     fatherName: {
+//       first: 'Michael',
+//       middle: 'J',
+//       last: 'Smith',
+//     },
+//     motherName: {
+//       first: 'Sarah',
+//       middle: 'L',
+//       last: 'Smith',
+//     },
 //   },
 //   causesOfDeath19b: {
-//     immediate: { cause: 'Cardiac arrest', interval: '5 minutes' },
-//     antecedent: { cause: 'Heart disease', interval: '2 years' },
-//     underlying: { cause: 'Hypertension', interval: '10 years' },
+//     immediate: { cause: 'Cardiac arrest', interval: '2 hours' },
+//     antecedent: { cause: 'Heart disease', interval: '3 days' },
+//     underlying: { cause: 'Hypertension', interval: 'Unknown' },
 //     otherSignificantConditions: 'None',
 //   },
 //   medicalCertificate: {
 //     causesOfDeath: {
-//       immediate: { cause: 'Cardiac arrest', interval: '5 minutes' },
-//       antecedent: { cause: 'Heart disease', interval: '2 years' },
-//       underlying: { cause: 'Hypertension', interval: '10 years' },
+//       immediate: { cause: 'Cardiac arrest', interval: '2 hours' },
+//       antecedent: { cause: 'Heart disease', interval: '3 days' },
+//       underlying: { cause: 'Hypertension', interval: 'Unknown' },
 //       otherSignificantConditions: 'None',
 //     },
 //     maternalCondition: {
@@ -408,163 +418,102 @@ export function useDeathCertificateForm({
 //       pregnantInLabor: false,
 //       lessThan42Days: false,
 //       daysTo1Year: false,
-//       noneOfTheAbove: true,
+//       noneOfTheAbove: false,
 //     },
-//     externalCauses: { mannerOfDeath: 'Natural', placeOfOccurrence: 'Hospital' },
+//     externalCauses: { mannerOfDeath: 'Natural', placeOfOccurrence: 'Home' },
 //     attendant: {
 //       type: 'Private physician',
 //       othersSpecify: '',
 //       duration: {
-//         from: new Date('2023-01-01T10:00:00'),
-//         to: new Date('2023-01-01T12:00:00'),
+//         from: new Date('2025-03-03T08:00:00'),
+//         to: new Date('2025-03-03T10:00:00'),
 //       },
 //       certification: {
-//         time: new Date('2023-01-01T12:00:00'),
-//         signature: 'base64dummySignature1',
-//         name: 'Dr. Smith',
+//         time: new Date('2025-03-03T11:00:00'),
+//         signature: 'base64attendantcertsignature',
+//         name: 'Dr. House',
 //         title: 'Attending Physician',
 //         address: {
-//           houseNo: '456',
-//           st: 'Doctor St',
-//           barangay: 'Barangay 2',
-//           cityMunicipality: 'Sample City',
-//           province: 'Sample Province',
-//           country: 'Sample Country',
+//           houseNo: '789',
+//           st: 'Third St',
+//           barangay: 'Barangay 3',
+//           cityMunicipality: 'City C',
+//           province: 'Province C',
+//           country: 'USA',
 //         },
-//         date: new Date('2023-01-01'),
+//         date: new Date('2025-03-03'),
 //       },
 //     },
 //     autopsy: false,
 //   },
 //   certificationOfDeath: {
 //     hasAttended: true,
-//     signature: 'base64dummySignature2',
-//     nameInPrint: 'Officer Name',
-//     titleOfPosition: 'Health Officer',
+//     signature: 'base64certsignature',
+//     nameInPrint: 'Dr. Who',
+//     titleOfPosition: 'Medical Examiner',
 //     address: {
-//       houseNo: '789',
-//       st: 'Officer St',
-//       barangay: 'Barangay 3',
-//       cityMunicipality: 'Sample City',
-//       province: 'Sample Province',
-//       country: 'Sample Country',
-//     },
-//     date: new Date('2023-01-02'),
-//     healthOfficerSignature: 'base64dummySignature3',
-//     healthOfficerNameInPrint: 'Health Officer Name',
-//   },
-//   reviewedBy: {
-//     signature: 'base64dummySignature4',
-//     date: new Date('2023-01-03'),
-//   },
-//   postmortemCertificate: {
-//     causeOfDeath: 'Natural',
-//     signature: 'base64dummySignature5',
-//     nameInPrint: 'Postmortem Name',
-//     date: new Date('2023-01-04'),
-//     titleDesignation: 'Postmortem Title',
-//     address: '123 Postmortem Address',
-//   },
-//   embalmerCertification: {
-//     nameOfDeceased: 'John Doe',
-//     signature: 'base64dummySignature6',
-//     nameInPrint: 'Embalmer Name',
-//     address: '123 Embalmer Address',
-//     titleDesignation: 'Embalmer Title',
-//     licenseNo: '123456',
-//     issuedOn: '2023-01-05',
-//     issuedAt: 'Sample City',
-//     expiryDate: '2025-01-05',
-//   },
-//   delayedRegistration: {
-//     affiant: {
-//       name: 'Affiant Name',
-//       civilStatus: 'Married',
-//       residenceAddress: '123 Affiant Address',
-//       age: '40',
-//       signature: 'base64dummySignature7',
-//     },
-//     deceased: {
-//       name: 'John Doe',
-//       dateOfDeath: '2023-01-01',
-//       placeOfDeath: 'Sample Hospital',
-//       burialInfo: {
-//         date: '2023-01-06',
-//         place: 'Cemetery',
-//         method: 'Buried',
-//       },
-//     },
-//     attendance: {
-//       wasAttended: true,
-//       attendedBy: 'Attendant Name',
-//     },
-//     causeOfDeath: 'Natural',
-//     reasonForDelay: 'Some reason',
-//     affidavitDate: new Date('2023-01-07'),
-//     affidavitDatePlace: 'Sample City',
-//     adminOfficer: {
-//       signature: 'base64dummySignature8',
-//       position: 'Admin Officer',
-//     },
-//     ctcInfo: {
-//       number: 'CTC123',
-//       issuedOn: '2023-01-08',
-//       issuedAt: 'Sample City',
-//     },
-//   },
-//   corpseDisposal: 'Cremation',
-//   burialPermit: {
-//     number: 'BP123',
-//     dateIssued: new Date('2023-01-09'),
-//   },
-//   transferPermit: {
-//     number: 'TP123',
-//     dateIssued: '2023-01-10',
-//   },
-//   cemeteryOrCrematory: {
-//     name: 'Cemetery Name',
-//     address: {
-//       houseNo: '321',
-//       st: 'Cemetery St',
+//       houseNo: '101',
+//       st: 'Fourth St',
 //       barangay: 'Barangay 4',
-//       cityMunicipality: 'Sample City',
-//       province: 'Sample Province',
-//       country: 'Sample Country',
+//       cityMunicipality: 'City D',
+//       province: 'Province D',
+//       country: 'USA',
+//     },
+//     date: new Date('2025-03-03'),
+//     healthOfficerSignature: 'base64healthsignature',
+//     healthOfficerNameInPrint: 'Nurse Joy',
+//   },
+//   reviewedBy: { signature: 'base64review', date: new Date('2025-03-03') },
+//   postmortemCertificate: undefined,
+//   embalmerCertification: undefined,
+//   delayedRegistration: undefined,
+//   corpseDisposal: 'Burial',
+//   burialPermit: { number: 'BP-001', dateIssued: new Date('2025-03-03') },
+//   transferPermit: undefined,
+//   cemeteryOrCrematory: {
+//     name: 'Cemetery A',
+//     address: {
+//       houseNo: '111',
+//       st: 'Fifth St',
+//       barangay: 'Barangay 5',
+//       cityMunicipality: 'City A', // same as placeOfDeath to avoid transfer permit error
+//       province: 'Province A',
+//       country: 'USA',
 //     },
 //   },
 //   informant: {
-//     signature: 'base64dummySignature9',
-//     nameInPrint: 'Informant Name',
-//     relationshipToDeceased: 'Brother',
+//     signature: 'base64informant',
+//     nameInPrint: 'Jane Doe',
+//     relationshipToDeceased: 'Daughter',
 //     address: {
-//       houseNo: '111',
-//       st: 'Informant St',
-//       barangay: 'Barangay 5',
-//       cityMunicipality: 'Sample City',
-//       province: 'Sample Province',
-//       country: 'Sample Country',
+//       houseNo: '222',
+//       st: 'Sixth St',
+//       barangay: 'Barangay 6',
+//       cityMunicipality: 'City B',
+//       province: 'Province B',
+//       country: 'USA',
 //     },
-//     date: new Date('2023-01-11'),
+//     date: new Date('2025-03-03'),
 //   },
 //   preparedBy: {
-//     signature: 'base64dummySignature10',
-//     nameInPrint: 'Preparer Name',
+//     signature: 'base64prepared',
+//     nameInPrint: 'Alice',
 //     titleOrPosition: 'Registrar',
-//     date: new Date('2023-01-12'),
+//     date: new Date('2025-03-03'),
 //   },
 //   receivedBy: {
-//     signature: 'base64dummySignature11',
-//     nameInPrint: 'Receiver Name',
-//     titleOrPosition: 'Receiver',
-//     date: new Date('2023-01-13'),
+//     signature: 'base64received',
+//     nameInPrint: 'Bob',
+//     titleOrPosition: 'Clerk',
+//     date: new Date('2025-03-03'),
 //   },
 //   registeredByOffice: {
-//     signature: 'base64dummySignature12',
-//     nameInPrint: 'Registrar Office Name',
-//     titleOrPosition: 'Registrar',
-//     date: new Date('2023-01-14'),
+//     signature: 'base64registered',
+//     nameInPrint: 'Charlie',
+//     titleOrPosition: 'Supervisor',
+//     date: new Date('2025-03-03'),
 //   },
-//   remarks: 'No remarks',
+//   remarks: 'Test submission',
 //   pagination: { pageNumber: '1', bookNumber: '1' },
 // };
 
@@ -576,13 +525,13 @@ export function useDeathCertificateForm({
 //     resolver: zodResolver(deathCertificateFormSchema),
 //     mode: 'onChange',
 //     reValidateMode: 'onChange',
-//     defaultValues: defaultValues || dummyDefaults,
+//     defaultValues: defaultValues || emptyDefaults,
 //   });
 
-//   // Reset the form when defaultValues change (for edit mode)
-//   React.useEffect(() => {
-//     if (defaultValues) {
-//       formMethods.reset({ ...dummyDefaults, ...defaultValues });
+//   // Only reset the form if defaultValues change and the form is not dirty.
+//   useEffect(() => {
+//     if (defaultValues && !formMethods.formState.isDirty) {
+//       formMethods.reset({ ...emptyDefaults, ...defaultValues });
 //     }
 //   }, [defaultValues, formMethods]);
 
@@ -657,7 +606,7 @@ export function useDeathCertificateForm({
 //         );
 //       }
 
-//       // If defaultValues includes an id, assume update mode and simply log success
+//       // If defaultValues includes an id, assume update mode and log success.
 //       if (defaultValues && defaultValues.id) {
 //         console.log('Update successful:', data);
 //         toast.success('Death certificate update successful');
@@ -669,10 +618,12 @@ export function useDeathCertificateForm({
 //           toast.success(
 //             `Death certificate submitted successfully (Book ${result.data.bookNumber}, Page ${result.data.pageNumber})`
 //           );
+
 //           const documentRead = Permission.DOCUMENT_READ;
 //           const Title = 'New uploaded Death Certificate';
 //           const message = `New Death Certificate with the details (Book ${result.data.bookNumber}, Page ${result.data.pageNumber}, Registry Number ${data.registryNumber}) has been uploaded.`;
 //           notifyUsersWithPermission(documentRead, Title, message);
+
 //           onOpenChange?.(false);
 //         } else if ('error' in result) {
 //           console.log('Submission error:', result.error);
@@ -682,7 +633,7 @@ export function useDeathCertificateForm({
 //           toast.error(errorMessage);
 //         }
 //       }
-//       formMethods.reset(dummyDefaults);
+//       formMethods.reset(emptyDefaults);
 //     } catch (error) {
 //       console.error('Form submission error details:', error);
 //       toast.error('An unexpected error occurred while submitting the form');

@@ -72,38 +72,27 @@ function ProcessingDetailsCard<T extends FieldValues = FieldValues>({
             <FormField
               control={control}
               name={signatureFieldName}
-              render={({ field, formState: { errors } }) => (
+              render={({ formState: { errors } }) => (
                 <FormItem>
-                  {/* <FormLabel>Signature</FormLabel> */}
                   <FormControl>
                     <SignatureUploader
                       name={signatureFieldName}
                       label='Signature'
                       onChange={(value: File | string) => {
-                        if (value instanceof File) {
-                          setValue(
-                            signatureFieldName,
-                            value as PathValue<T, Path<T>>,
-                            {
-                              shouldValidate: true,
-                              shouldDirty: true,
-                            }
-                          );
-                        } else {
-                          setValue(
-                            signatureFieldName,
-                            value as PathValue<T, Path<T>>,
-                            {
-                              shouldValidate: true,
-                              shouldDirty: true,
-                            }
-                          );
-                        }
+                        // Update the field value in react-hook-form.
+                        setValue(
+                          signatureFieldName,
+                          value as PathValue<T, Path<T>>,
+                          {
+                            shouldValidate: true,
+                            shouldDirty: true,
+                          }
+                        );
                       }}
                     />
                   </FormControl>
                   <FormMessage>
-                    {errors?.[field.name]?.message as string}
+                    {errors?.[signatureFieldName]?.message as string}
                   </FormMessage>
                 </FormItem>
               )}

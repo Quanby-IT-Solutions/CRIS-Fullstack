@@ -324,8 +324,7 @@ export async function submitDeathCertificateForm(
           },
         });
 
-        // Revalidate the path for updated content.
-        revalidatePath('/death-certificates');
+        revalidatePath('/civil-registry');
 
         return {
           success: true,
