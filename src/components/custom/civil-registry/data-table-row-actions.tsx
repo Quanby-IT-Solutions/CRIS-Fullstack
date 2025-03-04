@@ -37,6 +37,7 @@ import {
 import { Icons } from '@/components/ui/icons';
 import { mapToDeathCertificateValues } from '@/lib/utils/map-to-death-certificate-values';
 import { mapToMarriageCertificateValues } from '@/lib/utils/map-to-marriage-certificate';
+import { useMemo } from 'react';
 import DeathCertificateForm from '../forms/certificates/death-certificate-form';
 import MarriageCertificateForm from '../forms/certificates/marriage-certificate-form';
 import { EditCivilRegistryFormDialog } from './components/edit-civil-registry-form-dialog';
@@ -297,21 +298,20 @@ export function DataTableRowActions({
       {/* Dialogs */}
       {canEdit && (
         <>
-          {form.formType === FormType.DEATH &&
-            (() => {
-              const deathFormValues = mapToDeathCertificateValues(form);
-              return (
-                <DeathCertificateForm
-                  open={editDialogOpen}
-                  onOpenChange={(open) => {
-                    setEditDialogOpen(open);
-                    // Optionally, add refresh logic when dialog closes.
-                  }}
-                  onCancel={handleCancel}
-                  defaultValues={deathFormValues}
-                />
-              );
-            })()}
+          {form.formType === FormType.DEATH && (
+            <DeathCertificateForm
+              open={editDialogOpen}
+              onOpenChange={(open) => {
+                setEditDialogOpen(open);
+                // Optionally, add refresh logic when dialog closes.
+              }}
+              onCancel={handleCancel}
+              defaultValues={useMemo(
+                () => mapToDeathCertificateValues(form),
+                [form]
+              )}
+            />
+          )}
 
           {form.formType === FormType.MARRIAGE &&
             (() => {
