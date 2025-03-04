@@ -46,9 +46,13 @@ export default function MarriageCertificateForm({
   onCancel,
   defaultValues,
 }: MarriageCertificateFormProps) {
+  // Add console logs to check what's being passed
+
+  
+
   const { formMethods, onSubmit, handleError } = useMarriageCertificateForm({
     onOpenChange,
-    defaultValues,
+    defaultValues: defaultValues || {},
   });
 
   return (

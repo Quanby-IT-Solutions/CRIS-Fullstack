@@ -33,284 +33,353 @@ const preparePrismaData = (data: any) => {
 const emptyDefaults: MarriageCertificateFormValues = {
     // Registry Information
     registryNumber: '',
-    province: 'Metro Manila', // Updated
-    cityMunicipality: 'Quezon City', // Updated
-
+    province: '',
+    cityMunicipality: '',
+  
     // Husband Information
     husbandName: {
-        first: 'Juan',
-        middle: 'Dela',
-        last: 'Cruz'
+      first: '',
+      middle: '',
+      last: '',
     },
-    husbandAge: 30,
-    husbandBirth: new Date('1990-01-01'),
+    husbandAge: 0,
+    husbandBirth: undefined, // or new Date() if you want an empty date
     husbandPlaceOfBirth: {
-        houseNo: '123',
-        street: 'Main Street',
-        barangay: '', // Updated
-        cityMunicipality: '', // Updated
-        province: '', // Updated
-        country: 'Philippines'
+      houseNo: '',
+      street: '',
+      barangay: '',
+      cityMunicipality: '',
+      province: '',
+      country: '',
     },
-    husbandSex: 'Male',
-    husbandCitizenship: 'Filipino',
-    husbandResidence: 'Quezon City',
-    husbandReligion: 'Roman Catholic',
-    husbandCivilStatus: 'Single',
+    husbandSex: '' as 'Male' | 'Female', // Cast to satisfy TypeScript
+    husbandCitizenship: '',
+    husbandResidence: '',
+    husbandReligion: '',
+    husbandCivilStatus: '' as 'Single' | 'Widowed' | 'Divorced', // Cast to satisfy TypeScript
     husbandConsentPerson: {
-        name: {
-            first: 'Pedro',
-            middle: 'Dela',
-            last: 'Cruz'
-        },
-        relationship: 'Father',
-        residence: {
-            houseNo: '123',
-            street: 'Main Street',
-            barangay: 'Capri', // Updated
-            cityMunicipality: 'Quezon City', // Updated
-            province: 'Metro Manila', // Updated
-            country: 'Philippines'
-        }
+      name: {
+        first: '',
+        middle: '',
+        last: '',
+      },
+      relationship: '',
+      residence: {
+        houseNo: '',
+        street: '',
+        barangay: '',
+        cityMunicipality: '',
+        province: '',
+        country: '',
+      },
     },
     husbandParents: {
-        fatherName: {
-            first: 'Pedro',
-            middle: 'Dela',
-            last: 'Cruz'
-        },
-        fatherCitizenship: 'Filipino',
-        motherName: {
-            first: 'Maria',
-            middle: 'Dela',
-            last: 'Cruz'
-        },
-        motherCitizenship: 'Filipino'
+      fatherName: {
+        first: '',
+        middle: '',
+        last: '',
+      },
+      fatherCitizenship: '',
+      motherName: {
+        first: '',
+        middle: '',
+        last: '',
+      },
+      motherCitizenship: '',
     },
-
+  
     // Wife Information
     wifeName: {
-        first: 'Maria',
-        middle: 'Dela',
-        last: 'Cruz'
+      first: '',
+      middle: '',
+      last: '',
     },
-    wifeAge: 28,
-    wifeBirth: new Date('1992-02-02'),
+    wifeAge: 0,
+    wifeBirth: undefined, // or new Date() if you want an empty date
     wifePlaceOfBirth: {
-        houseNo: '456',
-        street: 'Second Street',
-        barangay: 'Capri', // Updated
-        cityMunicipality: 'Quezon City', // Updated
-        province: 'Metro Manila', // Updated
-        country: 'Philippines'
+      houseNo: '',
+      street: '',
+      barangay: '',
+      cityMunicipality: '',
+      province: '',
+      country: '',
     },
-    wifeSex: 'Female',
-    wifeCitizenship: 'Filipino',
-    wifeResidence: 'Quezon City',
-    wifeReligion: 'Roman Catholic',
-    wifeCivilStatus: 'Single',
+    wifeSex: '' as 'Female', // Cast to satisfy TypeScript
+    wifeCitizenship: '',
+    wifeResidence: '',
+    wifeReligion: '',
+    wifeCivilStatus: '' as 'Single' | 'Widowed' | 'Divorced', // Cast to satisfy TypeScript
     wifeConsentPerson: {
-        name: {
-            first: 'Juanita',
-            middle: 'Dela',
-            last: 'Cruz'
-        },
-        relationship: 'Mother',
-        residence: {
-            houseNo: '456',
-            street: 'Second Street',
-            barangay: 'Capri', // Updated
-            cityMunicipality: 'Quezon City', // Updated
-            province: 'Metro Manila', // Updated
-            country: 'Philippines'
-        }
+      name: {
+        first: '',
+        middle: '',
+        last: '',
+      },
+      relationship: '',
+      residence: {
+        houseNo: '',
+        street: '',
+        barangay: '',
+        cityMunicipality: '',
+        province: '',
+        country: '',
+      },
     },
     wifeParents: {
-        fatherName: {
-            first: 'Jose',
-            middle: 'Dela',
-            last: 'Cruz'
-        },
-        fatherCitizenship: 'Filipino',
-        motherName: {
-            first: 'Ana',
-            middle: 'Dela',
-            last: 'Cruz'
-        },
-        motherCitizenship: 'Filipino'
+      fatherName: {
+        first: '',
+        middle: '',
+        last: '',
+      },
+      fatherCitizenship: '',
+      motherName: {
+        first: '',
+        middle: '',
+        last: '',
+      },
+      motherCitizenship: '',
     },
-
+  
     // Marriage Details
     placeOfMarriage: {
-        houseNo: '789',
-        street: 'Third Street',
-        barangay: 'Capri', // Updated
-        cityMunicipality: 'Quezon City', // Updated
-        province: 'Metro Manila', // Updated
-        country: 'Philippines'
+      houseNo: '',
+      street: '',
+      barangay: '',
+      cityMunicipality: '',
+      province: '',
+      country: '',
     },
-    dateOfMarriage: new Date('2023-10-10'),
-    timeOfMarriage: new Date('2023-10-10T14:30:00'),
-
+    dateOfMarriage: undefined, // or new Date() if you want an empty date
+    timeOfMarriage: undefined, // or new Date() if you want an empty date
+  
     // Witnesses
-    husbandWitnesses: [
-        {
-            name: 'John Doe',
-            signature: 'John_Doe_Signature'
-        },
-        {
-            name: 'Jane Doe',
-            signature: 'Jane_Doe_Signature'
-        }
-    ],
-    wifeWitnesses: [
-        {
-            name: 'Alice Smith',
-            signature: 'Alice_Smith_Signature'
-        },
-        {
-            name: 'Bob Johnson',
-            signature: 'Bob_Johnson_Signature'
-        }
-    ],
-
+    husbandWitnesses: [],
+    wifeWitnesses: [],
+  
     // Contract Details
-    contractDay: new Date('2023-10-10'),
-
+    contractDay: undefined, // or new Date() if you want an empty date
+  
     // Contracting Parties
     husbandContractParty: {
-        signature: 'Juan_Cruz_Signature',
-        agreement: true
+      signature: '',
+      agreement: false,
     },
     wifeContractParty: {
-        signature: 'Maria_Cruz_Signature',
-        agreement: true
+      signature: '',
+      agreement: false,
     },
-
+  
     // Marriage License Details
     marriageLicenseDetails: {
-        dateIssued: new Date('2023-09-01'),
-        placeIssued: 'Manila City Hall',
-        licenseNumber: 'LIC123456',
-        marriageAgreement: true
+      dateIssued: undefined, // or new Date() if you want an empty date
+      placeIssued: '',
+      licenseNumber: '',
+      marriageAgreement: false,
     },
-
+  
     // Marriage Article
     marriageArticle: {
-        article: 'Article 1',
-        marriageArticle: true
+      article: '',
+      marriageArticle: false,
     },
-
+  
     // Marriage Settlement
-    marriageSettlement: true,
-
+    marriageSettlement: false,
+  
     // Solemnizing Officer
     solemnizingOfficer: {
-        name: 'Rev. Father Santos',
-        position: 'Priest',
-        signature: 'Rev_Father_Santos_Signature',
-        registryNoExpiryDate: '2025-12-31'
+      name: '',
+      position: '',
+      signature: '',
+      registryNoExpiryDate: '',
     },
-
+  
     // Registered at Civil Registrar
     preparedBy: {
-        date: new Date('2023-10-11'),
-        nameInPrint: 'Clerk Juan',
-        signature: 'Clerk_Juan_Signature',
-        titleOrPosition: 'Clerk'
+      date: undefined, // or new Date() if you want an empty date
+      nameInPrint: '',
+      signature: '',
+      titleOrPosition: '',
     },
     receivedBy: {
-        date: new Date('2023-10-11'),
-        nameInPrint: 'Registrar Maria',
-        signature: 'Registrar_Maria_Signature',
-        titleOrPosition: 'Registrar'
+      date: undefined, // or new Date() if you want an empty date
+      nameInPrint: '',
+      signature: '',
+      titleOrPosition: '',
     },
     registeredByOffice: {
-        date: new Date('2023-10-11'),
-        nameInPrint: 'Office Clerk',
-        signature: 'Office_Clerk_Signature',
-        titleOrPosition: 'Office Clerk'
+      date: undefined, // or new Date() if you want an empty date
+      nameInPrint: '',
+      signature: '',
+      titleOrPosition: '',
     },
-
+  
     // Optional Sections
-    remarks: 'No remarks',
-
+    remarks: '',
+  
     // Back page data - Affidavit of Solemnizing Officer
     affidavitOfSolemnizingOfficer: {
-        solemnizingOfficerInformation: {
-            officerName: {
-                first: 'Rev. Father',
-                middle: 'Dela',
-                last: 'Santos'
-            },
-            officeName: 'Manila Parish',
-            signature: 'Rev_Father_Santos_Signature',
-            address: 'Manila, Philippines'
+      solemnizingOfficerInformation: {
+        officerName: {
+          first: '',
+          middle: '',
+          last: '',
         },
-        administeringOfficerInformation: {
-            adminName: {
-                first: 'Clerk',
-                middle: 'Dela',
-                last: 'Juan'
-            },
-            position: 'Clerk',
-            address: 'Manila, Philippines',
-            signature: 'Clerk_Juan_Signature'
+        officeName: '',
+        signature: '',
+        address: '',
+      },
+      administeringOfficerInformation: {
+        adminName: {
+          first: '',
+          middle: '',
+          last: '',
         },
-
-        a: {
-            nameOfHusband: {
-                first: 'Juan',
-                middle: 'Dela',
-                last: 'Cruz'
-            },
-            nameOfWife: {
-                first: 'Maria',
-                middle: 'Dela',
-                last: 'Cruz'
-            },
+        position: '',
+        address: '',
+        signature: '',
+      },
+      a: {
+        nameOfHusband: {
+          first: '',
+          middle: '',
+          last: '',
         },
-        b: {
-            a: true,
-            b: false,
-            c: false,
-            d: false,
-            e: false,
+        nameOfWife: {
+          first: '',
+          middle: '',
+          last: '',
         },
-        c: '', //wala man to
-        d: {
-            dayOf: new Date('2023-10-10'),
-            atPlaceExecute: {
-                st: 'Third Street',
-                barangay: 'Capri', // Updated
-                cityMunicipality: 'Quezon City', // Updated
-                province: 'Metro Manila', // Updated
-                country: 'Philippines'
-            },
+      },
+      b: {
+        a: false,
+        b: false,
+        c: false,
+        d: false,
+        e: false,
+      },
+      c: '',
+      d: {
+        dayOf: undefined, // or new Date() if you want an empty date
+        atPlaceExecute: {
+          st: '',
+          barangay: '',
+          cityMunicipality: '',
+          province: '',
+          country: '',
         },
-        dateSworn: {
-            dayOf: new Date('2023-10-11'),
-            atPlaceOfSworn: {
-                st: 'Third Street',
-                barangay: 'Capri', // Updated
-                cityMunicipality: 'Quezon City', // Updated
-                province: 'Metro Manila', // Updated 
-                country: 'Philippines'
-            },
-            ctcInfo: {
-                number: 'CTC123456',
-                dateIssued: new Date('2023-10-11'),
-                placeIssued: 'Manila City Hall'
-            },
+      },
+      dateSworn: {
+        dayOf: undefined, // or new Date() if you want an empty date
+        atPlaceOfSworn: {
+          st: '',
+          barangay: '',
+          cityMunicipality: '',
+          province: '',
+          country: '',
         },
-
+        ctcInfo: {
+          number: '',
+          dateIssued: undefined, // or new Date() if you want an empty date
+          placeIssued: '',
+        },
+      },
     },
-
+  
     // Affidavit for Delayed Registration
     affidavitForDelayed: {
-        delayedRegistration: 'No',
-    }
-};
+      delayedRegistration: 'No',
+      administeringInformation: {
+        adminSignature: '',
+        adminName: '',
+        position: '',
+        adminAddress: '',
+      },
+      applicantInformation: {
+        signatureOfApplicant: '',
+        nameOfApplicant: '',
+        postalCode: '',
+        applicantAddress: {
+          st: '',
+          barangay: '',
+          cityMunicipality: '',
+          province: '',
+          country: '',
+        },
+      },
+      a: {
+        a: {
+          agreement: false,
+          nameOfPartner: {
+            first: '',
+            middle: '',
+            last: '',
+          },
+          placeOfMarriage: '',
+          dateOfMarriage: undefined, // or new Date() if you want an empty date
+        },
+        b: {
+          agreement: false,
+          nameOfHusband: {
+            first: '',
+            middle: '',
+            last: '',
+          },
+          nameOfWife: {
+            first: '',
+            middle: '',
+            last: '',
+          },
+          placeOfMarriage: '',
+          dateOfMarriage: undefined, // or new Date() if you want an empty date
+        },
+      },
+      b: {
+        solemnizedBy: '',
+        sector: '' as 'religious-ceremony' | 'civil-ceremony' | 'Muslim-rites' | 'tribal-rites', // Cast to satisfy TypeScript
+      },
+      c: {
+        a: {
+          licenseNo: '',
+          dateIssued: undefined, // or new Date() if you want an empty date
+          placeOfSolemnizedMarriage: '',
+        },
+        b: {
+          underArticle: '',
+        },
+      },
+      d: {
+        husbandCitizenship: '',
+        wifeCitizenship: '',
+      },
+      e: '',
+      f: {
+        date: undefined, // or new Date() if you want an empty date
+        place: {
+          st: '',
+          barangay: '',
+          cityMunicipality: '',
+          province: '',
+          country: '',
+        },
+      },
+      dateSworn: {
+        dayOf: undefined, // or new Date() if you want an empty date
+        atPlaceOfSworn: {
+          st: '',
+          barangay: '',
+          cityMunicipality: '',
+          province: '',
+          country: '',
+        },
+        ctcInfo: {
+          number: '',
+          dateIssued: undefined, // or new Date() if you want an empty date
+          placeIssued: '',
+        },
+      },
+    },
+  };
 
 export function useMarriageCertificateForm({
     onOpenChange,
@@ -471,10 +540,9 @@ export function useMarriageCertificateForm({
 
             // Then in your onSubmit function
             if (isEditMode) {
-                console.log('Edit mode - updating existing record');
+                console.log('Edit mode - updating existing record with ID:', defaultValues?.id);
                 result = await updateMarriageCertificateForm(
-                    defaultValues?.id as string,
-                    // baseFormId as string, // Use the stored baseFormId
+                    defaultValues?.id as string, // Only pass the ID
                     processedData
                 );
 
