@@ -177,11 +177,11 @@ const emptyDefaults: MarriageCertificateFormValues = {
 
     // Contracting Parties
     husbandContractParty: {
-        signature: 'Alro',
+        signature: 'Juan_Cruz_Signature',
         agreement: true
     },
     wifeContractParty: {
-        signature: 'Alro',
+        signature: 'Maria_Cruz_Signature',
         agreement: true
     },
 
@@ -219,6 +219,12 @@ const emptyDefaults: MarriageCertificateFormValues = {
     },
     preparedBy: {
         date: new Date('2023-10-11'),
+        nameInPrint: 'Clerk Juan',
+        signature: 'Clerk_Juan_Signature',
+        titleOrPosition: 'Clerk'
+    },
+    receivedBy: {
+        date: new Date('2023-10-11'),
         nameInPrint: 'Registrar Maria',
         signature: 'Registrar_Maria_Signature',
         titleOrPosition: 'Registrar'
@@ -242,7 +248,7 @@ const emptyDefaults: MarriageCertificateFormValues = {
                 last: 'Santos'
             },
             officeName: 'Manila Parish',
-            signature: 'dasdas',
+            signature: 'Rev_Father_Santos_Signature',
             address: 'Manila, Philippines'
         },
         administeringOfficerInformation: {
@@ -253,7 +259,7 @@ const emptyDefaults: MarriageCertificateFormValues = {
             },
             position: 'Clerk',
             address: 'Manila, Philippines',
-            signature: 'asd'
+            signature: 'Clerk_Juan_Signature'
         },
 
         a: {
@@ -445,17 +451,39 @@ export function useMarriageCertificateForm({
             const preparedData = preparePrismaData(data);
             const processedData = await handleFileUploads(preparedData);
 
-            console.log('Processed data before submission:', processedData);
+            // Check if we're in edit mode
+            const isEditMode = Boolean(defaultValues && defaultValues.id);
 
-            // For update mode, just show the toast and log without actual submission
-            if (isUpdateMode) {
-                console.log('Update data is correct and ready to be saved to the database:', processedData);
-                toast.success('Marriage certificate data prepared successfully for update');
-                return; // Stop here for update mode
-            }
+            let result;
 
-            // Continue with regular submission for new records
-            const result = await submitMarriageCertificateForm(processedData);
+            // Then in your onSubmit function
+            if (isEditMode) {
+                console.log('Edit mode - updating existing record');
+                result = await updateMarriageCertificateForm(
+                    defaultValues?.id as string,
+                    // baseFormId as string, // Use the stored baseFormId
+                    processedData
+                );
+
+                // Update operation has success and message/error properties
+                if (result.success) {
+                    toast.success('Marriage certificate updated successfully');
+                    onOpenChange?.(false);
+                    formMethods.reset();
+                } else {
+                    if ('error' in result) {
+                        console.log('Update error:', result.error);
+                        toast.error(result.error.includes('No user found with name')
+                            ? 'Invalid prepared by user. Please check the name.'
+                            : result.error);
+                    } else {
+                        console.log('Update message:', result.message);
+                        toast.error(result.message);
+                    }
+                }
+            } else {
+                console.log('Create mode - creating new record');
+                result = await submitMarriageCertificateForm(processedData);
 
             if ('data' in result) {
                 toast.success(`Marriage certificate submitted successfully (Book ${result.data.bookNumber}, Page ${result.data.pageNumber})`);

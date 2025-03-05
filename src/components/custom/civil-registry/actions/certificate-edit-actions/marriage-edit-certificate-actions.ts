@@ -7,25 +7,26 @@ import { revalidatePath } from 'next/cache';
 import { z } from "zod";
 
 export async function updateMarriageCertificateForm(
-    id: string, // Only need the ID
+    id: string,
+    // baseFormId: string,
     formData: MarriageCertificateFormValues
-  ) {
+) {
     try {
-      if (!id) {
-        throw new Error('No ID provided for update');
-      }
-  
-      // Find the existing record to get the baseFormId
-      const existingRecord = await prisma.marriageCertificateForm.findUnique({
-        where: { id },
-        select: { baseFormId: true }
-      });
-  
-      if (!existingRecord || !existingRecord.baseFormId) {
-        throw new Error('Marriage certificate not found or missing baseFormId');
-      }
-  
-      const baseFormId = existingRecord.baseFormId;
+        // Find the existing record including the baseFormId
+        const existingRecord = await prisma.marriageCertificateForm.findUnique({
+            where: { id },
+            select: { baseFormId: true }
+        });
+
+        if (!existingRecord || !existingRecord.baseFormId) {
+            throw new Error('Marriage certificate not found or missing baseFormId');
+        }
+
+        const baseFormId = existingRecord.baseFormId;
+
+        if (!id || !baseFormId) {
+            throw new Error('No ID provided for update');
+        }
 
         if (!formData) {
             throw new Error('No form data provided');
