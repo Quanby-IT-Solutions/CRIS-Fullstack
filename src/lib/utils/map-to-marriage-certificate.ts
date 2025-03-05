@@ -177,29 +177,34 @@ export const mapToMarriageCertificateValues = (
         };
 
         return {
-            houseNo: typeof addressObj.houseNo === 'object' && addressObj.houseNo
-                ? ensureString(addressObj.houseNo.value || addressObj.houseNo)
-                : ensureString(addressObj.houseNo),
-            street: typeof addressObj.street === 'object' && addressObj.street
-                ? ensureString(addressObj.street.value || addressObj.street)
-                : ensureString(addressObj.street),
-            st: typeof addressObj.st === 'object' && addressObj.st
-                ? ensureString(addressObj.st.value || addressObj.st)
-                : ensureString(addressObj.st),
-            barangay: typeof addressObj.barangay === 'object' && addressObj.barangay
-                ? ensureString(addressObj.barangay.value || addressObj.barangay)
-                : ensureString(addressObj.barangay),
-            cityMunicipality: typeof addressObj.cityMunicipality === 'object' && addressObj.cityMunicipality
-                ? ensureString(addressObj.cityMunicipality.value || addressObj.cityMunicipality)
-                : ensureString(addressObj.cityMunicipality),
-            province: typeof addressObj.province === 'object' && addressObj.province
-                ? ensureString(addressObj.province.value || addressObj.province)
-                : ensureString(addressObj.province),
-            country: typeof addressObj.country === 'object' && addressObj.country
-                ? ensureString(addressObj.country.value || addressObj.country)
-                : ensureString(addressObj.country)
+            province: addressObj.province
+                ? ensureString(addressObj.province?.value ?? addressObj.province)
+                : '', // Always a string
+            barangay: addressObj.barangay
+                ? ensureString(addressObj.barangay?.value ?? addressObj.barangay)
+                : undefined,
+            cityMunicipality: addressObj.cityMunicipality
+                ? ensureString(addressObj.cityMunicipality?.value ?? addressObj.cityMunicipality)
+                : '', // Always a string
+            houseNo: addressObj.houseNo
+                ? ensureString(addressObj.houseNo?.value ?? addressObj.houseNo)
+                : undefined,
+            street: addressObj.street
+                ? ensureString(addressObj.street?.value ?? addressObj.street)
+                : undefined,
+            st: addressObj.st
+                ? ensureString(addressObj.st?.value ?? addressObj.st)
+                : undefined,
+
+
+            country: addressObj.country
+                ? ensureString(addressObj.country?.value ?? addressObj.country)
+                : undefined,
         };
     };
+
+
+
 
     // Initialize the return object with the structure from MarriageCertificateFormValues
     const result: Partial<MarriageCertificateFormValues> = {};
@@ -400,6 +405,12 @@ export const mapToMarriageCertificateValues = (
             signature: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.signature),
             address: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.address),
         },
+        administeringOfficerInformation: {
+            adminName: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.adminName),
+            position: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.position),
+            address: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.address),
+            signature: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.signature?.signature),
+        },
         a: {
             nameOfHusband: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.a?.nameOfHusband),
             nameOfWife: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.a?.nameOfWife)
@@ -425,12 +436,7 @@ export const mapToMarriageCertificateValues = (
                 placeIssued: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.ctcInfo?.placeIssued)
             }
         },
-        administeringOfficerInformation: {
-            adminName: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.adminName),
-            position: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.position),
-            address: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.address),
-            signature: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.signature?.signature),
-        }
+
     };
 
     // Add delayed registration if available - with proper type handling
@@ -450,14 +456,8 @@ export const mapToMarriageCertificateValues = (
                 signatureOfApplicant: ensureString(marriageForm.affidavitOfdelayedRegistration.applicantInformation?.signatureOfApplicant),
                 nameOfApplicant: ensureString(marriageForm.affidavitOfdelayedRegistration.applicantInformation?.nameOfApplicant),
                 postalCode: ensureString(marriageForm.affidavitOfdelayedRegistration.applicantInformation?.postalCode),
-                applicantAddress: {
-                    st: '',
-                    barangay: '',
-                    cityMunicipality: '',
-                    province: '',
-                    country: ''
-                }
-            },
+                applicantAddress: createAddressObject(marriageForm.affidavitOfdelayedRegistration.applicantInformation?.applicantAddress),
+            }, //affiant
             a: {
                 a: {
                     agreement: false,
@@ -529,6 +529,10 @@ export const mapToMarriageCertificateValues = (
                     placeIssued: ''
                 }
             }
+        };
+    } else {
+        result.affidavitForDelayed = {
+            delayedRegistration: 'No'
         };
     }
 

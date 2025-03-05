@@ -8,6 +8,7 @@ import {
   processingDetailsSchema,
   provinceSchema,
   registryNumberSchema,
+  signatureSchema,
 } from './form-certificates-shared-schema'
 
 /**
