@@ -24,7 +24,7 @@ import LocationSelector from '../shared-components/location-selector';
 
 const HusbandInfoCard: React.FC = () => {
   const { control, setValue, getValues } = useFormContext<MarriageCertificateFormValues>();
-  const [husbandNcrMode, setHusbandNcrMode] = useState(false);
+  const [ncrMode, setNcrMode] = useState(false);
 
   // Auto-calculate and set age when birthdate changes
   const birthDate = useWatch({ control, name: 'husbandBirth' });
@@ -38,8 +38,8 @@ const HusbandInfoCard: React.FC = () => {
   useEffect(() => {
     // Detect NCR mode from fetched data on component mount
     const province = getValues('husbandPlaceOfBirth.province');
-    if (province === '' || province === 'Metro Manila' || province === 'NCR') {
-      setHusbandNcrMode(true);
+    if (province === 'Metro Manila' || province === 'NCR') {
+      setNcrMode(true);
     }
   }, [getValues]);
 
@@ -265,7 +265,7 @@ const HusbandInfoCard: React.FC = () => {
           <CardTitle >Place Of Birth</CardTitle>
         </div>
         <div className='col-span-1 md:col-span-3'>
-          <NCRModeSwitch isNCRMode={husbandNcrMode} setIsNCRMode={setHusbandNcrMode} />
+          <NCRModeSwitch isNCRMode={ncrMode} setIsNCRMode={setNcrMode} />
         </div>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4'>
           {/* Place of Birth */}
@@ -276,7 +276,7 @@ const HusbandInfoCard: React.FC = () => {
             provinceLabel='Province'
             municipalityLabel='City/Municipality'
             barangayLabel='Barangay'
-            isNCRMode={husbandNcrMode}
+            isNCRMode={ncrMode}
             showBarangay={true}
             provincePlaceholder='Select province'
             municipalityPlaceholder='Select city/municipality'

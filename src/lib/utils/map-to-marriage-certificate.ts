@@ -165,52 +165,54 @@ export const mapToMarriageCertificateValues = (
         };
     };
 
-    const createAddressObject = (addressObj?: any) => {
-        if (!addressObj || typeof addressObj !== 'object') {
-            return { cityMunicipality: '', province: '', barangay: '', houseNo: '', street: '', st: '', country: '' };
-        }
-
-        const ensureString = (value: any) => (typeof value === 'string' ? value : value?.toString() ?? '');
+    const createAddressObject = (addressObj: any) => {
+        if (!addressObj) return {
+            houseNo: '',
+            street: '',
+            st: '',
+            barangay: '',
+            cityMunicipality: '',
+            province: '',
+            country: ''
+        };
 
         return {
-            province: addressObj.province
-                ? ensureString(addressObj.province?.value ?? addressObj.province)
-                : '', // Always a string
-            barangay: addressObj.barangay
-                ? ensureString(addressObj.barangay?.value ?? addressObj.barangay)
-                : undefined,
-            cityMunicipality: addressObj.cityMunicipality
-                ? ensureString(addressObj.cityMunicipality?.value ?? addressObj.cityMunicipality)
-                : '', // Always a string
-            houseNo: addressObj.houseNo
-                ? ensureString(addressObj.houseNo?.value ?? addressObj.houseNo)
-                : undefined,
-            street: addressObj.street
-                ? ensureString(addressObj.street?.value ?? addressObj.street)
-                : undefined,
-            st: addressObj.st
-                ? ensureString(addressObj.st?.value ?? addressObj.st)
-                : undefined,
-            country: addressObj.country
-                ? ensureString(addressObj.country?.value ?? addressObj.country)
-                : undefined,
+            houseNo: typeof addressObj.houseNo === 'object' && addressObj.houseNo
+                ? ensureString(addressObj.houseNo.value || addressObj.houseNo)
+                : ensureString(addressObj.houseNo),
+            street: typeof addressObj.street === 'object' && addressObj.street
+                ? ensureString(addressObj.street.value || addressObj.street)
+                : ensureString(addressObj.street),
+            st: typeof addressObj.st === 'object' && addressObj.st
+                ? ensureString(addressObj.st.value || addressObj.st)
+                : ensureString(addressObj.st),
+            barangay: typeof addressObj.barangay === 'object' && addressObj.barangay
+                ? ensureString(addressObj.barangay.value || addressObj.barangay)
+                : ensureString(addressObj.barangay),
+            cityMunicipality: typeof addressObj.cityMunicipality === 'object' && addressObj.cityMunicipality
+                ? ensureString(addressObj.cityMunicipality.value || addressObj.cityMunicipality)
+                : ensureString(addressObj.cityMunicipality),
+            province: typeof addressObj.province === 'object' && addressObj.province
+                ? ensureString(addressObj.province.value || addressObj.province)
+                : ensureString(addressObj.province),
+            country: typeof addressObj.country === 'object' && addressObj.country
+                ? ensureString(addressObj.country.value || addressObj.country)
+                : ensureString(addressObj.country)
         };
     };
 
-    // Create a properly structured result object that matches the expected schema
-    const result: Partial<MarriageCertificateFormValues> = {
-        // ID information
+    // Initialize the return object with the structure from MarriageCertificateFormValues
+    const result: Partial<MarriageCertificateFormValues> = {};
 
-
-        // Registry information
-        registryNumber: ensureString(form.registryNumber),
-        province: ensureString(form.province),
-        cityMunicipality: ensureString(form.cityMunicipality),
-        pagination: {
-            pageNumber: ensureString(form.pageNumber),
-            bookNumber: ensureString(form.bookNumber),
-        },
-        remarks: ensureString(marriageForm.remarks || form.remarks),
+    // Map basic registry information
+    result.registryNumber = ensureString(form.registryNumber);
+    result.province = ensureString(form.province);
+    result.cityMunicipality = ensureString(form.cityMunicipality);
+    result.pagination = {
+        pageNumber: ensureString(form.pageNumber),
+        bookNumber: ensureString(form.bookNumber),
+    };
+    result.remarks = ensureString(marriageForm.remarks || form.remarks);
 
         // Husband information
         husbandName: {
@@ -303,88 +305,131 @@ export const mapToMarriageCertificateValues = (
             marriageArticle: marriageForm.marriageArticle?.marriageArticle || false
         },
 
-        // Solemnizing officer
-        solemnizingOfficer: {
-            name: ensureString(marriageForm.solemnizingOfficer?.name),
-            position: ensureString(marriageForm.solemnizingOfficer?.position),
-            signature: ensureString(marriageForm.solemnizingOfficer?.signature),
-            registryNoExpiryDate: ensureString(marriageForm.solemnizingOfficer?.registryNoExpiryDate)
-        },
+    // Map marriage settlement
+    result.marriageSettlement = marriageForm.marriageSettlement || false;
 
-        // Witness information
-        husbandWitnesses: Array.isArray(marriageForm.witnesses) && marriageForm.witnesses.length > 0
-            ? marriageForm.witnesses.slice(0, 2).map(w => ({
-                name: ensureString(w.name),
-                signature: ensureString(w.signature)
-            }))
-            : [{ name: '', signature: '' }, { name: '', signature: '' }],
-        wifeWitnesses: Array.isArray(marriageForm.witnesses) && marriageForm.witnesses.length > 2
-            ? marriageForm.witnesses.slice(2, 4).map(w => ({
-                name: ensureString(w.name),
-                signature: ensureString(w.signature)
-            }))
-            : [{ name: '', signature: '' }, { name: '', signature: '' }],
+    // Map solemnizing officer information
+    result.solemnizingOfficer = {
+        name: ensureString(marriageForm.solemnizingOfficer?.name),
+        position: ensureString(marriageForm.solemnizingOfficer?.position),
+        signature: ensureString(marriageForm.solemnizingOfficer?.signature),
+        registryNoExpiryDate: ensureString(marriageForm.solemnizingOfficer?.registryNoExpiryDate)
+    };
 
-        preparedBy: {
-            signature: ensureString(marriageForm.preparedByOffice?.signature),
-            nameInPrint: ensureString(marriageForm.preparedByOffice?.nameInPrint),
-            titleOrPosition: ensureString(marriageForm.preparedByOffice?.titleOrPosition),
-            date: parseDateSafely(marriageForm.preparedByOffice?.date),
-        },
+    // Map witnesses - split into husband and wife witnesses based on the schema
+    if (Array.isArray(marriageForm.witnesses) && marriageForm.witnesses.length > 0) {
+        // If there are at least two witnesses, assign the first to husband, second to wife
+        const husbandWitnesses = [];
+        const wifeWitnesses = [];
 
-        receivedBy: {
-            signature: ensureString(marriageForm.receivedByOffice?.signature),
-            nameInPrint: ensureString(marriageForm.receivedByOffice?.nameInPrint),
-            titleOrPosition: ensureString(marriageForm.receivedByOffice?.titleOrPosition),
-            date: parseDateSafely(marriageForm.receivedByOffice?.date),
-        },
+        for (let i = 0; i < marriageForm.witnesses.length; i++) {
+            const witness = {
+                name: ensureString(marriageForm.witnesses[i].name),
+                signature: ensureString(marriageForm.witnesses[i].signature)
+            };
 
-        registeredByOffice: {
-            signature: ensureString(marriageForm.registeredByOffice?.signature),
-            nameInPrint: ensureString(marriageForm.registeredByOffice?.nameInPrint),
-            titleOrPosition: ensureString(marriageForm.registeredByOffice?.title),
-            date: parseDateSafely(marriageForm.registeredByOffice?.date),
-        },
-
-        // Affidavit information
-        affidavitOfSolemnizingOfficer: {
-            solemnizingOfficerInformation: {
-                officeName: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.officeName),
-                officerName: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.officerName),
-                signature: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.signature),
-                address: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.address),
-            },
-            administeringOfficerInformation: {
-                adminName: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.administeringOfficerInformation?.adminName),
-                position: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringOfficerInformation?.position),
-                address: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringOfficerInformation?.address),
-                signature: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringOfficerInformation?.signature?.signature),
-            },
-            a: {
-                nameOfHusband: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.a?.nameOfHusband),
-                nameOfWife: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.a?.nameOfWife)
-            },
-            b: {
-                a: marriageForm.affidavitOfSolemnizingOfficer?.b?.a || false,
-                b: marriageForm.affidavitOfSolemnizingOfficer?.b?.b || false,
-                c: marriageForm.affidavitOfSolemnizingOfficer?.b?.c || false,
-                d: marriageForm.affidavitOfSolemnizingOfficer?.b?.d || false,
-                e: marriageForm.affidavitOfSolemnizingOfficer?.b?.e || false
-            },
-            c: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.c),
-            d: {
-                dayOf: parseDateSafely(marriageForm.affidavitOfSolemnizingOfficer?.d?.dayOf),
-                atPlaceExecute: createAddressObject(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceExecute)
-            },
-            dateSworn: {
-                dayOf: parseDateSafely(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.dayOf),
-                atPlaceOfSworn: createAddressObject(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.atPlaceOfSworn),
-                ctcInfo: {
-                    number: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.ctcInfo?.number),
-                    dateIssued: parseDateSafely(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.ctcInfo?.dateIssued),
-                    placeIssued: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.ctcInfo?.placeIssued)
-                }
+            if (i < 2) {
+                husbandWitnesses.push(witness);
+            } else {
+                wifeWitnesses.push(witness);
             }
+        }
+
+        // Ensure at least 2 witnesses in each array
+        while (husbandWitnesses.length < 2) {
+            husbandWitnesses.push({ name: '', signature: '' });
+        }
+
+        while (wifeWitnesses.length < 2) {
+            wifeWitnesses.push({ name: '', signature: '' });
+        }
+
+        result.husbandWitnesses = husbandWitnesses;
+        result.wifeWitnesses = wifeWitnesses;
+    } else {
+        // Default empty witnesses
+        result.husbandWitnesses = [
+            { name: '', signature: '' },
+            { name: '', signature: '' }
+        ];
+        result.wifeWitnesses = [
+            { name: '', signature: '' },
+            { name: '', signature: '' }
+        ];
+    }
+
+    // Map registered by office information
+    result.registeredByOffice = {
+        date: parseDateSafely(marriageForm.registeredByOffice?.date),
+        nameInPrint: ensureString(marriageForm.registeredByOffice?.nameInPrint),
+        signature: ensureString(marriageForm.registeredByOffice?.signature),
+        titleOrPosition: ensureString(marriageForm.registeredByOffice?.titleOrPosition)
+    };
+
+    // Initialize empty receivedBy and preparedBy fields (as they're required in the schema)
+    result.receivedBy = {
+        nameInPrint: '',
+        titleOrPosition: '',
+        date: undefined,
+        signature: ''
+    };
+
+    result.preparedBy = {
+        nameInPrint: '',
+        titleOrPosition: '',
+        date: undefined,
+        signature: ''
+    };
+
+    // Map contract parties
+    result.husbandContractParty = {
+        signature: '',
+        agreement: false
+    };
+
+    result.wifeContractParty = {
+        signature: '',
+        agreement: false
+    };
+
+    // Map affidavit of solemnizing officer with updated structure
+    result.affidavitOfSolemnizingOfficer = {
+        solemnizingOfficerInformation: {
+            officeName: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.officeName),
+            officerName: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.officerName),
+            signature: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.signature),
+            address: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.solemnizingOfficerInformation?.address),
+        },
+        a: {
+            nameOfHusband: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.a?.nameOfHusband),
+            nameOfWife: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.a?.nameOfWife)
+        },
+        b: {
+            a: marriageForm.affidavitOfSolemnizingOfficer?.b?.a || false,
+            b: marriageForm.affidavitOfSolemnizingOfficer?.b?.b || false,
+            c: marriageForm.affidavitOfSolemnizingOfficer?.b?.c || false,
+            d: marriageForm.affidavitOfSolemnizingOfficer?.b?.d || false,
+            e: marriageForm.affidavitOfSolemnizingOfficer?.b?.e || false
+        },
+        c: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.c),
+        d: {
+            dayOf: parseDateSafely(marriageForm.affidavitOfSolemnizingOfficer?.d?.dayOf),
+            atPlaceExecute: createAddressObject(marriageForm.affidavitOfSolemnizingOfficer?.d?.atPlaceExecute)
+        },
+        dateSworn: {
+            dayOf: parseDateSafely(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.dayOf),
+            atPlaceOfSworn: createAddressObject(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.atPlaceOfSworn),
+            ctcInfo: {
+                number: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.ctcInfo?.number),
+                dateIssued: parseDateSafely(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.ctcInfo?.dateIssued),
+                placeIssued: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.dateSworn?.ctcInfo?.placeIssued)
+            }
+        },
+        administeringOfficerInformation: {
+            adminName: createNameObject(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.adminName),
+            position: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.position),
+            address: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.address),
+            signature: ensureString(marriageForm.affidavitOfSolemnizingOfficer?.administeringInformation?.signature?.signature),
         }
     };
 
@@ -396,80 +441,94 @@ export const mapToMarriageCertificateValues = (
                 marriageForm.affidavitOfdelayedRegistration.delayedRegistration || 'Yes'
             ),
             administeringInformation: {
-                adminSignature: ensureString(marriageForm.affidavitOfdelayedRegistration.administeringInformation?.adminSignature),
-                adminName: ensureString(marriageForm.affidavitOfdelayedRegistration.administeringInformation?.adminName),
-                position: ensureString(marriageForm.affidavitOfdelayedRegistration.administeringInformation?.position),
-                adminAddress: ensureString(marriageForm.affidavitOfdelayedRegistration.administeringInformation?.adminAddress),
+                adminSignature: '',
+                adminName: '',
+                position: '',
+                adminAddress: ''
             },
             applicantInformation: {
                 signatureOfApplicant: ensureString(marriageForm.affidavitOfdelayedRegistration.applicantInformation?.signatureOfApplicant),
                 nameOfApplicant: ensureString(marriageForm.affidavitOfdelayedRegistration.applicantInformation?.nameOfApplicant),
                 postalCode: ensureString(marriageForm.affidavitOfdelayedRegistration.applicantInformation?.postalCode),
-                applicantAddress: createAddressObject(marriageForm.affidavitOfdelayedRegistration.applicantInformation?.applicantAddress),
+                applicantAddress: {
+                    st: '',
+                    barangay: '',
+                    cityMunicipality: '',
+                    province: '',
+                    country: ''
+                }
             },
             a: {
                 a: {
-                    agreement: marriageForm.affidavitOfdelayedRegistration.a?.a?.agreement || false,
+                    agreement: false,
                     nameOfPartner: {
-                        first: ensureString(marriageForm.affidavitOfdelayedRegistration.a?.a?.nameOfPartner?.first),
-                        middle: ensureString(marriageForm.affidavitOfdelayedRegistration.a?.a?.nameOfPartner?.middle),
-                        last: ensureString(marriageForm.affidavitOfdelayedRegistration.a?.a?.nameOfPartner?.last),
+                        first: '',
+                        middle: '',
+                        last: ''
                     },
                     placeOfMarriage: '',
                     dateOfMarriage: undefined
                 },
                 b: {
-                    agreement: marriageForm.affidavitOfdelayedRegistration.a?.b?.agreement || false,
+                    agreement: false,
                     nameOfHusband: {
-                        first: ensureString(marriageForm.affidavitOfdelayedRegistration.a?.b?.nameOfHusband?.first),
-                        middle: ensureString(marriageForm.affidavitOfdelayedRegistration.a?.b?.nameOfHusband?.middle),
-                        last: ensureString(marriageForm.affidavitOfdelayedRegistration.a?.b?.nameOfHusband?.last),
+                        first: '',
+                        middle: '',
+                        last: ''
                     },
                     nameOfWife: {
-                        first: ensureString(marriageForm.affidavitOfdelayedRegistration.a?.b?.nameOfWife?.first),
-                        middle: ensureString(marriageForm.affidavitOfdelayedRegistration.a?.b?.nameOfWife?.middle),
-                        last: ensureString(marriageForm.affidavitOfdelayedRegistration.a?.b?.nameOfWife?.last),
+                        first: '',
+                        middle: '',
+                        last: ''
                     },
-                    placeOfMarriage: ensureString(marriageForm.affidavitOfdelayedRegistration.a?.b?.placeOfMarriage),
-                    dateOfMarriage: parseDateSafely(marriageForm.affidavitOfdelayedRegistration.a?.b?.dateOfMarriage),
+                    placeOfMarriage: '',
+                    dateOfMarriage: undefined
                 }
             },
             b: {
-                solemnizedBy: ensureString(marriageForm.affidavitOfdelayedRegistration.b?.solemnizedBy),
+                solemnizedBy: '',
                 sector: validateSector(marriageForm.affidavitOfdelayedRegistration.b?.sector) || 'religious-ceremony',
             },
             c: {
                 a: {
-                    licenseNo: ensureString(marriageForm.affidavitOfdelayedRegistration.c?.a?.licenseNo),
-                    dateIssued: parseDateSafely(marriageForm.affidavitOfdelayedRegistration.c?.a?.dateIssued),
-                    placeOfSolemnizedMarriage: ensureString(marriageForm.affidavitOfdelayedRegistration.c?.a?.placeOfSolemnizedMarriage),
+                    licenseNo: '',
+                    dateIssued: undefined,
+                    placeOfSolemnizedMarriage: ''
                 },
                 b: {
-                    underArticle: ensureString(marriageForm.affidavitOfdelayedRegistration.c?.b?.underArticle),
+                    underArticle: ''
                 }
             },
             d: {
-                husbandCitizenship: ensureString(marriageForm.affidavitOfdelayedRegistration.d?.husbandCitizenship),
-                wifeCitizenship: ensureString(marriageForm.affidavitOfdelayedRegistration.d?.wifeCitizenship),
+                husbandCitizenship: '',
+                wifeCitizenship: ''
             },
-            e: ensureString(marriageForm.affidavitOfdelayedRegistration.e),
+            e: '',
             f: {
-                date: parseDateSafely(marriageForm.affidavitOfdelayedRegistration.f?.date),
-                place: createAddressObject(marriageForm.affidavitOfdelayedRegistration.f?.place),
+                date: undefined,
+                place: {
+                    st: '',
+                    barangay: '',
+                    cityMunicipality: '',
+                    province: '',
+                    country: ''
+                }
             },
             dateSworn: {
-                dayOf: parseDateSafely(marriageForm.affidavitOfdelayedRegistration.dateSworn?.dayOf),
-                atPlaceOfSworn: createAddressObject(marriageForm.affidavitOfdelayedRegistration.dateSworn?.atPlaceOfSworn),
+                dayOf: undefined,
+                atPlaceOfSworn: {
+                    st: '',
+                    barangay: '',
+                    cityMunicipality: '',
+                    province: '',
+                    country: ''
+                },
                 ctcInfo: {
-                    number: ensureString(marriageForm.affidavitOfdelayedRegistration.dateSworn?.ctcInfo?.number),
-                    dateIssued: parseDateSafely(marriageForm.affidavitOfdelayedRegistration.dateSworn?.ctcInfo?.dateIssued),
-                    placeIssued: ensureString(marriageForm.affidavitOfdelayedRegistration.dateSworn?.ctcInfo?.placeIssued),
+                    number: '',
+                    dateIssued: undefined,
+                    placeIssued: ''
                 }
             }
-        };
-    } else {
-        result.affidavitForDelayed = {
-            delayedRegistration: 'No'
         };
     }
 

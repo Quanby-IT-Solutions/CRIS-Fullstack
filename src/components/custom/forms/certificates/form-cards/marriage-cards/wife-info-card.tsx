@@ -23,18 +23,17 @@ import { MarriageCertificateFormValues } from '@/lib/types/zod-form-certificate/
 import LocationSelector from '../shared-components/location-selector';
 import NCRModeSwitch from '../shared-components/ncr-mode-switch';
 
-
 const WifeInfoCard: React.FC = () => {
   const { control, setValue, getValues } = useFormContext<MarriageCertificateFormValues>();
-  const [wifeNcrMode, setWifeNcrMode] = useState(false);
+  const [ncrMode, setNcrMode] = useState(false);
 
-  useEffect(() => {
-    // Detect NCR mode from fetched data on component mount
-    const province = getValues('wifePlaceOfBirth.province');
-    if (province === '' || province === 'Metro Manila' || province === 'NCR') {
-      setWifeNcrMode(true);
-    }
-  }, [getValues]);
+   useEffect(() => {
+      // Detect NCR mode from fetched data on component mount
+      const province = getValues('wifePlaceOfBirth.province');
+      if (province === 'Metro Manila' || province === 'NCR') {
+        setNcrMode(true);
+      }
+    }, [getValues]);
 
   // Auto-calculate and set age when birthdate changes
   const birthDate = useWatch({ control, name: 'wifeBirth' });
@@ -263,7 +262,7 @@ const WifeInfoCard: React.FC = () => {
           <CardTitle >Place Of Birth</CardTitle>
         </div>
         <div className='col-span-1 md:col-span-3'>
-          <NCRModeSwitch isNCRMode={wifeNcrMode} setIsNCRMode={setWifeNcrMode} />
+          <NCRModeSwitch isNCRMode={ncrMode} setIsNCRMode={setNcrMode} />
         </div>
         {/* Place of Birth */}
         <div className='grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4'>
@@ -276,7 +275,7 @@ const WifeInfoCard: React.FC = () => {
             provinceLabel='Province'
             municipalityLabel='City/Municipality'
             barangayLabel='Barangay'
-            isNCRMode={wifeNcrMode}
+            isNCRMode={ncrMode}
             showBarangay={true}
             provincePlaceholder='Select province'
             municipalityPlaceholder='Select city/municipality'
@@ -302,7 +301,7 @@ const WifeInfoCard: React.FC = () => {
 
           <FormField
             control={control}
-            name='wifePlaceOfBirth.street'
+            name='wifeResidence'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Street</FormLabel>

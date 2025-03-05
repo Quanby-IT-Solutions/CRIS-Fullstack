@@ -298,7 +298,7 @@ const emptyDefaults: MarriageCertificateFormValues = {
                 st: 'Third Street',
                 barangay: 'Capri', // Updated
                 cityMunicipality: 'Quezon City', // Updated
-                province: 'Metro Manila', // Updated 
+                province: 'Metro Manila', // Updated
                 country: 'Philippines'
             },
             ctcInfo: {

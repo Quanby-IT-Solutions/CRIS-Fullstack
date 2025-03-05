@@ -8,7 +8,6 @@ import {
   processingDetailsSchema,
   provinceSchema,
   registryNumberSchema,
-  signatureSchema,
 } from './form-certificates-shared-schema'
 
 /**
@@ -21,17 +20,15 @@ const locationSchema = z.object({
   cityMunicipality: z.string(),
   province: z.string().optional(),
   country: z.string().optional(),
-  region: z.string().optional(),
 })
 
 
 const residenceSchemas = z.object({
   st: z.string().optional(),
   barangay: z.string().optional(),
-  cityMunicipality: z.string().optional(), // Reuse shared city/municipality schema
-  province: z.string().optional(), // Reuse shared province schema
+  cityMunicipality: cityMunicipalitySchema, // Reuse shared city/municipality schema
+  province: provinceSchema, // Reuse shared province schema
   country: z.string().optional(),
-  region: z.string().optional(),
 })
 
 
@@ -80,75 +77,27 @@ const affidavitOfSolemnizingOfficerSchema = z.object({
       last: z.string().optional(),
     }),
     officeName: z.string().min(1, 'Office name is required'),
-    signature: z.union([
-      z.custom<File | string | any>(
-        (val) => {
-          // Check if we're in browser and it's a File
-          if (
-            typeof window !== 'undefined' &&
-            typeof File !== 'undefined' &&
-            val instanceof File
-          ) {
-            return true;
-          }
-          // On server, accept something that resembles file-like object
-          if (val && typeof val === 'object' && 'size' in val && 'type' in val) {
-            return true;
-          }
-          // Also accept string (for base64)
-          return typeof val === 'string' && val.length > 0;
-        },
-        { message: 'Invalid signature format' }
-      ),
-      z.string().optional(),
-    ]),
+    signature: z.any().optional(),
     address: z.string().min(1, 'Address is required'),
   }),
   administeringOfficerInformation: z.object({
-    adminName: z.object({
-      first: z.string().optional(),
-      middle: z.string().optional(), // Middle name can be optional
-      last: z.string().optional(),
-    }),
-    signature: z.union([
-      z.custom<File | string | any>(
-        (val) => {
-          // Check if we're in browser and it's a File
-          if (
-            typeof window !== 'undefined' &&
-            typeof File !== 'undefined' &&
-            val instanceof File
-          ) {
-            return true;
-          }
-          // On server, accept something that resembles file-like object
-          if (val && typeof val === 'object' && 'size' in val && 'type' in val) {
-            return true;
-          }
-          // Also accept string (for base64)
-          return typeof val === 'string' && val.length > 0;
-        },
-        { message: 'Invalid signature format' }
-      ),
-      z.string().optional(),
-    ]),
+    adminName: nameSchema,
+    signature: z.any().optional(),
     address: z.string().min(1, 'Address is required'),
     position: z.string().min(1, 'Position/Title/Designation is required'),
   })
 })
 
 const affidavitForDelayedSchema = z.object({
-  delayedRegistration: z.enum(['Yes', 'No']).default('No'),
-
+  delayedRegistration: z.enum(['Yes', 'No',]).default('No'),
   administeringInformation: z.object({
     adminName: z.string().optional(),
-    adminSignature: signatureSchema,
+    adminSignature: z.any().optional(),
     position: z.string().optional(),
     adminAddress: z.string().optional(),
-  }).optional(), // Make this entire section optional
-
+  }),
   applicantInformation: z.object({
-    signatureOfApplicant: signatureSchema,
+    signatureOfApplicant: z.any().optional(),
     nameOfApplicant: z.string().optional(),
     applicantAddress: residenceSchemas.optional(), // Make the address optional
     postalCode: z
@@ -156,50 +105,44 @@ const affidavitForDelayedSchema = z.object({
       .min(4, 'Postal code must be at least 4 digits')
       .max(6, 'Postal code must be at most 6 digits')
       .regex(/^\d+$/, 'Postal code must contain only numbers')
-      .optional(), // Make postal code optional
-  }).optional(),
+  }),
 
-  a: z
-    .object({
-      a: z.object({
-        agreement: z.boolean().default(false).optional(),
-        nameOfPartner: z
-          .object({
-            first: z.string().optional(),
-            middle: z.string().optional(),
-            last: z.string().optional(),
-          })
-          .optional(),
-        placeOfMarriage: z.string().optional(),
-        dateOfMarriage: createDateFieldSchema({
-          requiredError: 'Start date is required',
-          futureError: 'Start date cannot be in the future',
-        }).optional(),
+  a: z.object({
+    a: z.object({
+      agreement: z.boolean().default(false).optional(),
+      nameOfPartner: z.object({
+        first: z.string().optional(),
+        middle: z.string().optional(), // Middle name can be optional
+        last: z.string().optional(),
       }).optional(),
-
-      b: z.object({
-        agreement: z.boolean().default(false).optional(),
-        nameOfHusband: z
-          .object({
-            first: z.string().optional(),
-            middle: z.string().optional(),
-            last: z.string().optional(),
-          })
-          .optional(),
-        nameOfWife: z
-          .object({
-            first: z.string().optional(),
-            middle: z.string().optional(),
-            last: z.string().optional(),
-          })
-          .optional(),
-        placeOfMarriage: z.string().optional(),
-        dateOfMarriage: createDateFieldSchema({
-          requiredError: 'Start date is required',
-          futureError: 'Start date cannot be in the future',
-        }).optional(),
+      placeOfMarriage: z.string().optional(),
+      dateOfMarriage: createDateFieldSchema({
+        requiredError: 'Start date is required',
+        futureError: 'Start date cannot be in the future',
+      }).optional()
+    }),
+    b: z.object({
+      agreement: z.boolean().default(false),
+      nameOfHusband: z.object({
+        first: z.string().optional(),
+        middle: z.string().optional(), // Middle name can be optional
+        last: z.string().optional(),
       }).optional(),
-    }).optional(),
+      nameOfWife: z.object({
+        first: z.string().optional(),
+        middle: z.string().optional(), // Middle name can be optional
+        last: z.string().optional(),
+      }).optional(),
+      placeOfMarriage: z.string().optional(),
+      dateOfMarriage: createDateFieldSchema({
+        requiredError: 'Start date is required',
+        futureError: 'Start date cannot be in the future',
+      }).optional()
+    }),
+  }).refine((data) => {
+    // Ensure only one agreement is true at a time
+    return data.a.agreement !== data.b.agreement
+  }, 'You can only select one option (either a or b)'),
 
   b: z.object({
     solemnizedBy: z.string().min(1, 'Name of officer is required').optional(), // Make required fields optional
@@ -208,9 +151,8 @@ const affidavitForDelayedSchema = z.object({
       'civil-ceremony',
       'Muslim-rites',
       'tribal-rites',
-    ]).optional(), // Make required fields optional
-  }).optional(),
-
+    ]),
+  }),
   c: z.object({
     a: z.object({
       licenseNo: z.string().min(1, 'License number is required').optional(), // Make required fields optional
@@ -221,25 +163,21 @@ const affidavitForDelayedSchema = z.object({
       placeOfSolemnizedMarriage: z.string().min(1, 'Place of Solemnized marriage').optional(), // Make required fields optional
     }).optional(),
     b: z.object({
-      underArticle: z.string().optional(),
-    }).optional(),
-  }).optional(),
-
+      underArticle: z.string().optional()
+    })
+  }),
   d: z.object({
-    husbandCitizenship: citizenshipSchema.optional(), // Make required fields optional
-    wifeCitizenship: citizenshipSchema.optional(), // Make required fields optional
-  }).optional(),
-
-  e: z.string().nonempty('Add valid reason').optional(), // Make required fields optional
-
+    husbandCitizenship: citizenshipSchema,
+    wifeCitizenship: citizenshipSchema
+  }),
+  e: z.string().nonempty('Add valid reason'),
   f: z.object({
     date: createDateFieldSchema({
       requiredError: 'Start date is required',
       futureError: 'Start date cannot be in the future',
-    }).optional(), // Make required fields optional
-    place: residenceSchemas.optional(), // Make required fields optional
-  }).optional(),
-
+    }),
+    place: residenceSchemas
+  }),
   dateSworn: z.object({
     dayOf: createDateFieldSchema({
       requiredError: 'Start date is required',
@@ -251,11 +189,11 @@ const affidavitForDelayedSchema = z.object({
       dateIssued: createDateFieldSchema({
         requiredError: 'Start date is required',
         futureError: 'Start date cannot be in the future',
-      }).optional(),
-      placeIssued: z.string().optional(),
-    }).optional(),
-  }).optional(),
-}).optional(); // Make the entire affidavit section optional
+      }),
+      placeIssued: z.string().min(1, 'Place issued is required'),
+    }),
+  }),
+})
 
 /**
  * Main Marriage Certificate Schema

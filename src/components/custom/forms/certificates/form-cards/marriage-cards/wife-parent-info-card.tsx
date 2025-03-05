@@ -18,13 +18,13 @@ import LocationSelector from '../shared-components/location-selector';
 
 const WifeParentsInfoCard: React.FC = () => {
   const { control, getValues } = useFormContext<MarriageCertificateFormValues>();
-  const [wifeParentNcrMode, setWifeParentNcrMode] = useState(false);
+  const [ncrMode, setNcrMode] = useState(false);
 
   useEffect(() => {
     // Detect NCR mode from fetched data on component mount
     const province = getValues('wifeConsentPerson.residence.province');
-    if (province === '' || province === 'Metro Manila' || province === 'NCR') {
-      setWifeParentNcrMode(true);
+    if (province === 'Metro Manila' || province === 'NCR') {
+      setNcrMode(true);
     }
   }, [getValues]);
 
@@ -207,8 +207,8 @@ const WifeParentsInfoCard: React.FC = () => {
           <h3 className='font-bold '>Name of person Wali who gave consent or advise</h3>
         </div>
         <NCRModeSwitch
-          isNCRMode={wifeParentNcrMode}
-          setIsNCRMode={setWifeParentNcrMode}
+          isNCRMode={ncrMode}
+          setIsNCRMode={setNcrMode}
         />
         <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
           <FormField
@@ -301,7 +301,7 @@ const WifeParentsInfoCard: React.FC = () => {
             provinceLabel='Province'
             municipalityLabel='City/Municipality'
             barangayLabel='Barangay'
-            isNCRMode={wifeParentNcrMode}
+            isNCRMode={ncrMode}
             showBarangay={true}
             provincePlaceholder='Select province'
             municipalityPlaceholder='Select city/municipality'

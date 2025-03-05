@@ -16,7 +16,6 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { MarriageCertificateFormValues } from '@/lib/types/zod-form-certificate/marriage-certificate-form-schema';
 import DatePickerField from '@/components/custom/datepickerfield/date-picker-field';
-import SignatureUploader from '../shared-components/signature-uploader';
 
 interface ContractingPartiesCertificationProps {
   className?: string;
@@ -25,7 +24,7 @@ interface ContractingPartiesCertificationProps {
 export const ContractingPartiesCertification: React.FC<
   ContractingPartiesCertificationProps
 > = ({ className }) => {
-  const { control, setValue } = useFormContext<MarriageCertificateFormValues>();
+  const { control } = useFormContext<MarriageCertificateFormValues>();
 
   // Watch contractDay field
   const contractDay = useWatch({ control, name: 'contractDay' });
@@ -56,95 +55,23 @@ export const ContractingPartiesCertification: React.FC<
             </p>
           </div>
 
-
+          {/* Signatures Section */}
           <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
             {/* Date of Marriage */}
-            <div className='flex-1'>
-              <FormField
-                control={control}
-                name='contractDay'
-                render={({ field }) => (
-                  <DatePickerField field={{
-                    value: field.value || '',
-                    onChange: field.onChange,
-                  }}
-                    label='Date of Marriage'
-                    ref={field.ref} // Forward ref for auto-focus
-                    placeholder='Select date of marriage'
-                  />
-                )}
-              />
-            </div>
-            <div className="flex-1">
-              <FormField
-                control={control}
-                name='husbandContractParty.signature'
-                render={({ field, formState: { errors } }) => (
-                  <FormItem>
-
-                    <FormControl>
-                      <SignatureUploader
-                        name='husbandContractParty.signature'
-                        label='Signature of Husband'
-                        onChange={(value: File | string) => {
-                          if (value instanceof File) {
-                            setValue('husbandContractParty.signature', value, {
-                              shouldValidate: true,
-                              shouldDirty: true,
-                            });
-                          } else {
-                            setValue('husbandContractParty.signature', value, {
-                              shouldValidate: true,
-                              shouldDirty: true,
-                            });
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage>
-                      {typeof errors?.husbandContractParty?.signature?.message === 'string'
-                        ? errors?.husbandContractParty?.signature?.message
-                        : ''}
-                    </FormMessage>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex-1">
-              <FormField
-                control={control}
-                name='wifeContractParty.signature'
-                render={({ field, formState: { errors } }) => (
-                  <FormItem>
-
-                    <FormControl>
-                      <SignatureUploader
-                        name='wifeContractParty.signature'
-                        label='Signature of Wife'
-                        onChange={(value: File | string) => {
-                          if (value instanceof File) {
-                            setValue('wifeContractParty.signature', value, {
-                              shouldValidate: true,
-                              shouldDirty: true,
-                            });
-                          } else {
-                            setValue('wifeContractParty.signature', value, {
-                              shouldValidate: true,
-                              shouldDirty: true,
-                            });
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage>
-                      {typeof errors?.wifeContractParty?.signature?.message === 'string'
-                        ? errors?.wifeContractParty?.signature?.message
-                        : ''}
-                    </FormMessage>
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={control}
+              name='contractDay'
+              render={({ field }) => (
+                <DatePickerField field={{
+                  value: field.value || '',
+                  onChange: field.onChange,
+                }}
+                  label='Date of Marriage'
+                  ref={field.ref} // Forward ref for auto-focus
+                  placeholder='Select date of marriage'
+                />
+              )}
+            />
           </div>
         </div>
       </CardContent>
