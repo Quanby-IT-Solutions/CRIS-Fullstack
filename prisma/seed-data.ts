@@ -345,6 +345,34 @@ const generateMarriageCertificate = (
         residence: generatePhLocation(),
       },
 
+      husbandContractParty:{
+        signature: generatePersonName(),
+        agreement: true
+      },
+      wifeContractParty:{
+        signature: generatePersonName(),
+        agreement: true
+      },
+
+      receivedByOffice:{
+        signature: generatePersonName(),
+        nameInPrint: generatePersonName(),
+        title: faker.helpers.arrayElement([
+          'Civil Registrar',
+          'Civil Registry Officer',
+        ]),
+        date: registrationDate
+      },
+      preparedByOffice:{
+        signature: generatePersonName(),
+        nameInPrint: generatePersonName(),
+        title: faker.helpers.arrayElement([
+          'Civil Registrar',
+          'Civil Registry Officer',
+        ]),
+        date: registrationDate
+      },
+
       // Wife Information
       wifeFirstName: wifeFirstName,
       wifeMiddleName: wifeMiddleName,

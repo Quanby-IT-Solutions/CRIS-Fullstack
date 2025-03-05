@@ -28,7 +28,7 @@ const locationSchema = z.object({
 const residenceSchemas = z.object({
   st: z.string().optional(),
   barangay: z.string().optional(),
-  cityMunicipality: cityMunicipalitySchema, // Reuse shared city/municipality schema
+  cityMunicipality: z.string().optional(), // Reuse shared city/municipality schema
   province: z.string().optional(), // Reuse shared province schema
   country: z.string().optional(),
   region: z.string().optional(),
@@ -74,14 +74,64 @@ const affidavitOfSolemnizingOfficerSchema = z.object({
     }),
   }),
   solemnizingOfficerInformation: z.object({
-    officerName: nameSchema,
+    officerName: z.object({
+      first: z.string().optional(),
+      middle: z.string().optional(), // Middle name can be optional
+      last: z.string().optional(),
+    }),
     officeName: z.string().min(1, 'Office name is required'),
-    signature: signatureSchema,
+    signature: z.union([
+      z.custom<File | string | any>(
+        (val) => {
+          // Check if we're in browser and it's a File
+          if (
+            typeof window !== 'undefined' &&
+            typeof File !== 'undefined' &&
+            val instanceof File
+          ) {
+            return true;
+          }
+          // On server, accept something that resembles file-like object
+          if (val && typeof val === 'object' && 'size' in val && 'type' in val) {
+            return true;
+          }
+          // Also accept string (for base64)
+          return typeof val === 'string' && val.length > 0;
+        },
+        { message: 'Invalid signature format' }
+      ),
+      z.string().optional(),
+    ]),
     address: z.string().min(1, 'Address is required'),
   }),
   administeringOfficerInformation: z.object({
-    adminName: nameSchema,
-    signature: signatureSchema,
+    adminName: z.object({
+      first: z.string().optional(),
+      middle: z.string().optional(), // Middle name can be optional
+      last: z.string().optional(),
+    }),
+    signature: z.union([
+      z.custom<File | string | any>(
+        (val) => {
+          // Check if we're in browser and it's a File
+          if (
+            typeof window !== 'undefined' &&
+            typeof File !== 'undefined' &&
+            val instanceof File
+          ) {
+            return true;
+          }
+          // On server, accept something that resembles file-like object
+          if (val && typeof val === 'object' && 'size' in val && 'type' in val) {
+            return true;
+          }
+          // Also accept string (for base64)
+          return typeof val === 'string' && val.length > 0;
+        },
+        { message: 'Invalid signature format' }
+      ),
+      z.string().optional(),
+    ]),
     address: z.string().min(1, 'Address is required'),
     position: z.string().min(1, 'Position/Title/Designation is required'),
   })
@@ -92,13 +142,13 @@ const affidavitForDelayedSchema = z.object({
 
   administeringInformation: z.object({
     adminName: z.string().optional(),
-    adminSignature: z.any().optional(),
+    adminSignature: signatureSchema,
     position: z.string().optional(),
     adminAddress: z.string().optional(),
   }).optional(), // Make this entire section optional
 
   applicantInformation: z.object({
-    signatureOfApplicant: z.any().optional(),
+    signatureOfApplicant: signatureSchema,
     nameOfApplicant: z.string().optional(),
     applicantAddress: residenceSchemas.optional(), // Make the address optional
     postalCode: z
@@ -311,14 +361,15 @@ export const marriageCertificateSchema = z.object({
 
   // Contracting Parties
   husbandContractParty: z.object({
-    signature: z.any(),
-    agreement: z.boolean()
+    signature: signatureSchema,
+    agreement: z.boolean().optional()
   }),
 
   wifeContractParty: z.object({
-    signature: z.any(),
-    agreement: z.boolean()
+    signature: signatureSchema,
+    agreement: z.boolean().optional()
   }),
+  
 
   // Marriage License Details
   marriageLicenseDetails: z.object({
