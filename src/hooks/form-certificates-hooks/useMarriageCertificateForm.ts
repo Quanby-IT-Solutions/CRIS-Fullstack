@@ -496,7 +496,7 @@ export function useMarriageCertificateForm({
     const onSubmit = async (data: MarriageCertificateFormValues) => {
         console.log('🔍 Initial Form Data Submission Started');
         console.log('📋 Full Form Data:', JSON.stringify(data, null, 2));
-    
+
         // Log form state details
         console.log('📊 Form State Details:', {
             isValid: formMethods.formState.isValid,
@@ -504,12 +504,12 @@ export function useMarriageCertificateForm({
             isSubmitting: formMethods.formState.isSubmitting,
             submitCount: formMethods.formState.submitCount,
         });
-    
+
         // Detailed validation check
         const validationResult = marriageCertificateSchema.safeParse(data);
         console.log('🕵️ Zod Validation Result:', {
             success: validationResult.success,
-            ...(validationResult.success ? {} : { 
+            ...(validationResult.success ? {} : {
                 errors: validationResult.error.errors.map(err => ({
                     path: err.path.join('.'),
                     message: err.message,
@@ -517,28 +517,28 @@ export function useMarriageCertificateForm({
                 }))
             })
         });
-    
+
         // Comprehensive form validity check
         if (!formMethods.formState.isValid) {
             console.error("❌ Form is INVALID - Submission Blocked");
-            
+
             // Detailed error logging
             const errors = formMethods.formState.errors;
             console.error("🚨 Detailed Form Errors:", JSON.stringify(errors, null, 2));
-    
+
             // Log specific invalid fields
             Object.keys(errors).forEach(field => {
                 console.error(`🔴 Invalid Field: ${field}`, (errors as any)[field]);
             });
-    
+
             // Trigger error handling
             handleError(errors);
             return;
         }
-    
+
         try {
             console.log('🚀 Preparing to submit form data');
-    
+
             // Check and simplify affidavitForDelayed if it's "No"
             if (data.affidavitForDelayed?.delayedRegistration === 'No') {
                 console.log('🔍 Simplifying Delayed Registration Data');
@@ -546,10 +546,10 @@ export function useMarriageCertificateForm({
                     delayedRegistration: 'No'
                 };
             }
-    
+
             // Check if we're in update mode
             const isUpdateMode = Boolean(defaultValues && defaultValues.id);
-    
+
             if (isUpdateMode) {
                 console.log('🖊️ Update Mode Detected', {
                     currentId: defaultValues?.id,
@@ -558,53 +558,53 @@ export function useMarriageCertificateForm({
             } else {
                 console.log('📝 New Record Submission');
             }
-    
+
             // Data preparation
             const preparedData = preparePrismaData(data);
             console.log('🔧 Prepared Data:', JSON.stringify(preparedData, null, 2));
-    
+
             // For update mode, just show the toast and log
             if (isUpdateMode) {
                 console.log('🟢 Update data is correct and ready to be saved');
                 toast.success('Marriage certificate data prepared successfully for update');
                 return;
             }
-    
+
             // Actual submission
             console.log('📤 Submitting Marriage Certificate Form');
             const result = await submitMarriageCertificateForm(preparedData);
-    
+
             console.log('📥 Submission Result:', JSON.stringify(result, null, 2));
-    
+
             if ('data' in result) {
                 console.log('✅ Successful Submission', {
                     bookNumber: result.data.bookNumber,
                     pageNumber: result.data.pageNumber,
                     registryNumber: data.registryNumber
                 });
-    
+
                 toast.success(`Marriage certificate submitted successfully (Book ${result.data.bookNumber}, Page ${result.data.pageNumber})`);
-                
+
                 notifyUsersWithPermission(
                     Permission.DOCUMENT_READ,
                     "New uploaded Marriage Certificate",
                     `New Marriage Certificate with the details (Book ${result.data.bookNumber}, Page ${result.data.pageNumber}, Registry Number ${data.registryNumber}) has been uploaded.`
                 );
-    
+
                 onOpenChange?.(false);
                 formMethods.reset();
             } else if ('error' in result) {
                 console.error('❌ Submission Error:', result.error);
                 toast.error(
-                    result.error.includes('No user found with name') 
-                        ? 'Invalid prepared by user. Please check the name.' 
+                    result.error.includes('No user found with name')
+                        ? 'Invalid prepared by user. Please check the name.'
                         : result.error
                 );
             }
-    
+
             // Reset form to default values
             formMethods.reset(emptyDefaults);
-    
+
         } catch (error) {
             console.error('🔥 Catastrophic Submission Error:', error);
             toast.error('Submission failed, please try again');

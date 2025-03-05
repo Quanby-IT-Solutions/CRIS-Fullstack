@@ -49,7 +49,7 @@ function ProcessingDetailsCard<T extends FieldValues = FieldValues>({
   const { staff, loading } = useCivilRegistrarStaff();
   const selectedName = watch(`${fieldPrefix}.nameInPrint` as Path<T>);
   const titleFieldName = `${fieldPrefix}.titleOrPosition` as Path<T>;
-  const signatureFieldName = `${fieldPrefix}.signature` as Path<T>;
+  // const signatureFieldName = `${fieldPrefix}.signature` as Path<T>;
 
   useEffect(() => {
     const selectedStaff = staff.find((s) => s.name === selectedName);
