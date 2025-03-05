@@ -16,7 +16,7 @@ import { MarriageCertificateFormValues } from '@/lib/types/zod-form-certificate/
 import DatePickerField from '@/components/custom/datepickerfield/date-picker-field';
 import LocationSelector from '../shared-components/location-selector';
 import NCRModeSwitch from '../shared-components/ncr-mode-switch';
-import SignatureUploader from '../shared-components/signature-uploader';
+
 import { useEffect } from 'react';
 
 interface AffidavitOfSolemnizingOfficerProps {
@@ -120,7 +120,7 @@ export const AffidavitOfSolemnizingOfficer: React.FC<
                             )}
                         />
 
-                        <SignatureUploader name='affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.signature' label='Signature' />
+                        
 
                         <FormField
                             control={control}
@@ -655,7 +655,7 @@ export const AffidavitOfSolemnizingOfficer: React.FC<
                                         </FormItem>
                                     )}
                                 />
-                                <SignatureUploader name='affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature' label='Signature' />
+                             
 
                                 {/* Position */}
                                 <FormField

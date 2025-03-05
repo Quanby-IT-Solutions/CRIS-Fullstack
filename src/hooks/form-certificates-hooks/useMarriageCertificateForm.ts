@@ -31,8 +31,8 @@ const preparePrismaData = (data: any) => {
 const emptyDefaults: MarriageCertificateFormValues = {
     // Registry Information
     registryNumber: '',
-    province: 'Metro Manila', // Updated
-    cityMunicipality: 'Quezon City', // Updated
+    province: 'Metro Manila',
+    cityMunicipality: 'Quezon City',
 
     // Husband Information
     husbandName: {
@@ -45,9 +45,9 @@ const emptyDefaults: MarriageCertificateFormValues = {
     husbandPlaceOfBirth: {
         houseNo: '123',
         street: 'Main Street',
-        barangay: '', // Updated
-        cityMunicipality: '', // Updated
-        province: '', // Updated
+        barangay: 'Capri',
+        cityMunicipality: 'Quezon City',
+        province: 'Metro Manila',
         country: 'Philippines'
     },
     husbandSex: 'Male',
@@ -65,9 +65,9 @@ const emptyDefaults: MarriageCertificateFormValues = {
         residence: {
             houseNo: '123',
             street: 'Main Street',
-            barangay: 'Capri', // Updated
-            cityMunicipality: 'Quezon City', // Updated
-            province: 'Metro Manila', // Updated
+            barangay: 'Capri',
+            cityMunicipality: 'Quezon City',
+            province: 'Metro Manila',
             country: 'Philippines'
         }
     },
@@ -97,9 +97,9 @@ const emptyDefaults: MarriageCertificateFormValues = {
     wifePlaceOfBirth: {
         houseNo: '456',
         street: 'Second Street',
-        barangay: 'Capri', // Updated
-        cityMunicipality: 'Quezon City', // Updated
-        province: 'Metro Manila', // Updated
+        barangay: 'Capri',
+        cityMunicipality: 'Quezon City',
+        province: 'Metro Manila',
         country: 'Philippines'
     },
     wifeSex: 'Female',
@@ -117,9 +117,9 @@ const emptyDefaults: MarriageCertificateFormValues = {
         residence: {
             houseNo: '456',
             street: 'Second Street',
-            barangay: 'Capri', // Updated
-            cityMunicipality: 'Quezon City', // Updated
-            province: 'Metro Manila', // Updated
+            barangay: 'Capri',
+            cityMunicipality: 'Quezon City',
+            province: 'Metro Manila',
             country: 'Philippines'
         }
     },
@@ -142,9 +142,9 @@ const emptyDefaults: MarriageCertificateFormValues = {
     placeOfMarriage: {
         houseNo: '789',
         street: 'Third Street',
-        barangay: 'Capri', // Updated
-        cityMunicipality: 'Quezon City', // Updated
-        province: 'Metro Manila', // Updated
+        barangay: 'Capri',
+        cityMunicipality: 'Quezon City',
+        province: 'Metro Manila',
         country: 'Philippines'
     },
     dateOfMarriage: new Date('2023-10-10'),
@@ -153,22 +153,18 @@ const emptyDefaults: MarriageCertificateFormValues = {
     // Witnesses
     husbandWitnesses: [
         {
-            name: 'John Doe',
-            signature: 'John_Doe_Signature'
+            name: 'John Doe'
         },
         {
-            name: 'Jane Doe',
-            signature: 'Jane_Doe_Signature'
+            name: 'Jane Doe'
         }
     ],
     wifeWitnesses: [
         {
-            name: 'Alice Smith',
-            signature: 'Alice_Smith_Signature'
+            name: 'Alice Smith'
         },
         {
-            name: 'Bob Johnson',
-            signature: 'Bob_Johnson_Signature'
+            name: 'Bob Johnson'
         }
     ],
 
@@ -177,11 +173,9 @@ const emptyDefaults: MarriageCertificateFormValues = {
 
     // Contracting Parties
     husbandContractParty: {
-        signature: 'Juan_Cruz_Signature',
         agreement: true
     },
     wifeContractParty: {
-        signature: 'Maria_Cruz_Signature',
         agreement: true
     },
 
@@ -206,33 +200,23 @@ const emptyDefaults: MarriageCertificateFormValues = {
     solemnizingOfficer: {
         name: 'Rev. Father Santos',
         position: 'Priest',
-        signature: 'Rev_Father_Santos_Signature',
         registryNoExpiryDate: '2025-12-31'
     },
 
     // Registered at Civil Registrar
-    receivedBy: {
-        date: new Date('2023-10-11'),
-        nameInPrint: 'Registrar Maria',
-        signature: 'Registrar_Maria_Signature',
-        titleOrPosition: 'Registrar'
-    },
     preparedBy: {
         date: new Date('2023-10-11'),
         nameInPrint: 'Clerk Juan',
-        signature: 'Clerk_Juan_Signature',
         titleOrPosition: 'Clerk'
     },
     receivedBy: {
         date: new Date('2023-10-11'),
         nameInPrint: 'Registrar Maria',
-        signature: 'Registrar_Maria_Signature',
         titleOrPosition: 'Registrar'
     },
     registeredByOffice: {
         date: new Date('2023-10-11'),
         nameInPrint: 'Office Clerk',
-        signature: 'Office_Clerk_Signature',
         titleOrPosition: 'Office Clerk'
     },
 
@@ -248,18 +232,7 @@ const emptyDefaults: MarriageCertificateFormValues = {
                 last: 'Santos'
             },
             officeName: 'Manila Parish',
-            signature: 'Rev_Father_Santos_Signature',
             address: 'Manila, Philippines'
-        },
-        administeringOfficerInformation: {
-            adminName: {
-                first: 'Clerk',
-                middle: 'Dela',
-                last: 'Juan'
-            },
-            position: 'Clerk',
-            address: 'Manila, Philippines',
-            signature: 'Clerk_Juan_Signature'
         },
 
         a: {
@@ -286,9 +259,9 @@ const emptyDefaults: MarriageCertificateFormValues = {
             dayOf: new Date('2023-10-10'),
             atPlaceExecute: {
                 st: 'Third Street',
-                barangay: 'Capri', // Updated
-                cityMunicipality: 'Quezon City', // Updated
-                province: 'Metro Manila', // Updated
+                barangay: 'Capri',
+                cityMunicipality: 'Quezon City',
+                province: 'Metro Manila',
                 country: 'Philippines'
             },
         },
@@ -296,9 +269,9 @@ const emptyDefaults: MarriageCertificateFormValues = {
             dayOf: new Date('2023-10-11'),
             atPlaceOfSworn: {
                 st: 'Third Street',
-                barangay: 'Capri', // Updated
-                cityMunicipality: 'Quezon City', // Updated
-                province: 'Metro Manila', // Updated
+                barangay: 'Capri',
+                cityMunicipality: 'Quezon City',
+                province: 'Metro Manila',
                 country: 'Philippines'
             },
             ctcInfo: {
@@ -307,12 +280,107 @@ const emptyDefaults: MarriageCertificateFormValues = {
                 placeIssued: 'Manila City Hall'
             },
         },
-
+        administeringOfficerInformation: {
+            adminName: {
+                first: 'Clerk',
+                middle: 'Dela',
+                last: 'Juan'
+            },
+            address: 'Manila, Philippines',
+            position: 'Clerk'
+        },
     },
 
     // Affidavit for Delayed Registration
     affidavitForDelayed: {
         delayedRegistration: 'No',
+        administeringInformation: {
+            adminName: 'Admin Juan',
+            position: 'Admin',
+            adminAddress: 'Manila, Philippines'
+        },
+        applicantInformation: {
+            nameOfApplicant: 'Juan Cruz',
+            postalCode: '1234',
+            applicantAddress: {
+                st: 'Main Street',
+                barangay: 'Capri',
+                cityMunicipality: 'Quezon City',
+                province: 'Metro Manila',
+                country: 'Philippines'
+            }
+        },
+        a: {
+            a: {
+                agreement: false,
+                nameOfPartner: {
+                    first: '',
+                    middle: '',
+                    last: ''
+                },
+                placeOfMarriage: '',
+                dateOfMarriage: undefined,
+            },
+            b: {
+                agreement: true,
+                nameOfHusband: {
+                    first: 'Juan',
+                    middle: 'Dela',
+                    last: 'Cruz'
+                },
+                nameOfWife: {
+                    first: 'Maria',
+                    middle: 'Dela',
+                    last: 'Cruz'
+                },
+                placeOfMarriage: 'Manila',
+                dateOfMarriage: new Date('2023-10-10'),
+            }
+        },
+        b: {
+            solemnizedBy: 'Rev. Father Santos',
+            sector: 'religious-ceremony',
+        },
+        c: {
+            a: {
+                licenseNo: 'LIC123456',
+                dateIssued: new Date('2023-09-01'),
+                placeOfSolemnizedMarriage: 'Manila'
+            },
+            b: {
+                underArticle: 'Article 1'
+            }
+        },
+        d: {
+            husbandCitizenship: 'Filipino',
+            wifeCitizenship: 'Filipino'
+        },
+        e: 'No reason provided',
+        f: {
+            date: new Date('2023-10-11'),
+            place: {
+                st: 'Third Street',
+                barangay: 'Capri',
+                cityMunicipality: 'Quezon City',
+                province: 'Metro Manila',
+                country: 'Philippines'
+            }
+        },
+        dateSworn: {
+            dayOf: new Date('2023-10-11'),
+            atPlaceOfSworn: {
+                st: 'Third Street',
+                barangay: 'Capri',
+                cityMunicipality: 'Quezon City',
+                province: 'Metro Manila',
+                country: 'Philippines'
+            },
+            ctcInfo: {
+                number: 'CTC123456',
+                dateIssued: new Date('2023-10-11'),
+                placeIssued: 'Manila City Hall'
+            }
+        }
     }
 };
 
@@ -342,167 +410,204 @@ export function useMarriageCertificateForm({
     }, [defaultValues, formMethods, isInitialized]);
 
 
-    const handleFileUploads = async (data: any) => {
-        // Create a deep copy to avoid mutating the original
-        const processedData = { ...data };
+    // const handleFileUploads = async (data: any) => {
+    //     // Create a deep copy to avoid mutating the original
+    //     const processedData = { ...data };
 
-        // Process all signatures
-        // Prepared By, Received By, and Registered By signatures
-        if (processedData.preparedByOffice?.signature instanceof File) {
-            processedData.preparedByOffice.signature = await fileToBase64(processedData.preparedByOffice.signature);
-        }
+    //     // Process all signatures
+    //     // Prepared By, Received By, and Registered By signatures
+    //     if (processedData.preparedByOffice?.signature instanceof File) {
+    //         processedData.preparedByOffice.signature = await fileToBase64(processedData.preparedByOffice.signature);
+    //     }
 
-        if (processedData.receivedByOffice?.signature instanceof File) {
-            processedData.receivedByOffice.signature = await fileToBase64(processedData.receivedByOffice.signature);
-        }
+    //     if (processedData.receivedByOffice?.signature instanceof File) {
+    //         processedData.receivedByOffice.signature = await fileToBase64(processedData.receivedByOffice.signature);
+    //     }
 
-        if (processedData.registeredByOffice?.signature instanceof File) {
-            processedData.registeredByOffice.signature = await fileToBase64(processedData.registeredByOffice.signature);
-        }
+    //     if (processedData.registeredByOffice?.signature instanceof File) {
+    //         processedData.registeredByOffice.signature = await fileToBase64(processedData.registeredByOffice.signature);
+    //     }
 
-        // Solemnizing Officer signature
-        if (processedData.solemnizingOfficer?.signature instanceof File) {
-            processedData.solemnizingOfficer.signature = await fileToBase64(processedData.solemnizingOfficer.signature);
-        }
+    //     // Solemnizing Officer signature
+    //     if (processedData.solemnizingOfficer?.signature instanceof File) {
+    //         processedData.solemnizingOfficer.signature = await fileToBase64(processedData.solemnizingOfficer.signature);
+    //     }
 
-        // Contracting Parties signatures
-        if (processedData.husbandContractParty?.signature instanceof File) {
-            processedData.husbandContractParty.signature = await fileToBase64(
-                processedData.husbandContractParty.signature
-            );
-        }
+    //     // Contracting Parties signatures
+    //     if (processedData.husbandContractParty?.signature instanceof File) {
+    //         processedData.husbandContractParty.signature = await fileToBase64(
+    //             processedData.husbandContractParty.signature
+    //         );
+    //     }
 
-        if (processedData.wifeContractParty?.signature instanceof File) {
-            processedData.wifeContractParty.signature = await fileToBase64(
-                processedData.wifeContractParty.signature
-            );
-        }
+    //     if (processedData.wifeContractParty?.signature instanceof File) {
+    //         processedData.wifeContractParty.signature = await fileToBase64(
+    //             processedData.wifeContractParty.signature
+    //         );
+    //     }
 
-        if (processedData.husbandWitnesses?.signature instanceof File) {
-            processedData.husbandWitnesses.signature = await fileToBase64(processedData.husbandWitnesses.signature);
-        }
-        if (processedData.wifeWitnesses?.signature instanceof File) {
-            processedData.wifeWitnesses.signature = await fileToBase64(processedData.wifeWitnesses.signature);
-        }
+    //     if (processedData.husbandWitnesses?.signature instanceof File) {
+    //         processedData.husbandWitnesses.signature = await fileToBase64(processedData.husbandWitnesses.signature);
+    //     }
+    //     if (processedData.wifeWitnesses?.signature instanceof File) {
+    //         processedData.wifeWitnesses.signature = await fileToBase64(processedData.wifeWitnesses.signature);
+    //     }
 
-        // Affidavit of Solemnizing Officer
-        if (processedData.affidavitOfSolemnizingOfficer) {
-            if (processedData.affidavitOfSolemnizingOfficer.solemnizingOfficerInformation?.signature instanceof File) {
-                processedData.affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.signature =
-                    await fileToBase64(processedData.affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.signature);
-            }
+    //     // Affidavit of Solemnizing Officer
+    //     if (processedData.affidavitOfSolemnizingOfficer) {
+    //         if (processedData.affidavitOfSolemnizingOfficer.solemnizingOfficerInformation?.signature instanceof File) {
+    //             processedData.affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.signature =
+    //                 await fileToBase64(processedData.affidavitOfSolemnizingOfficer.solemnizingOfficerInformation.signature);
+    //         }
 
-            if (processedData.affidavitOfSolemnizingOfficer.administeringOfficerInformation?.signature instanceof File) {
-                processedData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature =
-                    await fileToBase64(processedData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature);
-            }
-        }
-        // Affidavit for Delayed Registration (optional)
-        if (processedData.affidavitForDelayed && processedData.affidavitForDelayed.delayedRegistration === 'Yes') {
-            // Check if administeringInformation exists before accessing its properties
-            if (processedData.affidavitForDelayed.administeringInformation) {
-                if (processedData.affidavitForDelayed.administeringInformation.adminSignature instanceof File) {
-                    processedData.affidavitForDelayed.administeringInformation.adminSignature =
-                        await fileToBase64(processedData.affidavitForDelayed.administeringInformation.adminSignature);
-                }
-            }
+    //         if (processedData.affidavitOfSolemnizingOfficer.administeringOfficerInformation?.signature instanceof File) {
+    //             processedData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature =
+    //                 await fileToBase64(processedData.affidavitOfSolemnizingOfficer.administeringOfficerInformation.signature);
+    //         }
+    //     }
+    //     // Affidavit for Delayed Registration (optional)
+    //     if (processedData.affidavitForDelayed && processedData.affidavitForDelayed.delayedRegistration === 'Yes') {
+    //         // Check if administeringInformation exists before accessing its properties
+    //         if (processedData.affidavitForDelayed.administeringInformation) {
+    //             if (processedData.affidavitForDelayed.administeringInformation.adminSignature instanceof File) {
+    //                 processedData.affidavitForDelayed.administeringInformation.adminSignature =
+    //                     await fileToBase64(processedData.affidavitForDelayed.administeringInformation.adminSignature);
+    //             }
+    //         }
 
-            // Check if applicantInformation exists before accessing its properties
-            if (processedData.affidavitForDelayed.applicantInformation) {
-                if (processedData.affidavitForDelayed.applicantInformation.signatureOfApplicant instanceof File) {
-                    processedData.affidavitForDelayed.applicantInformation.signatureOfApplicant =
-                        await fileToBase64(processedData.affidavitForDelayed.applicantInformation.signatureOfApplicant);
-                }
-            }
-        } else if (processedData.affidavitForDelayed) {
-            // If not a 'Yes' for delayed registration, set to null or a minimal object
-            processedData.affidavitForDelayed = {
-                delayedRegistration: 'No'
-            };
-        }
+    //         // Check if applicantInformation exists before accessing its properties
+    //         if (processedData.affidavitForDelayed.applicantInformation) {
+    //             if (processedData.affidavitForDelayed.applicantInformation.signatureOfApplicant instanceof File) {
+    //                 processedData.affidavitForDelayed.applicantInformation.signatureOfApplicant =
+    //                     await fileToBase64(processedData.affidavitForDelayed.applicantInformation.signatureOfApplicant);
+    //             }
+    //         }
+    //     } else if (processedData.affidavitForDelayed) {
+    //         // If not a 'Yes' for delayed registration, set to null or a minimal object
+    //         processedData.affidavitForDelayed = {
+    //             delayedRegistration: 'No'
+    //         };
+    //     }
 
-        return processedData;
-    };
+    //     return processedData;
+    // };
 
     // Updated submission function with proper data preparation
     const onSubmit = async (data: MarriageCertificateFormValues) => {
-        // Check and simplify affidavitForDelayed if it's "No"
-        if (data.affidavitForDelayed?.delayedRegistration === 'No') {
-            data.affidavitForDelayed = {
-                delayedRegistration: 'No'
-            };
-        }
-
+        console.log('🔍 Initial Form Data Submission Started');
+        console.log('📋 Full Form Data:', JSON.stringify(data, null, 2));
+    
+        // Log form state details
+        console.log('📊 Form State Details:', {
+            isValid: formMethods.formState.isValid,
+            isDirty: formMethods.formState.isDirty,
+            isSubmitting: formMethods.formState.isSubmitting,
+            submitCount: formMethods.formState.submitCount,
+        });
+    
+        // Detailed validation check
+        const validationResult = marriageCertificateSchema.safeParse(data);
+        console.log('🕵️ Zod Validation Result:', {
+            success: validationResult.success,
+            ...(validationResult.success ? {} : { 
+                errors: validationResult.error.errors.map(err => ({
+                    path: err.path.join('.'),
+                    message: err.message,
+                    code: err.code
+                }))
+            })
+        });
+    
+        // Comprehensive form validity check
         if (!formMethods.formState.isValid) {
-            console.error("Form is invalid, submission blocked");
+            console.error("❌ Form is INVALID - Submission Blocked");
+            
+            // Detailed error logging
+            const errors = formMethods.formState.errors;
+            console.error("🚨 Detailed Form Errors:", JSON.stringify(errors, null, 2));
+    
+            // Log specific invalid fields
+            Object.keys(errors).forEach(field => {
+                console.error(`🔴 Invalid Field: ${field}`, (errors as any)[field]);
+            });
+    
+            // Trigger error handling
+            handleError(errors);
             return;
         }
-
+    
         try {
+            console.log('🚀 Preparing to submit form data');
+    
+            // Check and simplify affidavitForDelayed if it's "No"
+            if (data.affidavitForDelayed?.delayedRegistration === 'No') {
+                console.log('🔍 Simplifying Delayed Registration Data');
+                data.affidavitForDelayed = {
+                    delayedRegistration: 'No'
+                };
+            }
+    
             // Check if we're in update mode
             const isUpdateMode = Boolean(defaultValues && defaultValues.id);
-
+    
             if (isUpdateMode) {
-                console.log('Preparing to update marriage certificate with data:', JSON.stringify(data, null, 2));
+                console.log('🖊️ Update Mode Detected', {
+                    currentId: defaultValues?.id,
+                    updateData: JSON.stringify(data, null, 2)
+                });
             } else {
-                console.log('Preparing to submit new marriage certificate with data:', JSON.stringify(data, null, 2));
+                console.log('📝 New Record Submission');
             }
-
+    
+            // Data preparation
             const preparedData = preparePrismaData(data);
-            const processedData = await handleFileUploads(preparedData);
-
-            // Check if we're in edit mode
-            const isEditMode = Boolean(defaultValues && defaultValues.id);
-
-            let result;
-
-            // Then in your onSubmit function
-            if (isEditMode) {
-                console.log('Edit mode - updating existing record');
-                result = await updateMarriageCertificateForm(
-                    defaultValues?.id as string,
-                    // baseFormId as string, // Use the stored baseFormId
-                    processedData
-                );
-
-                // Update operation has success and message/error properties
-                if (result.success) {
-                    toast.success('Marriage certificate updated successfully');
-                    onOpenChange?.(false);
-                    formMethods.reset();
-                } else {
-                    if ('error' in result) {
-                        console.log('Update error:', result.error);
-                        toast.error(result.error.includes('No user found with name')
-                            ? 'Invalid prepared by user. Please check the name.'
-                            : result.error);
-                    } else {
-                        console.log('Update message:', result.message);
-                        toast.error(result.message);
-                    }
-                }
-            } else {
-                console.log('Create mode - creating new record');
-                result = await submitMarriageCertificateForm(processedData);
-
+            console.log('🔧 Prepared Data:', JSON.stringify(preparedData, null, 2));
+    
+            // For update mode, just show the toast and log
+            if (isUpdateMode) {
+                console.log('🟢 Update data is correct and ready to be saved');
+                toast.success('Marriage certificate data prepared successfully for update');
+                return;
+            }
+    
+            // Actual submission
+            console.log('📤 Submitting Marriage Certificate Form');
+            const result = await submitMarriageCertificateForm(preparedData);
+    
+            console.log('📥 Submission Result:', JSON.stringify(result, null, 2));
+    
             if ('data' in result) {
+                console.log('✅ Successful Submission', {
+                    bookNumber: result.data.bookNumber,
+                    pageNumber: result.data.pageNumber,
+                    registryNumber: data.registryNumber
+                });
+    
                 toast.success(`Marriage certificate submitted successfully (Book ${result.data.bookNumber}, Page ${result.data.pageNumber})`);
+                
                 notifyUsersWithPermission(
                     Permission.DOCUMENT_READ,
                     "New uploaded Marriage Certificate",
                     `New Marriage Certificate with the details (Book ${result.data.bookNumber}, Page ${result.data.pageNumber}, Registry Number ${data.registryNumber}) has been uploaded.`
                 );
-
+    
                 onOpenChange?.(false);
                 formMethods.reset();
             } else if ('error' in result) {
-                console.log('Submission error:', result.error);
-                toast.error(result.error.includes('No user found with name') ? 'Invalid prepared by user. Please check the name.' : result.error);
+                console.error('❌ Submission Error:', result.error);
+                toast.error(
+                    result.error.includes('No user found with name') 
+                        ? 'Invalid prepared by user. Please check the name.' 
+                        : result.error
+                );
             }
-
+    
+            // Reset form to default values
             formMethods.reset(emptyDefaults);
+    
         } catch (error) {
-            console.error('Error in submitMarriageCertificateForm:', error);
+            console.error('🔥 Catastrophic Submission Error:', error);
+            toast.error('Submission failed, please try again');
             return { success: false, error: 'Internal server error' };
         }
     };

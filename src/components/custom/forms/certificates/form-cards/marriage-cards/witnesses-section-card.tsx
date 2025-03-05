@@ -51,21 +51,7 @@ export const WitnessesCard: React.FC<WitnessesCardProps> = ({ className }) => {
                 )}
               />
             </div>
-            <div className='flex-1'>
-              <FormField
-                control={control}
-                name={`husbandWitnesses.${index}.signature`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Signature</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Enter signature" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+           
             {/* You can add additional fields (e.g. name2, signature2) similarly */}
             <button className='border rounded-lg bg-red-500 p-1 text-sm text-accent w-24 flex-none h-10 mt-7' type="button" onClick={() => remove(index)}>
               Remove

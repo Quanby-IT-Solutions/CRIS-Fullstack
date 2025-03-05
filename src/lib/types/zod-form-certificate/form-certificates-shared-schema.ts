@@ -76,7 +76,7 @@ export const signatureSchema = z.union([
 ]);
 
 export const signatoryDetailsSchema = z.object({
-  signature: signatureSchema,
+  // signature: signatureSchema,
   nameInPrint: z.string().optional(),
   titleOrPosition: z.string().nonempty('Title or position is required'),
   date: createDateFieldSchema({

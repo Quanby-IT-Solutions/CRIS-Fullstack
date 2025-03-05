@@ -202,24 +202,7 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                             </FormItem>
                                         )}
                                     />
-                                    <FormField
-                                        control={control}
-                                        name='affidavitForDelayed.applicantInformation.signatureOfApplicant'
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Signature (optional)</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        type='text' className='h-10' placeholder='This is optional'
-                                                        {...field}
-                                                        value={field.value ?? ''}
-                                                        disabled
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
+                                    
                                 </div>
                             </CardContent>
                         </Card>
@@ -963,7 +946,7 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                             </CardContent>
                         </Card>
 
-                        {/* Signature of administrator */}
+                        {/*  of administrator */}
                         <Card>
                             <CardHeader>
                                 <CardTitle>Administering Officer Information</CardTitle>
@@ -1031,24 +1014,7 @@ export const AffidavitForDelayedMarriageRegistration: FC<
                                             )}
                                         />
 
-                                        <FormField
-                                            control={control}
-                                            name='affidavitForDelayed.administeringInformation.adminSignature'
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Signature (optional)</FormLabel>
-                                                    <FormControl>
-                                                        <Input
-                                                            type='text' className='h-10' placeholder='This is optional'
-                                                            {...field}
-                                                            value={field.value ?? ''}
-                                                            disabled
-                                                        />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
+                                        
                                     </div>
                                 </div>
                             </CardContent>

@@ -67,56 +67,7 @@ function ProcessingDetailsCard<T extends FieldValues = FieldValues>({
         <CardTitle>{cardTitle}</CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          {showSignature && (
-            <FormField
-              control={control}
-              name={signatureFieldName}
-              render={({ formState: { errors } }) => (
-                <FormItem>
-                  <FormControl>
-                    <SignatureUploader
-                      name={signatureFieldName}
-                      label='Signature'
-                      onChange={(value: File | string) => {
-                        // Update the field value in react-hook-form.
-                        setValue(
-                          signatureFieldName,
-                          value as PathValue<T, Path<T>>,
-                          {
-                            shouldValidate: true,
-                            shouldDirty: true,
-                          }
-                        );
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage>
-                    {errors?.[signatureFieldName]?.message as string}
-                  </FormMessage>
-                </FormItem>
-              )}
-            />
-          )}
-          {!hideDate && (
-            <FormField
-              control={control}
-              name={`${fieldPrefix}.date` as Path<T>}
-              render={({ field }) => (
-                <DatePickerField
-                  field={{
-                    value: field.value || null,
-                    onChange: field.onChange,
-                  }}
-                  label='Date'
-                  placeholder='Select date'
-                />
-              )}
-            />
-          )}
-        </div>
-
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
           {showNameInPrint && (
             <FormField
               control={control}
@@ -151,6 +102,26 @@ function ProcessingDetailsCard<T extends FieldValues = FieldValues>({
               )}
             />
           )}
+          {!hideDate && (
+            <FormField
+              control={control}
+              name={`${fieldPrefix}.date` as Path<T>}
+              render={({ field }) => (
+                <DatePickerField
+                  field={{
+                    value: field.value || null,
+                    onChange: field.onChange,
+                  }}
+                  label='Date'
+                  placeholder='Select date'
+                />
+              )}
+            />
+          )}
+
+
+
+
 
           {showTitleOrPosition && (
             <FormField
@@ -211,7 +182,7 @@ export function RegisteredAtOfficeCard<T extends FieldValues = FieldValues>(
       fieldPrefix={props.fieldPrefix}
       cardTitle={props.cardTitle}
       hideDate={props.hideDate}
-      showSignature={props.showSignature}
+
       showNameInPrint={props.showNameInPrint}
       showTitleOrPosition={props.showTitleOrPosition}
     />
