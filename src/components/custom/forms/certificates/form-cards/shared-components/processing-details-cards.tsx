@@ -20,7 +20,7 @@ import {
 import { useCivilRegistrarStaff } from '@/hooks/use-civil-registrar-staff';
 import { useEffect } from 'react';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
-import SignatureUploader from './signature-uploader';
+// import SignatureUploader from './signature-uploader';
 
 export interface ProcessingCardProps<T extends FieldValues = FieldValues> {
   fieldPrefix: string;
